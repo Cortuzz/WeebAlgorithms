@@ -42,24 +42,19 @@
             <div class="control">
                 <h1>Управление:</h1>
                 <div>
-                    <button id="start">Начать выполнение</button>
-                    <button id="pause">Приостановить выполнение</button>
-                    <button id="stop">Отменить выполнение</button>
+                    <button id="startButton">Начать выполнение</button>
+                    <button id="pauseButton">Приостановить выполнение</button>
+                    <button id="stopButton">Отменить выполнение</button>
                 </div>
             </div>
         </div>
 
-        <div class="canvas_block">
-            <canvas id="canvas">
-                <script>
-                    const canvas = document.getElementById('canvas')
-                    const ctx = canvas.getContext('2d')
-
-                    ctx.fillStyle = 'black'
-                    ctx.fillRect(0, 0, 1000, 1000)
-                </script>
-            </canvas>
+        <div class="field_block">
+            <div id="field">
+                <!--Initialized by js code-->
+            </div>
         </div>
     </div>
+    <script src = "../js/path_finder/handler.js" type="module"></script>
 </body>
 </html>

@@ -29,37 +29,37 @@
     margin-bottom: 10px;
 }
 
-.control button#start {
+.control #startButton {
     border-radius: 10px;
     background-color: lightgreen;
     border: 2px solid forestgreen;
 }
 
-.control button#start:hover {
+.control #startButton:hover {
     background-color: forestgreen;
     border: 2px solid lightgreen;
     transform: scale(0.95);
 }
 
-.control button#pause {
+.control #pauseButton {
     border-radius: 10px;
     background-color: #ffff6a;
     border: 2px solid #b79501;
 }
 
-.control button#pause:hover {
+.control #pauseButton:hover {
     background-color: #b79501;
     border: 2px solid #ffff6a;
     transform: scale(0.95);
 }
 
-.control button#stop {
+.control #stopButton {
     border-radius: 10px;
     background-color: palevioletred;
     border: 2px solid darkred;
 }
 
-.control button#stop:hover {
+.control #stopButton:hover {
     background-color: darkred;
     border: 2px solid palevioletred;
     transform: scale(0.95);
@@ -71,9 +71,4 @@
     padding: 20px 20px 20px 20px;
     margin-left: 10px;
     background-color: aliceblue;
-}
-
-canvas {
-    height: 100%;
-    width: 100%;
 }
