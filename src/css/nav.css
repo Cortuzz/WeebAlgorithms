@@ -7,7 +7,6 @@ body {
 }
 
 div.nav {
-    position: fixed;
     justify-content: center;
     background-color: aliceblue;
     border-radius: 10px;

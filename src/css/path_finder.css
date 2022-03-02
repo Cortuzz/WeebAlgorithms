@@ -2,17 +2,78 @@
     display: flex;
 }
 
-.description {
-    margin-top: 16% !important;
+.main_block {
+    width: 30%;
 }
 
-.description, .instruction {
+.description, .instruction, .control {
     font-style: italic;
     background-color: aliceblue;
     border-radius: 20px;
-    width: 50%;
-    margin-left: 12%;
+    margin-left: 100px;
     margin-top: 1%;
     padding: 20px 20px 20px 20px;
 }
 
+.control div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.control button {
+    width: 60%;
+    transition: all .4s ease;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+.control button#start {
+    border-radius: 10px;
+    background-color: lightgreen;
+    border: 2px solid forestgreen;
+}
+
+.control button#start:hover {
+    background-color: forestgreen;
+    border: 2px solid lightgreen;
+    transform: scale(0.95);
+}
+
+.control button#pause {
+    border-radius: 10px;
+    background-color: #ffff6a;
+    border: 2px solid #b79501;
+}
+
+.control button#pause:hover {
+    background-color: #b79501;
+    border: 2px solid #ffff6a;
+    transform: scale(0.95);
+}
+
+.control button#stop {
+    border-radius: 10px;
+    background-color: palevioletred;
+    border: 2px solid darkred;
+}
+
+.control button#stop:hover {
+    background-color: darkred;
+    border: 2px solid palevioletred;
+    transform: scale(0.95);
+}
+
+.canvas_block {
+    width: 40%;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+    margin-left: 10px;
+    background-color: aliceblue;
+}
+
+canvas {
+    height: 100%;
+    width: 100%;
+}
