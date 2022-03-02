@@ -1,0 +1,18 @@
+.main {
+    display: flex;
+}
+
+.description {
+    margin-top: 16% !important;
+}
+
+.description, .instruction {
+    font-style: italic;
+    background-color: aliceblue;
+    border-radius: 20px;
+    width: 50%;
+    margin-left: 12%;
+    margin-top: 1%;
+    padding: 20px 20px 20px 20px;
+}
+
