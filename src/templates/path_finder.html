@@ -1,10 +1,54 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/path_finder.css">
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <title>Поиск пути</title>
 </head>
 <body>
+    <div class="nav">
+        <aside>
+            <ul class="nav_block">
+                <li><a href="../../index.html"><i class="fas fa-home"></i> Главная</a></li>
+                <li><a href="path_finder.html"><i class="fas fa-clone"></i> Поиск пути</a><li>
+                <li><a href="genetic.html"><i class="fas fa-dna"></i> Генетический алгоритм</a><li>
+                <li><a href="clustering.html"><i class="fas fa-cubes"></i> Кластеризация</a><li>
+                <li><a href="neural_network.html"><i class="fas fa-network-wired"></i> Нейронная сеть</a><li>
+            </ul>
+        </aside>
+    </div>
 
+    <div class="main">
+        <div class="settings_block">
+            <div class="description">
+                <h1>Поиск пути<br></h1>
+                <a>Данный алгоритм ищет кратчайшее расстояние между двумя точками,
+                используя А*, визуализируя все шаги.</a>
+            </div>
+
+            <div class="instruction">
+                <h1>Инструкция:</h1>
+                <ul>
+                    <li>Установите размер поля</li>
+                    <li>Нарисуйте (или сгенерируйте) препятствия</li>
+                    <li>Отметьте точку старта</li>
+                    <li>Отметьте точку финиша</li>
+                    <li>Запустите алгоритм</li>
+                </ul>
+            </div>
+        </div>
+
+        <!--<canvas id="canvas">
+            <script>
+                const canvas = document.getElementById('canvas')
+                const ctx = canvas.getContext('2d')
+
+                ctx.fillStyle = 'white'
+                ctx.fillRect(10, 10, 50, 50)
+            </script>
+        </canvas>-->
+    </div>
 </body>
 </html>

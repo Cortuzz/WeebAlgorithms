@@ -1,0 +1,44 @@
+body {
+    justify-content: center;
+    background-image: url("/src/img/jibr.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+div.nav {
+    position: fixed;
+    justify-content: center;
+    background-color: aliceblue;
+    border-radius: 10px;
+    width: 90%;
+    margin-top: 1%;
+    margin-left: 5%;
+    margin-bottom: 1%;
+    padding: 1%;
+}
+
+ul.nav_block {
+    padding: 4px;
+    margin: auto;
+}
+
+ul.nav_block li {
+    display: inline-block;
+    color: gray;
+    margin-right: 50px;
+    padding: 15px;
+    transition: transform .4s ease;
+}
+
+ul.nav_block a {
+    text-decoration: none;
+    display: inline-block;
+    color: gray;
+}
+
+ul.nav_block li:hover, ul.nav_block a:hover {
+    color: #6D2749;
+    text-decoration: none;
+    transform: scale(1.55);
+}
