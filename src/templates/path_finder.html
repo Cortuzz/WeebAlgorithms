@@ -21,7 +21,7 @@
     </div>
 
     <div class="main">
-        <div class="settings_block">
+        <div class="main_block">
             <div class="description">
                 <h1>Поиск пути<br></h1>
                 <a>Данный алгоритм ищет кратчайшее расстояние между двумя точками,
@@ -38,17 +38,23 @@
                     <li>Запустите алгоритм</li>
                 </ul>
             </div>
+
+            <div class="control">
+                <h1>Управление:</h1>
+                <div>
+                    <button id="startButton">Начать выполнение</button>
+                    <button id="pauseButton">Приостановить выполнение</button>
+                    <button id="stopButton">Отменить выполнение</button>
+                </div>
+            </div>
         </div>
 
-        <!--<canvas id="canvas">
-            <script>
-                const canvas = document.getElementById('canvas')
-                const ctx = canvas.getContext('2d')
-
-                ctx.fillStyle = 'white'
-                ctx.fillRect(10, 10, 50, 50)
-            </script>
-        </canvas>-->
+        <div class="field_block">
+            <div id="field">
+                <!--Initialized by js code-->
+            </div>
+        </div>
     </div>
+    <script src = "../js/path_finder/handler.js" type="module"></script>
 </body>
 </html>

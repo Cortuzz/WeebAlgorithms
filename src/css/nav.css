@@ -7,7 +7,6 @@ body {
 }
 
 div.nav {
-    position: fixed;
     justify-content: center;
     background-color: aliceblue;
     border-radius: 10px;
@@ -40,5 +39,5 @@ ul.nav_block a {
 ul.nav_block li:hover, ul.nav_block a:hover {
     color: #6D2749;
     text-decoration: none;
-    transform: scale(1.55);
+    transform: scale(1.3);
 }
