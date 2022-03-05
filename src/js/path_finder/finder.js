@@ -34,12 +34,12 @@ class PathFinder {
         }
     }
 
-    findPath(start, finish) {
-        if (maze[start.x][start.y] === 1) {
+    async findPath(start, finish) {
+        if (this.maze[start.x][start.y] === 1) {
             console.log("Начало в стене((");
             return;
         }
-        if (maze[finish.x][finish.y] === 1) {
+        if (this.maze[finish.x][finish.y] === 1) {
             console.log("Конец в стене((");
             return;
         }
@@ -129,22 +129,3 @@ function ConstructMaze(width, height) {
     return maze;
 }
 */
-
-
-//Пример программы пока с вручную заданными входами и выводом в консоль
-//Вместо showWin и showLose будет сделан нормальный вывод
-let maze = [[0, 0, 1, 0, 1, 1],
-    [1, 0, 0, 0, 1, 1],
-    [1, 1, 0, 0, 0, 0],
-    [1, 1, 0, 1, 1, 0],
-    [0, 0, 1, 1, 1, 1],
-    [0, 1, 1, 0, 1, 0]]
-console.log(maze);
-
-let start = new Point(0, 0);
-let finish = new Point(3, 2);
-console.log(start, finish);
-
-//Вместо эвристики могут стоять разные функции, например manhattanHeuristic или euclidHeuristic
-a = new PathFinder(maze, manhattanHeuristic);
-a.findPath(start, finish);
