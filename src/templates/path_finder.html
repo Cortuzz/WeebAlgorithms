@@ -49,13 +49,43 @@
             </div>
         </div>
 
-        <div class="field_block">
-            <div id="field">
+        <div id="field">
                 <!--Initialized by js code-->
+        </div>
+
+        <div class="settings_block">
+            <div class="size">
+                <h1>Выбор размера:</h1>
+                <div class="currentSize">
+                    <h6>Текущий размер:&nbsp</h6>
+                    <h6 id="fieldSizeView"></h6>
+                </div>
+
+                <div class="fieldSize">
+                    <h6>5</h6>
+                    <input id="fieldSize" type = "range" min = "5" max = "30">
+                    <h6>30</h6>
+                </div>
+
+            </div>
+
+            <div class="cell">
+                <h1>Выбор действия:</h1>
+                <div class="currentAction">
+                    <h6>Текущее действие:&nbsp</h6>
+                    <h6 id="currentActionView"></h6>
+                </div>
+
+                <div>
+                    <button id="startCellButton">Установить начальную ячейку</button>
+                    <button id="finishCellButton">Установить конечную ячейку</button>
+                    <button id="borderCellButton">Поставить / убрать преграды</button>
+                </div>
             </div>
         </div>
     </div>
-    <script src = "../js/path_finder/handler.js" type="module"></script>
+
+    <script src="../js/path_finder/handler.js" type="module"></script>
     <script src="../js/path_finder/finder.js"></script>
 </body>
 </html>

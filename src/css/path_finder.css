@@ -6,22 +6,22 @@
     width: 30%;
 }
 
-.description, .instruction, .control {
+.description, .instruction, .control, .cell, .size {
     font-style: italic;
     background-color: aliceblue;
     border-radius: 20px;
-    margin-left: 100px;
+    margin-left: 17%;
     margin-top: 1%;
     padding: 20px 20px 20px 20px;
 }
 
-.control div {
+.control div, .cell div {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.control button {
+.control button, .cell button {
     width: 60%;
     transition: all .4s ease;
     margin-left: auto;
@@ -29,13 +29,13 @@
     margin-bottom: 10px;
 }
 
-.control #startButton {
+.control #startButton, .cell #startCellButton {
     border-radius: 10px;
     background-color: lightgreen;
     border: 2px solid forestgreen;
 }
 
-.control #startButton:hover {
+.control #startButton:hover, .cell #startCellButton:hover {
     background-color: forestgreen;
     border: 2px solid lightgreen;
     transform: scale(0.95);
@@ -53,22 +53,86 @@
     transform: scale(0.95);
 }
 
-.control #stopButton {
+.control #stopButton, .cell #finishCellButton {
     border-radius: 10px;
     background-color: palevioletred;
     border: 2px solid darkred;
 }
 
-.control #stopButton:hover {
+.control #stopButton:hover, .cell #finishCellButton:hover {
     background-color: darkred;
     border: 2px solid palevioletred;
     transform: scale(0.95);
 }
 
-.canvas_block {
+#field {
+    display: flex;
     width: 40%;
+    background-color: aliceblue;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;
-    margin-left: 10px;
-    background-color: aliceblue;
+    margin-left: 1%;
+    margin-top: 0.4%;
+}
+
+table {
+    table-layout: fixed;
+    border: 1px solid gray;
+}
+
+table td {
+    border: 1px solid gray;
+}
+
+table td[data-mode="unchecked"] {
+    background-color: lightgray;
+}
+
+table td[data-mode="border"] {
+    background-color: darkgray;
+}
+
+table td[data-mode="start"] {
+    background-color: forestgreen;
+}
+
+table td[data-mode="finish"] {
+    background-color: darkred;
+}
+
+.settings_block {
+    width: 30%;
+    margin-left: 1%
+}
+
+.cell, .size {
+    margin-left: 1% !important;
+    margin-right: 17% !important;
+}
+
+#fieldSize {
+    width: 95%;
+}
+
+.cell #borderCellButton {
+    border-radius: 10px;
+    background-color: darkgray;
+    border: 2px solid gray;
+}
+
+.cell #borderCellButton:hover {
+    background-color: gray;
+    border: 2px solid darkgray;
+    transform: scale(0.95);
+}
+
+.currentAction, .currentSize, .fieldSize {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+#fieldSize {
+    margin-left: 2.5%;
+    margin-right: 2.5%;
 }
