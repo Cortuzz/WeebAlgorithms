@@ -1,4 +1,4 @@
-class point {
+class Point {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -8,7 +8,7 @@ class point {
     }
 }
 
-function Find(x, y, array) {
+function find(x, y, array) {
     for (let i = 0; i < array.length; i++) {
         if (array[i].x === x && array[i].y === y) {
             return i;
@@ -34,7 +34,7 @@ class PathFinder {
         }
     }
 
-    FindPath(start, finish) {
+    findPath(start, finish) {
         if (maze[start.x][start.y] === 1) {
             console.log("Начало в стене((");
             return;
@@ -65,11 +65,11 @@ class PathFinder {
                     if (Math.abs(i) + Math.abs(j) === 1 && x + i < this.width && x + i >= 0 && y + j < this.height &&
                         y + j >= 0 && this.maze[x + i][y + j] !== 1 && this.closed[x + i][y + j] === 0) {
 
-                        let indexInOpen = Find(x + i, y + j, this.open);
+                        let indexInOpen = find(x + i, y + j, this.open);
                         let neighbourPoint;
                         if (indexInOpen === -1) {
-                            //If point is not in open[], then push it
-                            neighbourPoint = new point(x + i, y + j);
+                            //If Point is not in open[], then push it
+                            neighbourPoint = new Point(x + i, y + j);
                             neighbourPoint.parent = current;
                             neighbourPoint.h = this.heuristic(neighbourPoint, finish);
                             neighbourPoint.g = current.g + 1;
@@ -91,11 +91,11 @@ class PathFinder {
 
 }
 
-function EuclidHeuristic(pointA, pointB) {
+function euclidHeuristic(pointA, pointB) {
     return Math.sqrt((pointA.x - pointB.x) ** 2 + (pointA.y - pointB.y) ** 2);
 }
 
-function ManhattanHeuristic(pointA, pointB) {
+function manhattanHeuristic(pointA, pointB) {
     return Math.abs((pointA.x - pointB.x)) + Math.abs((pointA.y - pointB.y));
 }
 
@@ -139,10 +139,10 @@ let maze = [[0, 0, 1, 0, 1, 1],
     [0, 1, 1, 0, 1, 0]]
 console.log(maze);
 
-let start = new point(0, 0);
-let finish = new point(3, 2);
+let start = new Point(0, 0);
+let finish = new Point(3, 2);
 console.log(start, finish);
 
-//Вместо эвристики могут стоять разные функции, например ManhattanHeuristic или EuclidHeuristic
-a = new PathFinder(maze, ManhattanHeuristic);
-a.FindPath(start, finish);
+//Вместо эвристики могут стоять разные функции, например manhattanHeuristic или euclidHeuristic
+a = new PathFinder(maze, manhattanHeuristic);
+a.findPath(start, finish);
