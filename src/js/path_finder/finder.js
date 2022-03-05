@@ -3,8 +3,8 @@ class Point {
         this.x = x;
         this.y = y;
         this.parent = null;
-        this.h = Number.MAX_VALUE;
-        this.g = Number.MAX_VALUE;
+        this.heuristicValue = Number.MAX_VALUE;
+        this.pathLength = Number.MAX_VALUE;
     }
 }
 
@@ -43,8 +43,8 @@ class PathFinder {
             console.log("Конец в стене((");
             return;
         }
-        start.g = 0;
-        start.h = this.heuristic(start, finish);
+        start.pathLength = 0;
+        start.heuristicValue = this.heuristic(start, finish);
         this.open.push(start);
 
         while (this.open.length > 0) {
@@ -71,20 +71,22 @@ class PathFinder {
                             //If Point is not in open[], then push it
                             neighbourPoint = new Point(x + i, y + j);
                             neighbourPoint.parent = current;
-                            neighbourPoint.h = this.heuristic(neighbourPoint, finish);
-                            neighbourPoint.g = current.g + 1;
+                            neighbourPoint.heuristicValue = this.heuristic(neighbourPoint, finish);
+                            neighbourPoint.pathLength = current.pathLength + 1;
                             this.open.push(neighbourPoint);
-                        } else if (this.open[indexInOpen].g > current.g + 1) {
+                        }
+                        else if (this.open[indexInOpen].pathLength > current.pathLength + 1) {
                             //Otherwise, check if possible to decrease g value
                             neighbourPoint = this.open[indexInOpen];
                             neighbourPoint.parent = current;
-                            neighbourPoint.g = current.g + 1;
+                            neighbourPoint.pathLength = current.pathLength + 1;
                         }
 
                     }
                 }
             }
-            this.open.sort((a, b) => (b.h + b.g) - (a.h + a.g));
+            this.open.sort((a, b) =>
+                (b.heuristicValue + b.pathLength) - (a.heuristicValue + a.pathLength));
         }
         showLose();
     }
@@ -109,7 +111,7 @@ function showWin(finish) {
         console.log(node.x, node.y)
         node = node.parent;
     }
-    console.log("Длина пути равна ", finish.g);
+    console.log("Длина пути равна ", finish.pathLength);
 }
 
 /*
