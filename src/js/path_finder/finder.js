@@ -35,14 +35,6 @@ class PathFinder {
     }
 
     async findPath(start, finish) {
-        if (this.maze[start.x][start.y] === 1) {
-            console.log("Начало в стене((", start.x, start.y);
-            return;
-        }
-        if (this.maze[finish.x][finish.y] === 1) {
-            console.log("Конец в стене((", finish.x, finish.y);
-            return;
-        }
         start.pathLength = 0;
         start.heuristicValue = this.heuristic(start, finish);
         this.open.push(start);
@@ -50,7 +42,6 @@ class PathFinder {
         while (this.open.length > 0) {
             //maybe implement maxHeap
             let current = this.open.pop();
-
             this.closed[current.x][current.y] = 1;
             if (current.x === finish.x && current.y === finish.y) {
                 finish = current;
@@ -81,7 +72,6 @@ class PathFinder {
                             neighbourPoint.parent = current;
                             neighbourPoint.pathLength = current.pathLength + 1;
                         }
-
                     }
                 }
             }

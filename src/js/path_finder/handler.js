@@ -53,24 +53,26 @@ function changeCell(event) {
             break;
 
         case "start":
-            let prevCellStart = document.querySelector("td[data-mode = 'start']");
+            let prevCellStart = document.querySelector("td[data-mode='start']");
             if (prevCellStart != null) {
                 prevCellStart.dataset.mode = 'unchecked';
             }
 
             event.target.dataset.mode = "start";
             maze[dataset.row][dataset.column] = 0;
-            start = new Point(dataset.row, dataset.column);
+            start = new Point(parseInt(dataset.row), parseInt(dataset.column));
             break;
 
         case "finish":
-            let prevCellFinish = document.querySelector("td[data-mode = 'finish']");
+            let prevCellFinish = document.querySelector("td[data-mode='finish']");
             if (prevCellFinish != null) {
                 prevCellFinish.dataset.mode = 'unchecked';
             }
+
             event.target.dataset.mode = "finish";
             maze[dataset.row][dataset.column] = 0;
-            finish = new Point(dataset.row, dataset.column);
+            finish = new Point(parseInt(dataset.row), parseInt(dataset.column));
+            break;
     }
 }
 
@@ -100,9 +102,6 @@ function tableBuilder(matrix) {
 }
 
 async function startFinder() {
-    console.log(maze);
-    console.log(start, finish);
-
     //Вместо эвристики могут стоять разные функции, например manhattanHeuristic или euclidHeuristic
     let a = new PathFinder(maze, manhattanHeuristic);
     await a.findPath(start, finish);
