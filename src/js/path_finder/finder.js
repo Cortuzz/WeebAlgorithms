@@ -36,11 +36,11 @@ class PathFinder {
 
     async findPath(start, finish) {
         if (this.maze[start.x][start.y] === 1) {
-            console.log("Начало в стене((");
+            console.log("Начало в стене((", start.x, start.y);
             return;
         }
         if (this.maze[finish.x][finish.y] === 1) {
-            console.log("Конец в стене((");
+            console.log("Конец в стене((", finish.x, finish.y);
             return;
         }
         start.pathLength = 0;
