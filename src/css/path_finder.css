@@ -85,7 +85,7 @@ table td {
 }
 
 table td[data-mode="unchecked"] {
-    background-color: lightgray;
+    background-color: aliceblue;
 }
 
 table td[data-mode="border"] {
@@ -110,10 +110,6 @@ table td[data-mode="finish"] {
     margin-right: 17% !important;
 }
 
-#fieldSize {
-    width: 95%;
-}
-
 .cell #borderCellButton {
     border-radius: 10px;
     background-color: darkgray;
@@ -132,7 +128,12 @@ table td[data-mode="finish"] {
     justify-content: start !important;
 }
 
-#fieldSize {
+input.fieldSize {
+    width: 100%;
     margin-left: 2.5%;
     margin-right: 2.5%;
+}
+
+#retainer {
+    margin-top: 6px;
 }
