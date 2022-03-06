@@ -88,6 +88,14 @@ table td[data-mode="unchecked"] {
     background-color: aliceblue;
 }
 
+table td[data-mode="checked"] {
+    background-color: lightblue;
+}
+
+table td[data-mode="path"] {
+    background-color: lightskyblue;
+}
+
 table td[data-mode="border"] {
     background-color: darkgray;
 }

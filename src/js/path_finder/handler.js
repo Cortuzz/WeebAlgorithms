@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
     window.pauseButton.addEventListener("click", pauseFinder);
     window.stopButton.addEventListener("click", stopFinder);
 
-    window.cellButtons.addEventListener("click", changeCellMode); // todo
+    window.cellButtons.addEventListener("click", changeCellMode);
 })
 
 let start;
@@ -75,6 +75,7 @@ function changeCell(event) {
             break;
     }
 }
+
 
 function tableBuilder(matrix) {
     let fieldBlock = window.field;
