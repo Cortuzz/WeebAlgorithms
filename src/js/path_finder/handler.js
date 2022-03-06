@@ -1,6 +1,5 @@
 window.addEventListener("load", () => {
     init()
-    tableBuilder(maze)
     window.startButton.addEventListener("click", startFinder);
     window.pauseButton.addEventListener("click", pauseFinder);
     window.stopButton.addEventListener("click", stopFinder);
@@ -8,27 +7,28 @@ window.addEventListener("load", () => {
     window.cellButtons.addEventListener("click", changeCellMode);
 })
 
-let start;
-let finish;
-
-let currentState;
-let handleStates;
-let viewStates;
-let maze = [
-        [0, 0, 1, 0, 1, 1],
-        [1, 0, 0, 0, 1, 1],
-        [1, 1, 0, 0, 0, 0],
-        [1, 1, 0, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1],
-        [0, 1, 1, 0, 1, 0]
-];
+let maze;
+let start, finish;
+let currentState, handleStates, viewStates;
 
 function init() {
+    maze = [ ]
     viewStates = {'border': "Выбор преград", 'start': "Выбор начальной точки", 'finish': "Выбор конечной точки"}
     handleStates = {2: 'start', 3: 'finish', 1: 'border', 0: 'unchecked'}
     currentState = 'start'
 
     window.currentActionView.innerText = viewStates[currentState];
+    matrixBuilder(10, 10);
+    tableBuilder(maze)
+}
+
+function matrixBuilder(width, height) {
+    for (let i = 0; i < height; i++) {
+        maze[i] = new Array(width);
+        for (let j = 0; j < width; j++) {
+            maze[i][j] = 0;
+        }
+    }
 }
 
 function changeCellMode(event) {
@@ -103,7 +103,6 @@ function tableBuilder(matrix) {
 }
 
 async function startFinder() {
-    //Вместо эвристики могут стоять разные функции, например manhattanHeuristic или euclidHeuristic
     let a = new PathFinder(maze, manhattanHeuristic);
     await a.findPath(start, finish);
 }
