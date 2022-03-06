@@ -118,6 +118,9 @@ function changeFix() {
 
     if (fixing) {
         window.fieldSizeY.value = window.fieldSizeX.value;
+        let value = window.fieldSizeY.value;
+
+        init(value, value);
     }
 }
 
