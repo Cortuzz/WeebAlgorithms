@@ -5,21 +5,33 @@ window.addEventListener("load", () => {
     window.stopButton.addEventListener("click", stopFinder);
 
     window.cellButtons.addEventListener("click", changeCellMode);
+
+    window.fieldSizeX.addEventListener("input", changeSizeX);
+    window.fieldSizeY.addEventListener("input", changeSizeY);
+    window.retainer.addEventListener("input", changeFix);
 })
 
-let maze;
+let fixing = false;
+let maze = [ ];
 let start, finish;
-let currentState, handleStates, viewStates;
+let currentState = 'start', handleStates, viewStates;
 
-function init() {
-    maze = [ ]
+function init(width=10, height=10) {
     viewStates = {'border': "Выбор преград", 'start': "Выбор начальной точки", 'finish': "Выбор конечной точки"}
     handleStates = {2: 'start', 3: 'finish', 1: 'border', 0: 'unchecked'}
-    currentState = 'start'
 
     window.currentActionView.innerText = viewStates[currentState];
-    matrixBuilder(10, 10);
-    tableBuilder(maze)
+    dropTable();
+    matrixBuilder(width, height);
+    tableBuilder(maze, width, height);
+}
+
+function dropTable() {
+    let table = document.getElementById("table");
+
+    if (table != null) {
+        table.parentNode.removeChild(table);
+    }
 }
 
 function matrixBuilder(width, height) {
@@ -76,25 +88,59 @@ function changeCell(event) {
     }
 }
 
+function changeSizeX(event) {
+    let sizeX = event.target.value;
+    let sizeY = window.fieldSizeY.value;
 
-function tableBuilder(matrix) {
+    if (fixing) {
+        init(sizeX, +sizeX);
+        window.fieldSizeY.value = window.fieldSizeX.value;
+        return;
+    }
+
+    init(sizeX, sizeY);
+}
+
+function changeSizeY(event) {
+    let sizeX = window.fieldSizeX.value;
+    let sizeY = event.target.value;
+    if (fixing) {
+        init(+sizeY, sizeY);
+        window.fieldSizeX.value = window.fieldSizeY.value;
+        return;
+    }
+
+    init(sizeX, sizeY);
+}
+
+function changeFix() {
+    fixing = this.checked;
+
+    if (fixing) {
+        window.fieldSizeY.value = window.fieldSizeX.value;
+    }
+}
+
+function tableBuilder(matrix, width, height) {
     let fieldBlock = window.field;
     let fieldSize = matrix.length;
 
     let table = document.createElement("table");
-    let width = fieldBlock.clientWidth;
-    table.width = width;
+    table.setAttribute("id", "table");
 
-    for (let i = 0; i < fieldSize; i++) {
+    let blockWidth = fieldBlock.clientWidth;
+    table.width = blockWidth;
+
+    for (let i = 0; i < height; i++) {
         let row = table.insertRow(-1);
 
-        for (let j = 0; j < fieldSize; j++) {
+        for (let j = 0; j < width; j++) {
             let cell = row.insertCell(-1);
 
             cell.dataset.mode = handleStates[matrix[i][j]]
             cell.dataset.row = i.toString();
             cell.dataset.column = j.toString();
-            cell.height = (width / fieldSize).toString();
+            cell.height = (blockWidth / fieldSize).toString();
         }
     }
 
@@ -103,7 +149,8 @@ function tableBuilder(matrix) {
 }
 
 async function startFinder() {
-    let a = new PathFinder(maze, manhattanHeuristic);
+    // manhattanHeuristic
+    let a = new PathFinder(maze, euclidHeuristic);
     await a.findPath(start, finish);
 }
 
