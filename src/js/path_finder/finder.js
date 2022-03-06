@@ -42,10 +42,12 @@ class PathFinder {
         while (this.open.length > 0) {
             //maybe implement maxHeap
             let current = this.open.pop();
+            markCheckedCell(current, 'checked');
+            await sleep(250);
             this.closed[current.x][current.y] = 1;
             if (current.x === finish.x && current.y === finish.y) {
                 finish = current;
-                showWin(finish);
+                await showWin(finish);
                 return;
             }
             let x = current.x, y = current.y;
@@ -95,13 +97,26 @@ function showLose() {
     console.log("Нет пути из start в finish");
 }
 
-function showWin(finish) {
+async function showWin(finish) {
     let node = finish;
     while (node !== null) {
-        console.log(node.x, node.y)
+        markCheckedCell(node, 'path');
+        await sleep(50);
         node = node.parent;
     }
+
     console.log("Длина пути равна ", finish.pathLength);
+}
+
+function markCheckedCell(cell, type) {
+    let tableCell = document.querySelector(`td[data-row='${cell.x}'][data-column='${cell.y}']`);
+    let mode = tableCell.dataset.mode;
+
+    if (mode === 'start' || mode === 'finish') {
+        return;
+    }
+
+    tableCell.dataset.mode = type;
 }
 
 /*
