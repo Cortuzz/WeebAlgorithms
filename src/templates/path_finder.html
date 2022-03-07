@@ -49,13 +49,56 @@
             </div>
         </div>
 
-        <div class="field_block">
-            <div id="field">
+        <div id="field">
                 <!--Initialized by js code-->
+        </div>
+
+        <div class="settings_block">
+            <div class="size">
+                <h1>Выбор размера:</h1>
+                <div class="currentSize">
+                    <h6>Текущий размер:&nbsp</h6>
+                    <h6 id="fieldSizeView"></h6>
+                </div>
+
+                <h6>Ширина:</h6>
+                <div class="fieldSize">
+                    <h6>5</h6>
+                    <input class="fieldSize" id="fieldSizeX" type = "range" min = "5" max = "25">
+                    <h6>25</h6>
+                </div>
+
+                <h6>Высота:</h6>
+                <div class="fieldSize">
+                    <h6>5</h6>
+                    <input class="fieldSize" id="fieldSizeY" type = "range" min = "5" max = "25">
+                    <h6>25</h6>
+                </div>
+
+                <div class="fieldSize">
+                    <h6>Зафиксировать значения:&nbsp</h6>
+                    <input type="checkbox" id="retainer">
+                </div>
+            </div>
+
+            <div class="cell">
+                <h1>Выбор действия:</h1>
+                <div class="currentAction">
+                    <h6>Текущее действие:&nbsp</h6>
+                    <h6 id="currentActionView"></h6>
+                </div>
+
+                <div id="cellButtons">
+                    <button id="startCellButton" data-mode="start">Установить начальную ячейку</button>
+                    <button id="finishCellButton" data-mode="finish">Установить конечную ячейку</button>
+                    <button id="borderCellButton" data-mode="border">Поставить / убрать преграды</button>
+                </div>
             </div>
         </div>
     </div>
-    <script src = "../js/path_finder/handler.js" type="module"></script>
+
+    <script src="../js/path_finder/handler.js" type="module"></script>
     <script src="../js/path_finder/finder.js"></script>
+    <script src="../js/main.js"></script>
 </body>
 </html>
