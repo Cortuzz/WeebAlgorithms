@@ -16,7 +16,7 @@ let maze = [ ];
 let start, finish;
 let currentState = 'start', handleStates, viewStates;
 
-function init(width=10, height=10) {
+function init(width=15, height=15) {
     viewStates = {'border': "Выбор преград", 'start': "Выбор начальной точки", 'finish': "Выбор конечной точки"}
     handleStates = {2: 'start', 3: 'finish', 1: 'border', 0: 'unchecked'}
 

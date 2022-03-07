@@ -99,11 +99,11 @@ function showLose() {
 }
 
 async function showWin(finish) {
-    let node = finish;
-    while (node !== null) {
-        markCheckedCell(node, 'path');
+    let point = finish;
+    while (point !== null) {
+        markCheckedCell(point, 'path');
         await sleep(50);
-        node = node.parent;
+        point = point.parent;
     }
 
     console.log("Длина пути равна ", finish.pathLength);
