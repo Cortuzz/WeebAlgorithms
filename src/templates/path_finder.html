@@ -8,97 +8,106 @@
     <title>Поиск пути</title>
 </head>
 <body>
-    <div class="nav">
-        <aside>
-            <ul class="nav_block">
-                <li><a href="../../index.html"><i class="fas fa-home"></i> Главная</a></li>
-                <li><a href="path_finder.html"><i class="fas fa-clone"></i> Поиск пути</a><li>
-                <li><a href="genetic.html"><i class="fas fa-dna"></i> Генетический алгоритм</a><li>
-                <li><a href="clustering.html"><i class="fas fa-cubes"></i> Кластеризация</a><li>
-                <li><a href="neural_network.html"><i class="fas fa-network-wired"></i> Нейронная сеть</a><li>
-            </ul>
-        </aside>
-    </div>
+<div class="nav">
+    <aside>
+        <ul class="nav_block">
+            <li><a href="../../index.html"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="path_finder.html"><i class="fas fa-clone"></i> Поиск пути</a>
+            <li>
+            <li><a href="genetic.html"><i class="fas fa-dna"></i> Генетический алгоритм</a>
+            <li>
+            <li><a href="clustering.html"><i class="fas fa-cubes"></i> Кластеризация</a>
+            <li>
+            <li><a href="neural_network.html"><i class="fas fa-network-wired"></i> Нейронная сеть</a>
+            <li>
+        </ul>
+    </aside>
+</div>
 
-    <div class="main">
-        <div class="main_block">
-            <div class="description">
-                <h1>Поиск пути<br></h1>
-                <a>Данный алгоритм ищет кратчайшее расстояние между двумя точками,
+<div class="main">
+    <div class="main_block">
+        <div class="description">
+            <h1>Поиск пути<br></h1>
+            <a>Данный алгоритм ищет кратчайшее расстояние между двумя точками,
                 используя А*, визуализируя все шаги.</a>
-            </div>
-
-            <div class="instruction">
-                <h1>Инструкция:</h1>
-                <ul>
-                    <li>Установите размер поля</li>
-                    <li>Нарисуйте (или сгенерируйте) препятствия</li>
-                    <li>Отметьте точку старта</li>
-                    <li>Отметьте точку финиша</li>
-                    <li>Запустите алгоритм</li>
-                </ul>
-            </div>
-
-            <div class="control">
-                <h1>Управление:</h1>
-                <div>
-                    <button id="startButton">Начать выполнение</button>
-                    <button id="pauseButton">Приостановить выполнение</button>
-                    <button id="stopButton">Отменить выполнение</button>
-                </div>
-            </div>
         </div>
 
-        <div id="field">
-                <!--Initialized by js code-->
+        <div class="instruction">
+            <h1>Инструкция:</h1>
+            <ul>
+                <li>Установите размер поля</li>
+                <li>Нарисуйте (или сгенерируйте) препятствия</li>
+                <li>Отметьте точку старта</li>
+                <li>Отметьте точку финиша</li>
+                <li>Запустите алгоритм</li>
+            </ul>
         </div>
 
-        <div class="settings_block">
-            <div class="size">
-                <h1>Выбор размера:</h1>
-                <div class="currentSize">
-                    <h6>Текущий размер:&nbsp</h6>
-                    <h6 id="fieldSizeView"></h6>
-                </div>
-
-                <h6>Ширина:</h6>
-                <div class="fieldSize">
-                    <h6>5</h6>
-                    <input class="fieldSize" id="fieldSizeX" type = "range" min = "5" max = "25">
-                    <h6>25</h6>
-                </div>
-
-                <h6>Высота:</h6>
-                <div class="fieldSize">
-                    <h6>5</h6>
-                    <input class="fieldSize" id="fieldSizeY" type = "range" min = "5" max = "25">
-                    <h6>25</h6>
-                </div>
-
-                <div class="fieldSize">
-                    <h6>Зафиксировать значения:&nbsp</h6>
-                    <input type="checkbox" id="retainer">
-                </div>
-            </div>
-
-            <div class="cell">
-                <h1>Выбор действия:</h1>
-                <div class="currentAction">
-                    <h6>Текущее действие:&nbsp</h6>
-                    <h6 id="currentActionView"></h6>
-                </div>
-
-                <div id="cellButtons">
-                    <button id="startCellButton" data-mode="start">Установить начальную ячейку</button>
-                    <button id="finishCellButton" data-mode="finish">Установить конечную ячейку</button>
-                    <button id="borderCellButton" data-mode="border">Поставить / убрать преграды</button>
-                </div>
+        <div class="control">
+            <h1>Управление:</h1>
+            <div>
+                <button id="startButton">Начать выполнение</button>
+                <button id="pauseButton">Приостановить выполнение</button>
+                <button id="stopButton">Отменить выполнение</button>
             </div>
         </div>
     </div>
 
-    <script src="../js/path_finder/handler.js" type="module"></script>
-    <script src="../js/path_finder/finder.js"></script>
-    <script src="../js/main.js"></script>
+    <div id="field">
+        <!--Initialized by js code-->
+    </div>
+
+    <div class="settings_block">
+        <div class="size">
+            <h1>Выбор размера:</h1>
+            <div class="currentSize">
+                <h6>Текущий размер:&nbsp</h6>
+                <h6 id="fieldSizeView"></h6>
+            </div>
+
+            <h6>Ширина:</h6>
+            <div class="fieldSize">
+                <h6>5</h6>
+                <input class="fieldSize" id="fieldSizeX" type="range" min="5" max="25">
+                <h6>25</h6>
+            </div>
+
+            <h6>Высота:</h6>
+            <div class="fieldSize">
+                <h6>5</h6>
+                <input class="fieldSize" id="fieldSizeY" type="range" min="5" max="25">
+                <h6>25</h6>
+            </div>
+
+            <div class="fieldSize">
+                <h6>Зафиксировать значения:&nbsp</h6>
+                <input type="checkbox" id="retainer">
+            </div>
+        </div>
+
+        <div class="cell">
+            <h1>Выбор действия:</h1>
+            <div class="currentAction">
+                <h6>Текущее действие:&nbsp</h6>
+                <h6 id="currentActionView"></h6>
+            </div>
+
+            <div id="cellButtons">
+                <button id="startCellButton" data-mode="start">Установить начальную ячейку</button>
+                <button id="finishCellButton" data-mode="finish">Установить конечную ячейку</button>
+                <button id="borderCellButton" data-mode="border">Поставить / убрать преграды</button>
+            </div>
+            <h6>Метрика эвристики</h6>
+            <select id="selectHeuristic">
+                <option value="Euclid" selected>Евклидова</option>
+                <option value="Manhattan">Манхэттенская</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<script src="../js/path_finder/handler.js" type="module"></script>
+<script src="../js/path_finder/finder.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>

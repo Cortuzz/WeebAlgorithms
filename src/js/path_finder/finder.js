@@ -59,8 +59,7 @@ class PathFinder {
                             neighbourPoint.heuristicValue = this.heuristic(neighbourPoint, finish);
                             neighbourPoint.pathLength = current.pathLength + 1;
                             this.open.push(neighbourPoint);
-                        }
-                        else if (this.open[indexInOpen].pathLength > current.pathLength + 1) {
+                        } else if (this.open[indexInOpen].pathLength > current.pathLength + 1) {
                             // Otherwise, check if possible to decrease pathLength value
                             neighbourPoint = this.open[indexInOpen];
                             neighbourPoint.parent = current;
@@ -87,7 +86,7 @@ function find(x, y, array) {
 }
 
 function euclidHeuristic(pointA, pointB) {
-    return Math.sqrt((pointA.x - pointB.x) ** 2 + (pointA.y - pointB.y) ** 2);
+    return 2 * Math.sqrt((pointA.x - pointB.x) ** 2 + (pointA.y - pointB.y) ** 2);
 }
 
 function manhattanHeuristic(pointA, pointB) {

@@ -16,8 +16,8 @@ let maze;
 let start, finish;
 let currentState = 'start', handleStates, viewStates;
 
-function init(width=15, height=15) {
-    maze = [ ];
+function init(width = 15, height = 15) {
+    maze = [];
     viewStates = {'border': "Выбор преград", 'start': "Выбор начальной точки", 'finish': "Выбор конечной точки"};
     handleStates = {2: 'start', 3: 'finish', 1: 'border', 0: 'unchecked'};
 
@@ -153,8 +153,14 @@ function tableBuilder(matrix, width, height) {
 }
 
 async function startFinder() {
-    // manhattanHeuristic
-    let a = new PathFinder(maze, euclidHeuristic);
+    let select = document.getElementById('selectHeuristic');
+    let value = select.options[select.selectedIndex].value;
+    let a;
+    if (value === "Euclid") {
+        a = new PathFinder(maze, euclidHeuristic);
+    } else {
+        a = new PathFinder(maze, manhattanHeuristic);
+    }
     await a.findPath(start, finish);
 }
 

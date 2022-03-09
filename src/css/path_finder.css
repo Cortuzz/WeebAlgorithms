@@ -130,6 +130,20 @@ table td[data-mode="finish"] {
     transform: scale(0.95);
 }
 
+.cell #selectHeuristic {
+
+    background-color: transparent;
+    border-radius: 20px;
+    padding: 0 1em 0 0;
+    margin: 0 20%;
+    width: 60%;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: inherit;
+}
+
+
 .currentAction, .currentSize, .fieldSize {
     display: flex;
     flex-direction: row !important;
