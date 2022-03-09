@@ -60,42 +60,55 @@
 
     <div class="settings_block">
         <div class="size">
-            <h1>Выбор размера:</h1>
+            <h1>Настройки поля:</h1>
             <div class="currentSize">
                 <h6>Текущий размер:&nbsp</h6>
                 <h6 id="fieldSizeView"></h6>
             </div>
 
-						<div class="currentSize">
-								<h6>Ширина:&nbsp</h6>
-								<h6 id="fieldWidthView"></h6>
-						</div>
+            <div class="currentSize">
+                    <h6>Ширина:&nbsp</h6>
+                    <h6 id="fieldWidthView"></h6>
+            </div>
 
-						<div class="fieldSize">
-								<h6>5</h6>
-								<input class="fieldSize" id="fieldSizeX" type="range" min="5" max="25">
-								<h6>25</h6>
-						</div>
+            <div class="fieldSize">
+                    <h6>5</h6>
+                    <input class="fieldSize" id="fieldSizeX" type="range" min="5" max="45">
+                    <h6>45</h6>
+            </div>
 
-						<div class="currentSize">
-								<h6>Высота:&nbsp</h6>
-								<h6 id="fieldHeightView"></h6>
-						</div>
+            <div class="currentSize">
+                    <h6>Высота:&nbsp</h6>
+                    <h6 id="fieldHeightView"></h6>
+            </div>
 
-						<div class="fieldSize">
-								<h6>5</h6>
-								<input class="fieldSize" id="fieldSizeY" type="range" min="5" max="25">
-								<h6>25</h6>
-						</div>
+            <div class="fieldSize">
+                    <h6>5</h6>
+                    <input class="fieldSize" id="fieldSizeY" type="range" min="5" max="45">
+                    <h6>45</h6>
+            </div>
 
             <div class="fieldSize">
                 <h6>Зафиксировать значения:&nbsp</h6>
                 <input type="checkbox" id="retainer">
             </div>
+
+            <br>
+
+            <div class="speedView">
+                <h6>Текущая скорость:&nbsp</h6>
+                <h6 id="speedView"></h6>
+            </div>
+
+            <div class="speed">
+                <h6>2</h6>
+                <input class="fieldSize" id="findSpeed" type="range" min="2" max="80">
+                <h6>80</h6>
+            </div>
         </div>
 
-        <div class="cell">
-            <h1>Выбор действия:</h1>
+        <div class="action">
+            <h1>Действия с ячейками:</h1>
             <div class="currentAction">
                 <h6>Текущее действие:&nbsp</h6>
                 <h6 id="currentActionView"></h6>
@@ -106,7 +119,26 @@
                 <button id="finishCellButton" data-mode="finish">Установить конечную ячейку</button>
                 <button id="borderCellButton" data-mode="border">Поставить / убрать преграды</button>
             </div>
-            <h6>Метрика эвристики</h6>
+
+            <h1>Действия с полем:</h1>
+            <div id="fillButtons">
+                <button id="randomizeButton" data-mode="start">Заполнить случайно</button>
+                <button id="generateButton" data-mode="finish">Сгенерировать лабиринт</button>
+                <button id="clearButton" data-mode="finish">Очистить</button>
+            </div>
+
+            <div class="randomView">
+                <h6>Заполнение:&nbsp</h6>
+                <h6 id="randomView"></h6>
+            </div>
+
+            <div class="random">
+                <h6>0%</h6>
+                <input class="fieldSize" id="changeRandBorder" type="range" min="0" max="100">
+                <h6>100%</h6>
+            </div>
+
+            <h6>Метрика эвристики:</h6>
             <select id="selectHeuristic">
                 <option value="Euclid" selected>Евклидова</option>
                 <option value="Manhattan">Манхэттенская</option>
