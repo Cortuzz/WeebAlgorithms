@@ -45,6 +45,16 @@ function init() {
     refreshTable();
 }
 
+function changeRandomBorder(event) {
+    if (event == null) {
+        randomBorder = +window.changeRandBorder.value / 100;
+    } else {
+        randomBorder = +event.target.value / 100;
+    }
+
+    window.randomView.textContent = (100 * randomBorder).toFixed(0) + "% заполняются препятствиями."
+}
+
 function dropTable() {
     let table = document.getElementById("table");
 
@@ -65,6 +75,20 @@ function matrixBuilder() {
             maze[i][j] = 0;
         }
     }
+}
+
+function randomizeMatrix() {
+    for (let i = 0; i < height; i++) {
+        for (let j = 0; j < width; j++) {
+            if (Math.random() < randomBorder) {
+                maze[i][j] = 1;
+                continue;
+            }
+            maze[i][j] = 0;
+        }
+    }
+
+    refreshTable();
 }
 
 function changeCellMode(event) {
