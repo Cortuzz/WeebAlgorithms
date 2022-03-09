@@ -24,6 +24,7 @@ function init(width=15, height=15) {
     window.currentActionView.innerText = viewStates[currentState];
     dropTable();
     matrixBuilder(width, height);
+    changeDimensionView(width, height);
     tableBuilder(maze, width, height);
 }
 
@@ -47,8 +48,19 @@ function matrixBuilder(width, height) {
 function changeCellMode(event) {
     let action = event.target.dataset.mode;
 
+    if (action == null) {
+        return;
+    }
+
     currentState = action
     window.currentActionView.innerText = viewStates[action];
+}
+
+function changeDimensionView(sizeX, sizeY) {
+    window.fieldWidthView.textContent = sizeX;
+    window.fieldHeightView.textContent = sizeY;
+
+    window.fieldSizeView.textContent = parseInt(sizeX) * parseInt(sizeY) + " ячеек";
 }
 
 function changeCell(event) {
@@ -105,6 +117,7 @@ function changeSizeX(event) {
 function changeSizeY(event) {
     let sizeX = window.fieldSizeX.value;
     let sizeY = event.target.value;
+
     if (fixing) {
         init(+sizeY, sizeY);
         window.fieldSizeX.value = window.fieldSizeY.value;
