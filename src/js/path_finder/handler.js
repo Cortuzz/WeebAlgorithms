@@ -18,20 +18,31 @@ window.addEventListener("load", () => {
 })
 
 let fixing = false;
-let maze;
+let width, height;
+let maze, speed;
+let randomBorder = 0.5;
+
+let finder;
 let start, finish;
 let currentState = 'start', handleStates, viewStates;
 
-function init(width = 15, height = 15) {
+function init() {
     maze = [];
     viewStates = {'border': "Выбор преград", 'start': "Выбор начальной точки", 'finish': "Выбор конечной точки"};
     handleStates = {2: 'start', 3: 'finish', 1: 'border', 0: 'unchecked'};
 
     window.currentActionView.innerText = viewStates[currentState];
-    dropTable();
-    matrixBuilder(width, height);
-    changeDimensionView(width, height);
-    tableBuilder(maze, width, height);
+
+    if (width == null && height == null) {
+        width = parseInt(window.fieldSizeX.value);
+        height = parseInt(window.fieldSizeY.value);
+    }
+
+    changeRandomBorder(undefined);
+    changeSpeed(undefined);
+    matrixBuilder();
+    changeDimensionView();
+    refreshTable();
 }
 
 function dropTable() {
@@ -42,7 +53,12 @@ function dropTable() {
     }
 }
 
-function matrixBuilder(width, height) {
+function refreshTable() {
+    dropTable();
+    tableBuilder(maze);
+}
+
+function matrixBuilder() {
     for (let i = 0; i < height; i++) {
         maze[i] = new Array(width);
         for (let j = 0; j < width; j++) {
@@ -62,11 +78,11 @@ function changeCellMode(event) {
     window.currentActionView.innerText = viewStates[action];
 }
 
-function changeDimensionView(sizeX, sizeY) {
-    window.fieldWidthView.textContent = sizeX;
-    window.fieldHeightView.textContent = sizeY;
+function changeDimensionView() {
+    window.fieldWidthView.textContent = width;
+    window.fieldHeightView.textContent = height;
 
-    window.fieldSizeView.textContent = parseInt(sizeX) * parseInt(sizeY) + " ячеек";
+    window.fieldSizeView.textContent = parseInt(width) * parseInt(height) + " ячеек";
 }
 
 function changeCell(event) {
@@ -110,27 +126,35 @@ function changeCell(event) {
 function changeSizeX(event) {
     let sizeX = event.target.value;
     let sizeY = window.fieldSizeY.value;
+    width = sizeX;
 
     if (fixing) {
-        init(sizeX, +sizeX);
+        height = +sizeX;
+        init();
+
         window.fieldSizeY.value = window.fieldSizeX.value;
         return;
     }
 
-    init(sizeX, sizeY);
+    height = sizeY;
+    init();
 }
 
 function changeSizeY(event) {
     let sizeX = window.fieldSizeX.value;
     let sizeY = event.target.value;
+    height = sizeY;
 
     if (fixing) {
-        init(+sizeY, sizeY);
+        width = +sizeY;
+        init();
+
         window.fieldSizeX.value = window.fieldSizeY.value;
         return;
     }
 
-    init(sizeX, sizeY);
+    width = sizeX;
+    init();
 }
 
 function changeSpeed(event) {
@@ -154,11 +178,14 @@ function changeFix() {
         window.fieldSizeY.value = window.fieldSizeX.value;
         let value = window.fieldSizeY.value;
 
-        init(value, value);
+        width = value;
+        height = value;
+
+        init();
     }
 }
 
-function tableBuilder(matrix, width, height) {
+function tableBuilder(matrix) {
     let fieldBlock = window.field;
     let fieldSize = matrix.length;
 
