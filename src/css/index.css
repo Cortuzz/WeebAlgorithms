@@ -1,54 +1,12 @@
-html * {
-    color: #1e1d1d;
-    text-shadow: 0 0 10px rgba(75, 128, 252, 0.9);
-    animation: cycle 5s linear infinite;
-}
-
-@keyframes cycle {
-    0% {
-        text-shadow: 0 0 10px rgba(75, 128, 252, 0.9);
-    }
-    20% {
-        text-shadow: 0 0 10px rgba(158, 125, 255, 0.9);
-    }
-    30% {
-        text-shadow: 0 0 10px rgba(238, 99, 255, 0.9);
-    }
-    40% {
-        text-shadow: 0 0 10px rgba(255, 14, 122, 0.9);
-    }
-    50% {
-        text-shadow: 0 0 10px rgba(253, 25, 25, 0.9);
-    }
-    60% {
-        text-shadow: 0 0 10px rgba(255, 153, 46, 0.9);
-    }
-    70% {
-        text-shadow: 0 0 10px rgba(255, 245, 39, 0.9);
-    }
-    80% {
-        text-shadow: 0 0 10px rgba(103, 255, 55, 0.9);
-    }
-    90% {
-        text-shadow: 0 0 10px rgba(46, 255, 111, 0.9);
-    }
-    100% {
-        text-shadow: 0 0 10px rgba(61, 255, 255, 0.9);
-    }
-}
-
 .title {
-    font-style: italic;
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 5%;
     margin-top: 15%;
     padding: 20px 20px 20px 20px;
-    text-shadow: 0 0 1px rgb(167, 167, 167);
 }
 
 .description {
-    font-style: italic;
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 100px;

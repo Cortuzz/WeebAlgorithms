@@ -7,7 +7,6 @@
 }
 
 .description, .instruction, .control, .cell, .size {
-    font-style: italic;
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 17%;
