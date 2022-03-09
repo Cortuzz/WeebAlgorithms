@@ -10,9 +10,11 @@ class Point {
 
 
 class PathFinder {
-    constructor(maze, heuristic) {
+    constructor(maze, heuristic, delay) {
         this.width = maze.length;
         this.height = maze[0].length;
+        this.delay = delay;
+
         this.maze = maze;
         this.heuristic = heuristic;
 
@@ -26,6 +28,10 @@ class PathFinder {
         }
     }
 
+    changeDelay(delay) {
+        this.delay = delay;
+    }
+
     async findPath(start, finish) {
         start.pathLength = 0;
         start.heuristicValue = this.heuristic(start, finish);
@@ -33,8 +39,7 @@ class PathFinder {
 
         while (this.open.length > 0) {
             let current = this.open.pop();
-            markCheckedCell(current, 'checked');
-            await sleep(250);
+            await markCheckedCell(current, 'checked', this.delay);
             this.closed[current.x][current.y] = 1;
 
             if (current.x === finish.x && current.y === finish.y) {
@@ -100,15 +105,14 @@ function showLose() {
 async function showWin(finish) {
     let point = finish;
     while (point !== null) {
-        markCheckedCell(point, 'path');
-        await sleep(50);
+        await markCheckedCell(point, 'path', 50);
         point = point.parent;
     }
 
     console.log("Длина пути равна ", finish.pathLength);
 }
 
-function markCheckedCell(cell, type) {
+async function markCheckedCell(cell, type, delay) {
     let tableCell = document.querySelector(`td[data-row='${cell.x}'][data-column='${cell.y}']`);
     let mode = tableCell.dataset.mode;
 
@@ -117,4 +121,5 @@ function markCheckedCell(cell, type) {
     }
 
     tableCell.dataset.mode = type;
+    await sleep(delay);
 }

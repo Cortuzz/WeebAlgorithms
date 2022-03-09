@@ -1,5 +1,5 @@
 window.addEventListener("load", () => {
-    init()
+    init(undefined, undefined);
     window.startButton.addEventListener("click", startFinder);
     window.pauseButton.addEventListener("click", pauseFinder);
     window.stopButton.addEventListener("click", stopFinder);
@@ -9,6 +9,12 @@ window.addEventListener("load", () => {
     window.fieldSizeX.addEventListener("input", changeSizeX);
     window.fieldSizeY.addEventListener("input", changeSizeY);
     window.retainer.addEventListener("input", changeFix);
+
+    window.findSpeed.addEventListener("input", changeSpeed);
+
+    window.randomizeButton.addEventListener("click", randomizeMatrix);
+    window.clearButton.addEventListener("click", init);
+    window.changeRandBorder.addEventListener("input", changeRandomBorder);
 })
 
 let fixing = false;
@@ -125,6 +131,20 @@ function changeSizeY(event) {
     }
 
     init(sizeX, sizeY);
+}
+
+function changeSpeed(event) {
+    if (event == null) {
+        speed = window.findSpeed.value;
+    } else {
+        speed = event.target.value;
+    }
+
+    if (finder != null) {
+        finder.changeDelay(1000 / speed);
+    }
+
+    window.speedView.textContent = speed + ". Обновление каждые " + (1000 / speed).toFixed(0) + " мс.";
 }
 
 function changeFix() {
