@@ -98,7 +98,7 @@ function changeCellMode(event) {
         return;
     }
 
-    currentState = action
+    currentState = action;
     window.currentActionView.innerText = viewStates[action];
 }
 
@@ -110,7 +110,7 @@ function changeDimensionView() {
 }
 
 function changeCell(event) {
-    let dataset = event.target.dataset
+    let dataset = event.target.dataset;
     switch (currentState) {
         case "border":
             if (dataset.mode === "border") {
@@ -225,7 +225,7 @@ function tableBuilder(matrix) {
         for (let j = 0; j < width; j++) {
             let cell = row.insertCell(-1);
 
-            cell.dataset.mode = handleStates[matrix[i][j]]
+            cell.dataset.mode = handleStates[matrix[i][j]];
             cell.dataset.row = i.toString();
             cell.dataset.column = j.toString();
             cell.height = (blockWidth / fieldSize).toString();
@@ -239,13 +239,16 @@ function tableBuilder(matrix) {
 async function startFinder() {
     let select = document.getElementById('selectHeuristic');
     let value = select.options[select.selectedIndex].value;
-    let a;
+    let heuristic;
+
     if (value === "Euclid") {
-        a = new PathFinder(maze, euclidHeuristic);
+        heuristic = euclidHeuristic;
     } else {
-        a = new PathFinder(maze, manhattanHeuristic);
+        heuristic = manhattanHeuristic;
     }
-    await a.findPath(start, finish);
+
+    finder = new PathFinder(maze, heuristic, 1000 / speed);
+    await finder.findPath(start, finish);
 }
 
 function pauseFinder() {
