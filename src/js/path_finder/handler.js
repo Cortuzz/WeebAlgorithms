@@ -48,7 +48,9 @@ function init() {
 
 function clear() {
     window.log.textContent = defaultLog;
-    stopped = true;
+    if (finder != null) {
+        finder.running = false;
+    }
     init();
 }
 
@@ -80,7 +82,7 @@ async function renderPathLength(length) {
     window.log_block.style.borderColor = "forestgreen";
     await sleep(3000);
 
-    window.log.textContent = "Очистите поле";
+    window.log.textContent = defaultLog;
     window.log_block.style.borderColor = defaultColor;
 }
 
@@ -308,7 +310,6 @@ function clearSolution() {
 }
 
 async function startFinder() {
-    stopped = false;
     if (!await checkPoints()) {
         return;
     }
@@ -327,6 +328,15 @@ async function startFinder() {
         heuristic = manhattanHeuristic;
     }
 
+    if (finder != null) {
+        finder.running = false;
+    }
+
     finder = new PathFinder(maze, heuristic, 1000 / speed);
-    await renderPathLength(await finder.findPath(start, finish));
+    try {
+        await renderPathLength(await finder.findPath(start, finish));
+    }
+    catch (e) {
+
+    }
 }

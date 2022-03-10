@@ -14,6 +14,7 @@ class PathFinder {
         this.width = maze.length;
         this.height = maze[0].length;
         this.delay = delay;
+        this.running = true;
 
         this.maze = maze;
         this.heuristic = heuristic;
@@ -39,8 +40,8 @@ class PathFinder {
 
         while (this.open.length > 0) {
             let current = this.open.pop();
-            if (checkBreak()) {
-                return;
+            if (!this.running) {
+                throw Error;
             }
 
             await markCheckedCell(current, 'checked', this.delay);
@@ -121,14 +122,4 @@ async function markCheckedCell(cell, type, delay) {
 
     tableCell.dataset.mode = type;
     await sleep(delay);
-}
-
-let stopped = false;
-
-function checkBreak() {
-    if (stopped) {
-        stopped = false;
-        return true;
-    }
-    return false;
 }
