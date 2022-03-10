@@ -122,6 +122,9 @@ function matrixBuilder() {
 }
 
 function randomizeMatrix() {
+    start = null;
+    finish = null;
+    
     for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
             if (Math.random() < randomBorder) {
