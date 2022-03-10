@@ -10,9 +10,11 @@ class Point {
 
 
 class PathFinder {
-    constructor(maze, heuristic) {
+    constructor(maze, heuristic, delay) {
         this.width = maze.length;
         this.height = maze[0].length;
+        this.delay = delay;
+
         this.maze = maze;
         this.heuristic = heuristic;
 
@@ -26,6 +28,10 @@ class PathFinder {
         }
     }
 
+    changeDelay(delay) {
+        this.delay = delay;
+    }
+
     async findPath(start, finish) {
         start.pathLength = 0;
         start.heuristicValue = this.heuristic(start, finish);
@@ -33,14 +39,16 @@ class PathFinder {
 
         while (this.open.length > 0) {
             let current = this.open.pop();
-            markCheckedCell(current, 'checked');
-            await sleep(250);
+            if (checkBreak()) {
+                return;
+            }
+
+            await markCheckedCell(current, 'checked', this.delay);
             this.closed[current.x][current.y] = 1;
 
             if (current.x === finish.x && current.y === finish.y) {
                 finish = current;
-                await showWin(finish);
-                return;
+                return await showWin(finish, this.delay / 4);
             }
             let x = current.x, y = current.y;
             // loop through neighbours and check if the neighbour is OK and not already in the closed[] list.
@@ -71,7 +79,7 @@ class PathFinder {
             this.open.sort((a, b) =>
                 (b.heuristicValue + b.pathLength) - (a.heuristicValue + a.pathLength));
         }
-        showLose();
+        return undefined;
     }
 }
 
@@ -93,22 +101,17 @@ function manhattanHeuristic(pointA, pointB) {
     return Math.abs((pointA.x - pointB.x)) + Math.abs((pointA.y - pointB.y));
 }
 
-function showLose() {
-    console.log("Нет пути из start в finish");
-}
-
-async function showWin(finish) {
+async function showWin(finish, delay) {
     let point = finish;
     while (point !== null) {
-        markCheckedCell(point, 'path');
-        await sleep(50);
+        await markCheckedCell(point, 'path', delay);
         point = point.parent;
     }
 
-    console.log("Длина пути равна ", finish.pathLength);
+    return finish.pathLength;
 }
 
-function markCheckedCell(cell, type) {
+async function markCheckedCell(cell, type, delay) {
     let tableCell = document.querySelector(`td[data-row='${cell.x}'][data-column='${cell.y}']`);
     let mode = tableCell.dataset.mode;
 
@@ -117,4 +120,15 @@ function markCheckedCell(cell, type) {
     }
 
     tableCell.dataset.mode = type;
+    await sleep(delay);
+}
+
+let stopped = false;
+
+function checkBreak() {
+    if (stopped) {
+        stopped = false;
+        return true;
+    }
+    return false;
 }

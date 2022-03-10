@@ -6,7 +6,7 @@
     width: 30%;
 }
 
-.description, .instruction, .control, .cell, .size {
+.description, .action, .size {
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 17%;
@@ -14,51 +14,50 @@
     padding: 20px 20px 20px 20px;
 }
 
-.control div, .cell div {
+.description div, .action div {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.control button, .cell button {
+.description button, .action button {
     width: 60%;
     transition: all .4s ease;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
+    margin: 0 auto 10px;
 }
 
-.control #startButton, .cell #startCellButton {
+.description button {
+    margin-top: 2% !important;
+}
+
+#startButton, .action #startCellButton {
     border-radius: 10px;
     background-color: lightgreen;
     border: 2px solid forestgreen;
 }
 
-.control #startButton:hover, .cell #startCellButton:hover {
+#startButton:hover, .action #startCellButton:hover {
     background-color: forestgreen;
     border: 2px solid lightgreen;
     transform: scale(0.95);
 }
 
-.control #pauseButton {
+#log_block {
+    display: flex;
+    align-items: center;
+    border: 5px solid coral;
+    background: #d5e6ff;
     border-radius: 10px;
-    background-color: #ffff6a;
-    border: 2px solid #b79501;
+    padding: 5px 5px 5px 5px;
 }
 
-.control #pauseButton:hover {
-    background-color: #b79501;
-    border: 2px solid #ffff6a;
-    transform: scale(0.95);
-}
-
-.control #stopButton, .cell #finishCellButton {
+.action #finishCellButton {
     border-radius: 10px;
     background-color: palevioletred;
     border: 2px solid darkred;
 }
 
-.control #stopButton:hover, .cell #finishCellButton:hover {
+.action #finishCellButton:hover {
     background-color: darkred;
     border: 2px solid palevioletred;
     transform: scale(0.95);
@@ -67,6 +66,7 @@
 #field {
     display: flex;
     width: 40%;
+    height: 100%;
     background-color: aliceblue;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;
@@ -112,25 +112,24 @@ table td[data-mode="finish"] {
     margin-left: 1%
 }
 
-.cell, .size {
+.action {
     margin-left: 1% !important;
     margin-right: 17% !important;
 }
 
-.cell #borderCellButton {
+.action #borderCellButton {
     border-radius: 10px;
     background-color: darkgray;
     border: 2px solid gray;
 }
 
-.cell #borderCellButton:hover {
+.action #borderCellButton:hover {
     background-color: gray;
     border: 2px solid darkgray;
     transform: scale(0.95);
 }
 
-.cell #selectHeuristic {
-
+.action #selectHeuristic {
     background-color: transparent;
     border-radius: 20px;
     padding: 0 1em 0 0;
@@ -143,7 +142,7 @@ table td[data-mode="finish"] {
 }
 
 
-.currentAction, .currentSize, .fieldSize {
+.currentAction, .currentSize, .fieldSize, .speed, .speedView, .random, .randomView {
     display: flex;
     flex-direction: row !important;
     justify-content: start !important;
@@ -157,4 +156,40 @@ input.fieldSize {
 
 #retainer {
     margin-top: 6px;
+}
+
+.action #randomizeButton {
+    border-radius: 10px;
+    background-color: lightsalmon;
+    border: 2px solid salmon;
+}
+
+.action #randomizeButton:hover {
+    background-color: salmon;
+    border: 2px solid lightsalmon;
+    transform: scale(0.95);
+}
+
+.action #generateButton {
+    border-radius: 10px;
+    background-color: lightcoral;
+    border: 2px solid coral;
+}
+
+.action #generateButton:hover {
+    background-color: coral;
+    border: 2px solid lightcoral;
+    transform: scale(0.95);
+}
+
+.action #clearButton {
+    border-radius: 10px;
+    background-color: darkgray;
+    border: 2px solid gray;
+}
+
+.action #clearButton:hover {
+    background-color: gray;
+    border: 2px solid darkgray;
+    transform: scale(0.95);
 }
