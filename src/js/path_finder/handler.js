@@ -1,8 +1,6 @@
 window.addEventListener("load", () => {
-    init(undefined, undefined);
+    init();
     window.startButton.addEventListener("click", startFinder);
-    window.pauseButton.addEventListener("click", pauseFinder);
-    window.stopButton.addEventListener("click", stopFinder);
 
     window.cellButtons.addEventListener("click", changeCellMode);
 
@@ -13,9 +11,12 @@ window.addEventListener("load", () => {
     window.findSpeed.addEventListener("input", changeSpeed);
 
     window.randomizeButton.addEventListener("click", randomizeMatrix);
-    window.clearButton.addEventListener("click", init);
+    window.clearButton.addEventListener("click", clear);
     window.changeRandBorder.addEventListener("input", changeRandomBorder);
-})
+});
+
+let defaultLog = "Алгоритм не запущен";
+let defaultColor = "coral";
 
 let fixing = false;
 let width, height;
@@ -45,6 +46,44 @@ function init() {
     refreshTable();
 }
 
+function clear() {
+    window.log.textContent = defaultLog;
+    stopped = true;
+    init();
+}
+
+async function checkPoints() {
+    if (start == null) {
+        window.log.textContent = "Не задана начальная точка";
+    } else if (finish == null) {
+        window.log.textContent = "Не задана конечная точка";
+    }
+
+    if (start == null || finish == null) {
+        window.log_block.style.borderColor = "B72626";
+        await sleep(3000);
+
+        window.log.textContent = defaultLog;
+        window.log_block.style.borderColor = defaultColor;
+        return false;
+    }
+    return true;
+}
+
+async function renderPathLength(length) {
+    window.log.textContent = "Путь не найден";
+
+    if (length != null) {
+        window.log.textContent = "Длина пути равна " + length;
+    }
+
+    window.log_block.style.borderColor = "forestgreen";
+    await sleep(3000);
+
+    window.log.textContent = "Очистите поле";
+    window.log_block.style.borderColor = defaultColor;
+}
+
 function changeRandomBorder(event) {
     if (event == null) {
         randomBorder = +window.changeRandBorder.value / 100;
@@ -52,7 +91,7 @@ function changeRandomBorder(event) {
         randomBorder = +event.target.value / 100;
     }
 
-    window.randomView.textContent = (100 * randomBorder).toFixed(0) + "% заполняются препятствиями."
+    window.randomView.textContent = (100 * randomBorder).toFixed(0) + "%"
 }
 
 function dropTable() {
@@ -69,6 +108,9 @@ function refreshTable() {
 }
 
 function matrixBuilder() {
+    start = null;
+    finish = null;
+
     for (let i = 0; i < height; i++) {
         maze[i] = new Array(width);
         for (let j = 0; j < width; j++) {
@@ -199,6 +241,10 @@ function changeFix() {
     fixing = this.checked;
 
     if (fixing) {
+        if (window.fieldSizeY.value === window.fieldSizeX.value) {
+            return;
+        }
+
         window.fieldSizeY.value = window.fieldSizeX.value;
         let value = window.fieldSizeY.value;
 
@@ -237,6 +283,14 @@ function tableBuilder(matrix) {
 }
 
 async function startFinder() {
+    stopped = false;
+    if (!await checkPoints()) {
+        return;
+    }
+
+    window.log.textContent = "Алгоритм запущен";
+    window.log_block.style.borderColor = "lightgreen";
+
     let select = document.getElementById('selectHeuristic');
     let value = select.options[select.selectedIndex].value;
     let heuristic;
@@ -248,13 +302,5 @@ async function startFinder() {
     }
 
     finder = new PathFinder(maze, heuristic, 1000 / speed);
-    await finder.findPath(start, finish);
-}
-
-function pauseFinder() {
-
-}
-
-function stopFinder() {
-
+    await renderPathLength(await finder.findPath(start, finish));
 }

@@ -39,13 +39,16 @@ class PathFinder {
 
         while (this.open.length > 0) {
             let current = this.open.pop();
+            if (checkBreak()) {
+                return;
+            }
+
             await markCheckedCell(current, 'checked', this.delay);
             this.closed[current.x][current.y] = 1;
 
             if (current.x === finish.x && current.y === finish.y) {
                 finish = current;
-                await showWin(finish);
-                return;
+                return await showWin(finish, this.delay / 4);
             }
             let x = current.x, y = current.y;
             // loop through neighbours and check if the neighbour is OK and not already in the closed[] list.
@@ -76,7 +79,7 @@ class PathFinder {
             this.open.sort((a, b) =>
                 (b.heuristicValue + b.pathLength) - (a.heuristicValue + a.pathLength));
         }
-        showLose();
+        return undefined;
     }
 }
 
@@ -98,18 +101,14 @@ function manhattanHeuristic(pointA, pointB) {
     return Math.abs((pointA.x - pointB.x)) + Math.abs((pointA.y - pointB.y));
 }
 
-function showLose() {
-    console.log("Нет пути из start в finish");
-}
-
-async function showWin(finish) {
+async function showWin(finish, delay) {
     let point = finish;
     while (point !== null) {
-        await markCheckedCell(point, 'path', 50);
+        await markCheckedCell(point, 'path', delay);
         point = point.parent;
     }
 
-    console.log("Длина пути равна ", finish.pathLength);
+    return finish.pathLength;
 }
 
 async function markCheckedCell(cell, type, delay) {
@@ -122,4 +121,14 @@ async function markCheckedCell(cell, type, delay) {
 
     tableCell.dataset.mode = type;
     await sleep(delay);
+}
+
+let stopped = false;
+
+function checkBreak() {
+    if (stopped) {
+        stopped = false;
+        return true;
+    }
+    return false;
 }
