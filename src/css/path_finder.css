@@ -6,7 +6,7 @@
     width: 30%;
 }
 
-.description, .instruction, .control, .action, .size {
+.description, .action, .size {
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 17%;
@@ -14,51 +14,50 @@
     padding: 20px 20px 20px 20px;
 }
 
-.control div, .action div {
+.description div, .action div {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.control button, .action button {
+.description button, .action button {
     width: 60%;
     transition: all .4s ease;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
+    margin: 0 auto 10px;
 }
 
-.control #startButton, .action #startCellButton {
+.description button {
+    margin-top: 2% !important;
+}
+
+#startButton, .action #startCellButton {
     border-radius: 10px;
     background-color: lightgreen;
     border: 2px solid forestgreen;
 }
 
-.control #startButton:hover, .action #startCellButton:hover {
+#startButton:hover, .action #startCellButton:hover {
     background-color: forestgreen;
     border: 2px solid lightgreen;
     transform: scale(0.95);
 }
 
-.control #pauseButton {
+#log_block {
+    display: flex;
+    align-items: center;
+    border: 5px solid coral;
+    background: #d5e6ff;
     border-radius: 10px;
-    background-color: #ffff6a;
-    border: 2px solid #b79501;
+    padding: 5px 5px 5px 5px;
 }
 
-.control #pauseButton:hover {
-    background-color: #b79501;
-    border: 2px solid #ffff6a;
-    transform: scale(0.95);
-}
-
-.control #stopButton, .action #finishCellButton {
+.action #finishCellButton {
     border-radius: 10px;
     background-color: palevioletred;
     border: 2px solid darkred;
 }
 
-.control #stopButton:hover, .action #finishCellButton:hover {
+.action #finishCellButton:hover {
     background-color: darkred;
     border: 2px solid palevioletred;
     transform: scale(0.95);
@@ -113,7 +112,7 @@ table td[data-mode="finish"] {
     margin-left: 1%
 }
 
-.action, .size {
+.action {
     margin-left: 1% !important;
     margin-right: 17% !important;
 }
