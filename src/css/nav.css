@@ -1,6 +1,6 @@
 body {
     justify-content: center;
-    background-image: url("./src/img/jibr.jpg");
+    background-image: url("../img/jibr.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
