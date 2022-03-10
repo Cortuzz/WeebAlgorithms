@@ -151,8 +151,21 @@ function changeDimensionView() {
     window.fieldSizeView.textContent = parseInt(width) * parseInt(height) + " ячеек";
 }
 
+function checkReplacePoints(x, y, point) {
+    console.log(x, y, point);
+
+    if (point != null && point.x === x && point.y === y) {
+        return null;
+    }
+
+    return point;
+}
+
 function changeCell(event) {
     let dataset = event.target.dataset;
+    start = checkReplacePoints(+dataset.row, +dataset.column, start);
+    finish = checkReplacePoints(+dataset.row, +dataset.column, finish);
+
     switch (currentState) {
         case "border":
             if (dataset.mode === "border") {
