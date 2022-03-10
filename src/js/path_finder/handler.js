@@ -152,8 +152,6 @@ function changeDimensionView() {
 }
 
 function checkReplacePoints(x, y, point) {
-    console.log(x, y, point);
-
     if (point != null && point.x === x && point.y === y) {
         return null;
     }
@@ -161,7 +159,13 @@ function checkReplacePoints(x, y, point) {
     return point;
 }
 
+function changeColor(x, y, value, state, target) {
+    maze[x][y] = value;
+    target.dataset.mode = state;
+}
+
 function changeCell(event) {
+    clearSolution();
     let dataset = event.target.dataset;
     start = checkReplacePoints(+dataset.row, +dataset.column, start);
     finish = checkReplacePoints(+dataset.row, +dataset.column, finish);
@@ -169,13 +173,11 @@ function changeCell(event) {
     switch (currentState) {
         case "border":
             if (dataset.mode === "border") {
-                maze[dataset.row][dataset.column] = 0;
-                event.target.dataset.mode = "unchecked";
+                changeColor(dataset.row, dataset.column, 0, "unchecked", event.target);
                 return;
             }
 
-            event.target.dataset.mode = "border";
-            maze[dataset.row][dataset.column] = 1;
+            changeColor(dataset.row, dataset.column, 1, "border", event.target)
             break;
 
         case "start":
@@ -184,8 +186,7 @@ function changeCell(event) {
                 prevCellStart.dataset.mode = 'unchecked';
             }
 
-            event.target.dataset.mode = "start";
-            maze[dataset.row][dataset.column] = 0;
+            changeColor(dataset.row, dataset.column, 0, "start", event.target)
             start = new Point(parseInt(dataset.row), parseInt(dataset.column));
             break;
 
@@ -195,8 +196,7 @@ function changeCell(event) {
                 prevCellFinish.dataset.mode = 'unchecked';
             }
 
-            event.target.dataset.mode = "finish";
-            maze[dataset.row][dataset.column] = 0;
+            changeColor(dataset.row, dataset.column, 0, "finish", event.target)
             finish = new Point(parseInt(dataset.row), parseInt(dataset.column));
             break;
     }
@@ -295,11 +295,24 @@ function tableBuilder(matrix) {
     fieldBlock.appendChild(table);
 }
 
+function clearSolution() {
+    if (finder == null) {
+        return;
+    }
+
+    let solutionCells = document.querySelectorAll("td[data-mode='path']");
+    let visitedCells = document.querySelectorAll("td[data-mode='checked']");
+
+    solutionCells.forEach(cell => {cell.dataset.mode = "unchecked"})
+    visitedCells.forEach(cell => {cell.dataset.mode = "unchecked"})
+}
+
 async function startFinder() {
     stopped = false;
     if (!await checkPoints()) {
         return;
     }
+    clearSolution();
 
     window.log.textContent = "Алгоритм запущен";
     window.log_block.style.borderColor = "lightgreen";
