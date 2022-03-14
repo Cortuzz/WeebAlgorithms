@@ -1,5 +1,6 @@
 const BORDER = -2;
 
+
 class AntsSimulation {
     constructor(field, width, height, greed, gregariousness, colony) {
         this.width = width;
@@ -9,6 +10,7 @@ class AntsSimulation {
 
         this.field = field;
         this.pheromoneMap = [ ];
+        this.pheromonePoints = [ ];
 
         this.colony = colony;
 
@@ -21,33 +23,33 @@ class AntsSimulation {
     }
 
     getDistance(ant, colony) {
-        return Math.abs(ant.x - colony.x) + Math.abs(ant.y - colony.y);
+        return Math.sqrt((ant.x - colony.x) ** 2 + (ant.y - colony.y) ** 2);
     }
 
     getMoveProbability(x, y, ant) {
+        let value = 0;
         let pheromoneValue = this.pheromoneMap[y][x];
         let distance = this.getDistance(ant, this.colony) + 1;
 
-        let value = (pheromoneValue ** this.gregariousness * distance ** this.greed) / 2;
+        if (ant.found) {
+            value = (10000 / distance);
+        } else {
+            value = (pheromoneValue ** this.gregariousness * (distance) ** this.greed) / 2;
+        }
 //ant.getPheromoneCount(this.pheromoneMap) ** this.gregariousness
         return value;
     }
 
     sprayPheromones(x, y, value) {
         this.pheromoneMap[y][x] = value;
+        this.pheromonePoints[this.pheromonePoints.length] = { x: x, y: y };
     }
 
     getPossibleMoves(ant) {
-        let moves = [[1, 0], [0, 1], [-1, 0], [0, -1]];
+        let speed = 5;
+        let moves = [[speed, 0], [0, speed], [-speed, 0], [0, -speed]];
         let possibleMoves = [ ];
         let count = 0;
-
-        if (ant.found) {
-            if (ant.path[ant.path.length - 1] != null) {
-                return [ant.path.pop()];
-            }
-            ant.found = false;
-        }
 
         moves.forEach(move => {
             let moveX = ant.x + move[0];
@@ -55,7 +57,13 @@ class AntsSimulation {
 
             if (!(moveX < 0 || moveY < 0 || moveX >= this.width || moveY >= this.height ||
                 this.field[moveY][moveX] === BORDER)) {
-                    possibleMoves[count] = {x: ant.x + move[0], y: ant.y + move[1]};
+                    if (ant.found && ant.path[0].x === moveX && ant.path[0].y === moveY) {
+                        console.log(true);
+                        ant.path = [ ];
+                        ant.found = false;
+                        return [ {x: moveX, y: moveY} ]
+                    }
+                    possibleMoves[count] = {x: moveX, y: moveY};
                     count++;
             }
         });
@@ -63,7 +71,8 @@ class AntsSimulation {
     }
 
     pheromoneTick() {
-        this.pheromoneMap.forEach(pheromone => {
+        this.pheromonePoints.forEach(point => {
+            let pheromone = this.pheromoneMap[point.y][point.x];
             if (pheromone > 0) {
                 pheromone--;
             }
@@ -90,7 +99,7 @@ class Colony {
 class Ant {
     constructor(x, y) {
         this.found = false;
-        this.pheromones = 10000000;
+        this.pheromones = 5000;
         this.x = x;
         this.y = y;
         this.path = [ {x: this.x, y:this.y} ];
@@ -119,18 +128,5 @@ class Ant {
 
     getPathPheromones() {
 
-    }
-
-    isPrevMove(x, y) {
-        let found = false;
-
-        this.path.forEach(point => {
-            if (point.x === x && point.y === y) {
-                found = true;
-                return;
-            }
-        });
-
-        return found;
     }
 }

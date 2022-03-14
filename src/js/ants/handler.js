@@ -94,10 +94,13 @@ function clearField() {
 
 }
 
-function drawAnt(x, y, color) {
+function drawAnt(x, y, color, w) {
+    if (checkFood(x, y)) {
+        return;
+    }
     let t = ctx.fillStyle;
     ctx.fillStyle = color;
-    ctx.fillRect(x, y, 1, 1);
+    ctx.fillRect(x, y, w, w);
     ctx.fillStyle = t;
 }
 
@@ -115,37 +118,46 @@ async function antsAlg(simulation, colony) {
             ant.move(moves[0].x, moves[0].y);
         }
 
+        let bestProb = 0;
+        let bestMove;
+
         moves.forEach(move => {
             let prob = simulation.getMoveProbability(move.x, move.y, ant);
-            if (Math.random() < prob) {
-                ant.move(move.x, move.y);
-                if (checkFood(move.x, move.y)) {
-                    ant.found = true;
-                }
-                return;
+            if (prob > bestProb) {
+                bestProb = prob;
+                bestMove = move;
             }
         });
 
-        let lastMoves = ant.getLastMoves();
-        if (lastMoves.previous != null) {
-            //drawAnt(lastMoves.previous.x, lastMoves.previous.y, '#F0F8FF');
+        ant.move(bestMove.x, bestMove.y);
+        if (checkFood(bestMove.x, bestMove.y)) {
+            ant.found = true;
         }
 
+        let lastMoves = ant.getLastMoves();
+
         if (ant.found) {
-            drawAnt(lastMoves.current.x, lastMoves.current.y, '#114411');
+            drawAnt(lastMoves.current.x, lastMoves.current.y, '#114411', 5, 5);
             continue;
         }
-        drawAnt(lastMoves.current.x, lastMoves.current.y, '#964B00');
+        drawAnt(lastMoves.current.x, lastMoves.current.y, '#964B00', 3, 3);
+
     }
     simulation.pheromoneTick();
     await sleep(1);
+
+    for (let i = 0; i < colony.ants.length; i++) {
+        let ant = colony.ants[i];
+        let lastMoves = ant.getLastMoves();
+        drawAnt(lastMoves.current.x, lastMoves.current.y, '#F0F8FF', 5, 5);
+    }
 }
 
 async function startAnts() {
     let canvasData = ctx.getImageData(0, 0, 1200, 600);
     field = convertCanvasToMatrix(canvasData.data, canvasData.width, canvasData.height);
 
-    let colony = new Colony(+colonyPoint.x, +colonyPoint.y,3000);
+    let colony = new Colony(+colonyPoint.x, +colonyPoint.y,512);
     let simulation = new AntsSimulation(field, 1200, 600, 0.05, 0.1, colony);
 
     colony = simulation.colony;
