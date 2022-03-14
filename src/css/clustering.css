@@ -1,0 +1,62 @@
+.main {
+    display: flex;
+}
+
+.main_block {
+    width: 30%;
+}
+
+.description, .action {
+    background-color: aliceblue;
+    border-radius: 20px;
+    margin-left: 17%;
+    margin-top: 1%;
+    padding: 20px 20px 20px 20px;
+}
+
+.description div, .action div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.description button, .action button {
+    width: 60%;
+    transition: transform .4s ease;
+    margin: 0 auto 10px;
+    border-radius: 10px;
+    background-color: palevioletred;
+    border: 2px solid darkred;
+}
+
+.description button:hover, .action button:hover {
+    width: 60%;
+    margin: 0 auto 10px;
+    background-color: darkred;
+    border: 2px solid palevioletred;
+    transform: scale(0.95);
+}
+
+
+.description button {
+    margin-top: 2% !important;
+}
+
+.action {
+    margin-left: 1% !important;
+    margin-right: 17% !important;
+}
+
+.canvas_block {
+    width: 64.6%;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+    margin-left: 10px;
+    margin-top: 0.3%;
+    background-color: aliceblue;
+}
+
+#canvas {
+    background-color: aliceblue;
+}
+
