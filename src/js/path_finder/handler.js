@@ -182,7 +182,7 @@ function changeCell(event) {
                 return;
             }
 
-            changeColor(dataset.row, dataset.column, 1, "border", event.target)
+            changeColor(dataset.row, dataset.column, 1, "border", event.target);
             break;
 
         case "start":
@@ -191,7 +191,7 @@ function changeCell(event) {
                 prevCellStart.dataset.mode = 'unchecked';
             }
 
-            changeColor(dataset.row, dataset.column, 0, "start", event.target)
+            changeColor(dataset.row, dataset.column, 0, "start", event.target);
             start = new Point(parseInt(dataset.row), parseInt(dataset.column));
             break;
 
@@ -201,7 +201,7 @@ function changeCell(event) {
                 prevCellFinish.dataset.mode = 'unchecked';
             }
 
-            changeColor(dataset.row, dataset.column, 0, "finish", event.target)
+            changeColor(dataset.row, dataset.column, 0, "finish", event.target);
             finish = new Point(parseInt(dataset.row), parseInt(dataset.column));
             break;
     }

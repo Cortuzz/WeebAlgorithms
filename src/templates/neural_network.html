@@ -17,6 +17,8 @@
             <li>
             <li><a href="genetic.html"><i class="fas fa-dna"></i> Генетический алгоритм</a>
             <li>
+            <li><a href="ants.html"><i class="fas fa-bug"></i> Муравьиный алгоритм</a>
+            <li>
             <li><a href="clustering.html"><i class="fas fa-cubes"></i> Кластеризация</a>
             <li>
             <li><a href="neural_network.html"><i class="fas fa-network-wired"></i> Нейронная сеть</a>
@@ -51,15 +53,17 @@
     </div>
 
     <div class="canvas_block">
-        <canvas id="canvas">
-            <script>
-                const canvas = document.getElementById('canvas')
-                const ctx = canvas.getContext('2d')
+        <div class="canvas">
+            <canvas id="canvas">
+                <script>
+                    const canvas = document.getElementById('canvas')
+                    const ctx = canvas.getContext('2d')
 
-                ctx.fillStyle = 'black'
-                ctx.fillRect(0, 0, 1000, 1000)
-            </script>
-        </canvas>
+                    ctx.fillStyle = 'black'
+                    ctx.fillRect(0, 0, 1000, 1000)
+                </script>
+            </canvas>
+        </div>
     </div>
 </div>
 </body>
