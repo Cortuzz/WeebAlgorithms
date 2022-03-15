@@ -111,15 +111,21 @@ function checkFood(x, y) {
 async function antsAlg(simulation, colony) {
     for (let i = 0; i < colony.ants.length; i++) {
         let ant = colony.ants[i];
+
+        if (!ant.alive) {
+            colony.ants.splice(i, 1);
+            colony.addAnt();
+            continue;
+        }
+
         let moves = simulation.getPossibleMoves(ant);
 
         if (ant.found) {
             simulation.sprayPheromones(moves[0].x, moves[0].y, ant.pheromones);
             ant.move(moves[0].x, moves[0].y);
         }
-
-        let bestProb = 0;
         let bestMove;
+        let bestProb = 0;
 
         moves.forEach(move => {
             let prob = simulation.getMoveProbability(move.x, move.y, ant);
@@ -127,29 +133,39 @@ async function antsAlg(simulation, colony) {
                 bestProb = prob;
                 bestMove = move;
             }
+
+            if (Math.random() < prob && simulation.foodFound) {
+                ant.move(move.x, move.y);
+                if (checkFood(bestMove.x, bestMove.y)) {
+                    ant.found = true;
+                }
+            }
         });
 
-        ant.move(bestMove.x, bestMove.y);
-        if (checkFood(bestMove.x, bestMove.y)) {
-            ant.found = true;
+        if (!simulation.foodFound) {
+            if (checkFood(bestMove.x, bestMove.y)) {
+                simulation.foodFound = true;
+                ant.found = true;
+            }
+            ant.move(bestMove.x, bestMove.y);
         }
 
         let lastMoves = ant.getLastMoves();
 
         if (ant.found) {
-            drawAnt(lastMoves.current.x, lastMoves.current.y, '#114411', 5, 5);
+            drawAnt(lastMoves.current.x, lastMoves.current.y, '#114411', 1, 1);
             continue;
         }
-        drawAnt(lastMoves.current.x, lastMoves.current.y, '#964B00', 3, 3);
-
+        drawAnt(lastMoves.current.x, lastMoves.current.y, '#964B00', 1, 1);
     }
+
     simulation.pheromoneTick();
     await sleep(1);
 
     for (let i = 0; i < colony.ants.length; i++) {
         let ant = colony.ants[i];
         let lastMoves = ant.getLastMoves();
-        drawAnt(lastMoves.current.x, lastMoves.current.y, '#F0F8FF', 5, 5);
+        //drawAnt(lastMoves.current.x, lastMoves.current.y, '#F0F8FF', 1, 1);
     }
 }
 
@@ -157,8 +173,8 @@ async function startAnts() {
     let canvasData = ctx.getImageData(0, 0, 1200, 600);
     field = convertCanvasToMatrix(canvasData.data, canvasData.width, canvasData.height);
 
-    let colony = new Colony(+colonyPoint.x, +colonyPoint.y,512);
-    let simulation = new AntsSimulation(field, 1200, 600, 0.05, 0.1, colony);
+    let colony = new Colony(+colonyPoint.x, +colonyPoint.y,1000);
+    let simulation = new AntsSimulation(field, 1200, 600, 0.1, 5, colony);
 
     colony = simulation.colony;
     let epochs = 1000000;
