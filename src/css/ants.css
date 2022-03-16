@@ -10,13 +10,18 @@ input {
 
 .main_block {
     margin-top: 0.3%;
-    width: 30%;
+    width: 40%;
 }
 
-.description, .action, .size {
+.fieldSize {
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+.description, .action, .size, .danger_block {
     background-color: aliceblue;
     border-radius: 20px;
-    margin-left: 17%;
+    margin-left: 19.5%;
     margin-top: 1%;
     padding: 20px 20px 20px 20px;
 }
@@ -25,16 +30,27 @@ input {
     margin-top: 0 !important;
 }
 
+.danger_block {
+    margin-left: 1% !important;
+    margin-right: 19.5% !important;
+}
+
 .description div, .action div {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.foodValue, .foodValueView, .populationValue, .populationView {
+.inputValue, .valueView {
     display: flex;
     flex-direction: row !important;
     justify-content: start !important;
+}
+
+input {
+    width: 100% !important;
+    margin-right: 2.5% !important;
+    margin-left: 2.5% !important;
 }
 
 .description button, .action button {
