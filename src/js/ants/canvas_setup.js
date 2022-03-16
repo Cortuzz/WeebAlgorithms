@@ -1,3 +1,4 @@
+let running;
 let field = [ ];
 let foodValue = 50;
 let currentState = 'colony';
@@ -11,6 +12,9 @@ colors = {'colony': 'darkred', 'food': 'forestgreen', 'border': 'gray', 'clearBo
 ctx.lineWidth = 40;
 
 canvas.addEventListener('mousedown', function(e) {
+    if (running) {
+        return;
+    }
     changeSetup();
     if (!checkBorderType()) {
         if (currentState === 'food') {
@@ -31,7 +35,7 @@ canvas.addEventListener('mousedown', function(e) {
 });
 
 canvas.addEventListener('mousemove', function(e) {
-    if (!(drawing && checkBorderType())) {
+    if (!(drawing && checkBorderType()) || running) {
         return;
     }
 
@@ -39,6 +43,9 @@ canvas.addEventListener('mousemove', function(e) {
 });
 
 canvas.addEventListener('mouseup', function(e) {
+    if (running) {
+        return;
+    }
     changeSetup();
     if (!checkBorderType()) {
         return;
@@ -84,7 +91,7 @@ function drawRect(e) {
     mouse.x = e.clientX - ClientRect.left;
     mouse.y = e.clientY - ClientRect.top;
 
-    ctx.fillRect(mouse.x, mouse.y, 10, 10);
+    ctx.fillRect(mouse.x, mouse.y, 20, 20);
 }
 
 function checkBorderType() {
