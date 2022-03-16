@@ -11,6 +11,7 @@ window.addEventListener("load", () => {
     window.findSpeed.addEventListener("input", changeSpeed);
 
     window.randomizeButton.addEventListener("click", randomizeMatrix);
+    window.generateButton.addEventListener("click", generateMaze);
     window.clearButton.addEventListener("click", clear);
     window.changeRandBorder.addEventListener("input", changeRandomBorder);
 });
@@ -26,6 +27,16 @@ let randomBorder = 0.5;
 let finder;
 let start, finish;
 let currentState = 'start', handleStates, viewStates;
+
+const ERASERS_NUMBER = 100;
+let erasers = [];
+for (let i = 0; i < ERASERS_NUMBER; i++) {
+    erasers.push({
+            x: 0,
+            y: 0
+        }
+    )
+}
 
 function init() {
     maze = [];
@@ -47,10 +58,17 @@ function init() {
 }
 
 function clear() {
+    for (let eraser of erasers) {
+        eraser.x = 0;
+        eraser.y = 0;
+    }
+
     window.log.textContent = defaultLog;
+
     if (finder != null) {
         finder.running = false;
     }
+
     init();
 }
 
@@ -111,6 +129,7 @@ function refreshTable() {
     tableBuilder(maze);
 }
 
+
 function matrixBuilder() {
     start = null;
     finish = null;
@@ -126,7 +145,7 @@ function matrixBuilder() {
 function randomizeMatrix() {
     start = null;
     finish = null;
-    
+
     for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
             if (Math.random() < randomBorder) {
@@ -138,6 +157,74 @@ function randomizeMatrix() {
     }
 
     refreshTable();
+}
+
+function generateMaze() {
+    for (let i = 0; i < height; i++) {
+        for (let j = 0; j < width; j++) {
+            maze[i][j] = 1
+        }
+    }
+
+    maze[0][0] = 0;
+
+    while (!isValid()) {
+        for (const eraser of erasers) {
+            moveEraser(eraser);
+        }
+    }
+
+    refreshTable();
+}
+
+function delay(timeout) {
+    return new Promise(resolve => setTimeout(resolve, timeout))
+}
+
+function moveEraser(eraser) {
+    const directions = [];
+
+    if (eraser.x > 1) {
+        directions.push([0, -2]);
+    }
+
+    if (eraser.x < width - 2) {
+        directions.push([0, 2]);
+    }
+
+    if (eraser.y > 1) {
+        directions.push([-2, 0]);
+    }
+
+    if (eraser.y < height - 2) {
+        directions.push([2, 0]);
+    }
+
+    const [dy, dx] = getRandomDirection(directions)
+    eraser.x += dx;
+    eraser.y += dy;
+
+    if (maze[eraser.y][eraser.x]) {
+        maze[eraser.y][eraser.x] = 0;
+        maze[eraser.y - dy / 2][eraser.x - dx / 2] = 0;
+    }
+}
+
+function getRandomDirection(array) {
+    const index = Math.floor(Math.random() * array.length)
+    return array[index]
+}
+
+function isValid() {
+    for (let i = 0; i < height; i+=2) {
+        for (let j = 0; j < width; j+=2) {
+            if (maze[i][j]) {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 function changeCellMode(event) {
