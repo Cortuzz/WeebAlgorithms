@@ -65,8 +65,10 @@ async function checkPoints() {
         window.log_block.style.borderColor = "B72626";
         await sleep(3000);
 
-        window.log.textContent = defaultLog;
-        window.log_block.style.borderColor = defaultColor;
+        if (window.log.textContent !== "Алгоритм запущен") {
+            window.log.textContent = defaultLog;
+            window.log_block.style.borderColor = defaultColor;
+        }
         return false;
     }
     return true;
