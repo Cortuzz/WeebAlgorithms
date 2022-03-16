@@ -30,6 +30,7 @@ window.addEventListener("load", () => {
     { decay = +e.target.value / 100; window.decayView.textContent = (100 * decay).toFixed(2) + '%'; });
 });
 
+const WIDTH = 900, HEIGHT = 600;
 let defaultLog = "Алгоритм не запущен";
 let defaultColor = "coral";
 
@@ -68,7 +69,7 @@ function init() {
     window.changeDecay.value = 100 * decay;
 
     ctx.fillStyle = "aliceblue";
-    ctx.rect(0, 0, 1200, 600);
+    ctx.rect(0, 0, WIDTH, HEIGHT);
     ctx.fill();
     window.currentActionView.innerText = viewStates[currentState];
     fieldBuilder();
@@ -175,7 +176,7 @@ function convertCanvasToMatrix(rawData, w, h) {
 function clearField() {
     colonyPoint = undefined;
     ctx.fillStyle = "aliceblue";
-    ctx.rect(0, 0, 1200, 600);
+    ctx.rect(0, 0, WIDTH, HEIGHT);
     ctx.fill();
 }
 
@@ -293,7 +294,7 @@ async function startAnts() {
     changeLog("Алгоритм запущен", "lightgreen");
 
     let colony = new Colony(+colonyPoint.x, +colonyPoint.y, colonySize,0.01);
-    let simulation = new AntsSimulation(field, 1200, 600, greed, gregariousness, speed,
+    let simulation = new AntsSimulation(field, WIDTH, HEIGHT, greed, gregariousness, speed,
         pheromoneMultiplier * pheromoneDecay, redPheromoneMultiplier * redPheromoneDecay, colony);
 
     colony.setAnts(simulation);
