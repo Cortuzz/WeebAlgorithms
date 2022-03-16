@@ -29,13 +29,9 @@ let start, finish;
 let currentState = 'start', handleStates, viewStates;
 
 const ERASERS_NUMBER = 100;
-let erasers = [];
+let erasers = [ ];
 for (let i = 0; i < ERASERS_NUMBER; i++) {
-    erasers.push({
-            x: 0,
-            y: 0
-        }
-    )
+    erasers.push( { x: 0, y: 0 })
 }
 
 function init() {
@@ -162,7 +158,7 @@ function randomizeMatrix() {
 function generateMaze() {
     for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
-            maze[i][j] = 1
+            maze[i][j] = 1;
         }
     }
 
@@ -175,10 +171,6 @@ function generateMaze() {
     }
 
     refreshTable();
-}
-
-function delay(timeout) {
-    return new Promise(resolve => setTimeout(resolve, timeout))
 }
 
 function moveEraser(eraser) {
@@ -200,7 +192,7 @@ function moveEraser(eraser) {
         directions.push([2, 0]);
     }
 
-    const [dy, dx] = getRandomDirection(directions)
+    const [dy, dx] = getRandomDirection(directions);
     eraser.x += dx;
     eraser.y += dy;
 
@@ -211,13 +203,13 @@ function moveEraser(eraser) {
 }
 
 function getRandomDirection(array) {
-    const index = Math.floor(Math.random() * array.length)
-    return array[index]
+    const index = Math.floor(Math.random() * array.length);
+    return array[index];
 }
 
 function isValid() {
-    for (let i = 0; i < height; i+=2) {
-        for (let j = 0; j < width; j+=2) {
+    for (let i = 0; i < height; i += 2) {
+        for (let j = 0; j < width; j += 2) {
             if (maze[i][j]) {
                 return false;
             }
@@ -397,8 +389,8 @@ function clearSolution() {
     let solutionCells = document.querySelectorAll("td[data-mode='path']");
     let visitedCells = document.querySelectorAll("td[data-mode='checked']");
 
-    solutionCells.forEach(cell => {cell.dataset.mode = "unchecked"})
-    visitedCells.forEach(cell => {cell.dataset.mode = "unchecked"})
+    solutionCells.forEach(cell => {cell.dataset.mode = "unchecked"});
+    visitedCells.forEach(cell => {cell.dataset.mode = "unchecked"});
 }
 
 async function startFinder() {
