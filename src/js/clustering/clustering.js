@@ -10,19 +10,6 @@ function l2normSquared(point_a, point_b) {
     return (point_a.x - point_b.x) ** 2 + (point_a.y - point_b.y) ** 2;
 }
 
-function shuffle(array) {
-    let currentIndex = array.length, randomIndex;
-
-    while (currentIndex !== 0) {
-
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
-}
-
 function recalculateMean(points, currClass) {
     let class_size = 0, total_x = 0, total_y = 0;
     for (let i = 0; i < points.length; i++) {
