@@ -28,6 +28,6 @@ function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
-function log(value) {
+function print(value) {
     console.log(JSON.parse(JSON.stringify(value)))
 }
