@@ -38,7 +38,7 @@ class AntFinder {
     }
 
     run() {
-        const ant = { edges: [ ], path: [ ], distance: Infinity };
+        let ant = { edges: [ ], path: [ ], distance: Infinity };
 
         let currentPoint = randomIndex(this.points);
         ant.path.push(currentPoint);
