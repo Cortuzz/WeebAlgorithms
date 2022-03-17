@@ -52,8 +52,7 @@ class AntFinder {
         let updatedAnt = null;
 
         while (ant.edges.length !== 0) {
-            let sum = this.getSum(currentPoint, ant);
-            updatedAnt = this.updateAnt(currentPoint, ant, sum);
+            updatedAnt = this.updateAnt(currentPoint, ant);
             let index = this.randomMove(ant);
 
             currentPoint = updatedAnt.edges[index].index;
@@ -79,7 +78,7 @@ class AntFinder {
         }
     }
 
-    getSum(index, ant) {
+    updateAnt(index, ant) {
         let total = 0;
 
         for (let i = 0; i < ant.edges.length; i++)
@@ -89,17 +88,13 @@ class AntFinder {
             total += Math.pow(pheromonesValue, this.greed) * Math.pow(distanceValue, this.gregariousness);
         }
 
-        return total;
-    }
-
-    updateAnt(index, ant, ratio) {
         for (let i = 0; i < ant.edges.length; i++)
         {
             let pheromonesValue = this.edges[index][ant.edges[i].index].pheromones;
             let distanceValue = this.edges[index][ant.edges[i].index].attraction;
 
             let value = Math.pow(pheromonesValue, this.greed) * Math.pow(distanceValue, this.gregariousness);
-            ant.edges[i].probability = value / ratio;
+            ant.edges[i].probability = value / total;
         }
 
         return ant;
