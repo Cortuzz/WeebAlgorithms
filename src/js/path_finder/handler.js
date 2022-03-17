@@ -158,6 +158,11 @@ function randomizeMatrix() {
 }
 
 function generateMaze() {
+    for (let eraser of erasers) {
+        eraser.x = 0;
+        eraser.y = 0;
+    }
+
     for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
             maze[i][j] = 1
@@ -299,6 +304,11 @@ function changeSizeX(event) {
     let sizeY = window.fieldSizeY.value;
     width = sizeX;
 
+    for (let eraser of erasers) {
+        eraser.x = 0;
+        eraser.y = 0;
+    }
+
     if (fixing) {
         height = +sizeX;
         init();
@@ -315,6 +325,11 @@ function changeSizeY(event) {
     let sizeX = window.fieldSizeX.value;
     let sizeY = event.target.value;
     height = sizeY;
+
+    for (let eraser of erasers) {
+        eraser.x = 0;
+        eraser.y = 0;
+    }
 
     if (fixing) {
         width = +sizeY;
