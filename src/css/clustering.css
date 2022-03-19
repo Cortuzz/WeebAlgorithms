@@ -6,7 +6,7 @@
     width: 25%;
 }
 
-.description, .action, .action2 {
+.description {
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 17%;
@@ -14,21 +14,24 @@
     padding: 20px 20px 20px 20px;
 }
 
+.action, .action2 {
+    background-color: aliceblue;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+}
+
 .action_block {
-    width: 19%;
+    width: 18.45%;
+    margin-left: 10px;
+    margin-top: 0.3%;
 }
 
 .action {
-    margin-top: 0.3%;
-    margin-left: 0.5% !important;
-    width: 100% !important;
     height: 22%;
 }
 
 .action2 {
-    margin-top: 0.3%;
-    margin-left: 0.5% !important;
-    width: 100% !important;
+    margin-top: 2%;
     height: 30%;
 }
 
