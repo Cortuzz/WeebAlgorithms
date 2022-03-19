@@ -4,32 +4,46 @@ window.addEventListener("load", () => {
     window.stepViewChecker.addEventListener("click", e => {
         stepView = window.stepViewChecker.checked;
         window.bestViewChecker.disabled = !window.bestViewChecker.disabled;
-        if (!stepView && !bestView) {
-            bestView = true;
-            window.bestViewChecker.checked = 1;
+        window.screenClearingChecker.disabled = !window.screenClearingChecker.disabled;
+
+        if (!stepView) {
+            window.screenClearingChecker.checked = 0;
+            if (!bestView) {
+                bestView = true;
+                window.bestViewChecker.checked = 1;
+            }
+        } else if (screenClearing) {
+            window.screenClearingChecker.checked = 1;
         }
     });
+    window.screenClearingChecker.addEventListener("click", e => { screenClearing = window.screenClearingChecker.checked; })
+    window.changeSpeedInput.addEventListener("input", e =>
+    { renderSpeed = +e.target.value; window.speedView.textContent = renderSpeed; });
+
     window.bestViewChecker.addEventListener("click", e => { bestView = window.bestViewChecker.checked; });
     window.pheromoneViewChecker.addEventListener("click", e => { pheromoneView = window.pheromoneViewChecker.checked; });
 
     window.locker.addEventListener("click", changeLock);
 });
 
+let alg;
 let running = false;
-let stepView = true, bestView = true, pheromoneView = false;
+let stepView = true, bestView = true, pheromoneView = false, screenClearing = true;
 
+let renderSpeed = 1;
 let epochs = 100000, infinityEpochs = false;
 const WIDTH = 900, HEIGHT = 600;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 canvas.addEventListener("mousedown", changePoint);
 
-let points = [ ];
+let points = [ ], newPoints = [ ];
 
 let viewStates = { "add": "Добавление точек", "remove": "Удаление точек" };
 let currentState = "add";
 
 function init() {
+    window.changeSpeedInput.value = renderSpeed;
     window.changeSize.value = colonySize;
     window.changeSizeMultiplier.value = colonySizeMultiplier;
     window.changeGreed.value = greed;
@@ -58,13 +72,37 @@ function changePoint(e) {
     }
 }
 
+function checkPoint(checkingPoint, set) {
+    let found = false;
+    set.forEach(point => {
+        if (point.x === checkingPoint.x && point.y === checkingPoint.y) {
+            found = true;
+        }
+    });
+    return found;
+}
+
 function createPoint(e) {
-    if (!running) {
-        let x = e.clientX - canvas.offsetLeft;
-        let y = e.clientY - canvas.offsetTop;
-        points.push({ x: x, y: y });
-        drawCircle(x, y, 10, "gray");
+    let x = e.clientX - canvas.offsetLeft;
+    let y = e.clientY - canvas.offsetTop;
+    let point = { x: x, y: y };
+
+    if (checkPoint(point, points) || checkPoint(point, newPoints)) {
+        return;
     }
+
+    drawCircle(x, y, 10, "gray");
+
+    if (!running) {
+        points.push(point);
+    } else {
+        newPoints.push(point);
+    }
+}
+
+async function checkNewPoints() {
+    newPoints.forEach(point => { alg.addPoint(point); });
+    newPoints = [ ];
 }
 
 function clearScreen() {
@@ -116,8 +154,8 @@ function getColorRatio(ant1, ant2) {
 }
 
 async function startAlg() {
-    console.log(colonySize);
-    let alg = new AntFinder(points, colonySize, colonySizeMultiplier, greed,
+    running = true;
+    alg = new AntFinder(points, colonySize, colonySizeMultiplier, greed,
         gregariousness, spray, decay, attractionMultiplier);
     let ants = [ ];
 
@@ -132,15 +170,19 @@ async function startAlg() {
                 let colorRatio = getColorRatio(alg.getBestDistance(), ant.distance);
                 let bestPath = alg.getBestPath();
                 let edges = alg.getEdges();
+                if (screenClearing) {
+                    clearScreen();
+                }
                 if (bestView) {
                     updateScreen(bestPath, edges, undefined, pheromoneView);
                 } else {
                     updateScreen(path, edges, colorRatio, pheromoneView);
                 }
-                await sleep(0.0001);
-            } else if (!bestView) {
+                await sleep(1000 / renderSpeed ** 2 / alg.size);
+
+            } /* else if (!bestView) {
                 ants.push({ path: ant.path, distance: ant.distance });
-            }
+            } */
         }
 
         if (!stepView) {
@@ -161,10 +203,11 @@ async function startAlg() {
             }
             */
 
-            await sleep(10);
+            await sleep(1 / renderSpeed ** 2);
         }
-
         alg.updatePheromones();
+        await checkNewPoints();
+
         if (!infinityEpochs) {
             epochs++;
         }
