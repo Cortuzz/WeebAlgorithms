@@ -1,8 +1,8 @@
 .picture {
     animation: MoveUpDown 3s ease-in-out infinite, colorAnim 5s linear infinite;
     position: fixed;
-    top: 450px;
-    left: 1300px;
+    top: 47%;
+    left: 68%;
     transform: scale(0.4);
 }
 
