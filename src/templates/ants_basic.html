@@ -56,22 +56,36 @@
                 <button id="clearButton" data-mode="clear">Очистить</button>
             </div>
 
+            <div class="valueView">
+                <h6>Текущая скорость:&nbsp</h6>
+                <h6 id="speedView">1</h6>
+            </div>
+
+            <div class="valueView">
+                <h6>0.1</h6>
+                <input id="changeSpeedInput" type="range" min="0.1" max="10" step="0.05">
+                <h6>10</h6>
+            </div>
+
+
             <div class="fieldSize">
                 <h6 style="margin-top: 3px">Пошаговый рендеринг:&nbsp</h6>
                 <input type="checkbox" id="stepViewChecker" class="toggle" checked>
                 <label for="stepViewChecker"></label>
-            </div>
 
-            <div class="fieldSize">
-                <h6 style="margin-top: 3px; margin-right: 11px">Только лучший путь:&nbsp</h6>
-                <input type="checkbox" id="bestViewChecker" class="toggle" checked>
-                <label for="bestViewChecker"></label>
-            </div>
-
-            <div class="fieldSize">
-                <h6 style="margin-top: 3px; margin-right: 1px">Рендеринг феромонов:&nbsp</h6>
+                <h6 style="margin-top: 3px; margin-left: 50px; margin-right: 2px">Рендеринг феромонов:&nbsp</h6>
                 <input type="checkbox" id="pheromoneViewChecker" class="toggle">
                 <label for="pheromoneViewChecker"></label>
+            </div>
+
+            <div class="fieldSize">
+                <h6 style="margin-top: 3px; margin-right: 16px">Пошаговая очистка:&nbsp</h6>
+                <input type="checkbox" id="screenClearingChecker" class="toggle" checked>
+                <label for="screenClearingChecker"></label>
+
+                <h6 style="margin-top: 3px; margin-right: 12px; margin-left: 50px">Только лучший путь:&nbsp</h6>
+                <input type="checkbox" id="bestViewChecker" class="toggle" checked>
+                <label for="bestViewChecker"></label>
             </div>
         </div>
     </div>
@@ -103,8 +117,8 @@
             </div>
 
             <div class="valueView">
-                <h6>0</h6>
-                <input disabled class="dangerParam" id="changeSize" type="range" min="0" max="500" step="1">
+                <h6>1</h6>
+                <input disabled class="dangerParam" id="changeSize" type="range" min="1" max="500" step="1">
                 <h6>500</h6>
             </div>
 
@@ -114,8 +128,8 @@
             </div>
 
             <div class="valueView">
-                <h6>0</h6>
-                <input disabled class="dangerParam" id="changeSizeMultiplier" type="range" min="0" max="100" step="1">
+                <h6>1</h6>
+                <input disabled class="dangerParam" id="changeSizeMultiplier" type="range" min="1" max="100" step="1">
                 <h6>100</h6>
             </div>
 
