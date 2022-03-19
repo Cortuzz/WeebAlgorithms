@@ -65,7 +65,7 @@ class slidingCircle {
     }
 }
 
-let c = 5e-5;
+const c = 1e-5;
 const eps = 2e-5;
 
 async function convertToMeans(circles) {
@@ -84,8 +84,10 @@ async function convertToMeans(circles) {
             result.push(curr);
         }
     }
+    print(result);
     redrawInitial();
     drawSlidingCircles(result);
+    await sleep(1000);
     for (let i = 0; i < result.length; i++) {
         let point = result[i].center;
         point.class = i;
@@ -116,11 +118,10 @@ function recalculateCenter(circle, points) {
 }
 
 async function meanShiftClustering(points, constant, radius) {
-    c = constant;
     let circles = [];
     for (let i = 5; i < width; i += width / 10) {
         for (let j = 5; j < height; j += width / 10) {
-            let currCircle = new slidingCircle(i, j, radius);
+            let currCircle = new slidingCircle(i, j, parseInt(radius));
             circles.push(currCircle);
         }
     }
