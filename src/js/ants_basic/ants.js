@@ -16,13 +16,16 @@ class AntFinder {
         this.gregariousness = gregariousness;
 
         this.bestAnt = null;
+        this.autoSize = false;
 
+        this.sizeMultiplier = sizeMultiplier;
         this.pheromonesSpraying = spray;
         this.pheromonesDecay = decay;
         this.attractionMultiplier = attractionMultiplier;
 
         if (size == null) {
-            this.size = sizeMultiplier * this.points.length;
+            this.size = this.sizeMultiplier * this.points.length;
+            this.autoSize = true;
         }
 
         this.ants = [ ];
@@ -37,9 +40,26 @@ class AntFinder {
         }
     }
 
+    addPoint(point) {
+        if (this.autoSize) {
+            this.size += this.sizeMultiplier;
+        }
+
+        this.points.push(point);
+        this.edges.push([ ]);
+        for (let i = 0; i < this.points.length; i++) {
+            let distance = this.getDistance(this.points[i], point);
+            let edge = { distance: distance, attraction: this.attractionMultiplier / distance, pheromones: 0.5 };
+
+            this.edges[i][this.points.length - 1] = edge;
+            this.edges[this.points.length - 1][i] = edge;
+        }
+        this.bestAnt = null;
+        this.bestDistance = Infinity;
+    }
+
     run() {
         let ant = { edges: [ ], path: [ ], distance: Infinity };
-
         let currentPoint = randomIndex(this.points);
         ant.path.push(currentPoint);
 
@@ -50,7 +70,6 @@ class AntFinder {
         }
         ant.edges.splice(currentPoint, 1);
         let updatedAnt = null;
-
         while (ant.edges.length !== 0) {
             updatedAnt = this.updateAnt(currentPoint, ant);
             let index = this.randomMove(ant);
