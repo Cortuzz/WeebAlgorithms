@@ -98,9 +98,6 @@ button {
     transition: all 0.3s ease;
     position: relative;
     display: inline-block;
-    box-shadow: inset 2px 2px 2px 0 rgba(255, 255, 255, .5),
-    7px 7px 20px 0 rgba(0, 0, 0, .1),
-    4px 4px 5px 0 rgba(0, 0, 0, .1);
     outline: none;
     padding: 0;
 }
@@ -137,4 +134,10 @@ button:after {
 button:hover:before, button:hover:after {
     width: 100%;
     transition: 800ms ease all;
+}
+
+select, input, button {
+    box-shadow: inset 2px 2px 2px 0 rgba(255, 255, 255, .5),
+    7px 7px 20px 0 rgba(0, 0, 0, .1),
+    4px 4px 5px 0 rgba(0, 0, 0, .1);
 }
