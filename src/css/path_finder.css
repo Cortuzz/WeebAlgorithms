@@ -145,7 +145,6 @@ table td[data-mode="finish"] {
     line-height: inherit;
 }
 
-
 .currentAction, .currentSize, .fieldSize, .speed, .speedView, .random, .randomView {
     display: flex;
     flex-direction: row !important;
