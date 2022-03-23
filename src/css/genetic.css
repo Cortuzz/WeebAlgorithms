@@ -1,0 +1,123 @@
+.main {
+    display: flex;
+    width: 100%;
+}
+
+.main_block {
+    margin-top: 0.3%;
+    margin-left: 5%;
+}
+
+.description, .action {
+    background-color: aliceblue;
+    border-radius: 20px;
+    width: 100%;
+    margin-top: 1%;
+    padding: 20px 20px 20px 20px;
+}
+
+.description {
+    margin-top: 0 !important;
+}
+
+.canvas_block {
+    width: 100%;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+    margin-right: 5%;
+    margin-left: 0.3%;
+    margin-top: 0.3%;
+    background-color: aliceblue;
+}
+
+.description div, .action div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inputValue, .valueView {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+input {
+    width: 100% !important;
+    margin-right: 2.5% !important;
+    margin-left: 2.5% !important;
+}
+
+.description button, .action button {
+    width: 60%;
+    transition: all .4s ease;
+    margin: 0 auto 10px;
+}
+
+.description #startButton {
+    margin-top: 2% !important;
+}
+
+.currentAction {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+#startButton, .action #addPointButton {
+    border-radius: 10px;
+    background-color: lightgreen;
+    border: 2px solid forestgreen;
+}
+
+#startButton:hover, .action #addPointButton:hover {
+    background-color: forestgreen;
+    border: 2px solid lightgreen;
+    transform: scale(0.95);
+}
+
+.action #randomizeButton {
+    border-radius: 10px;
+    background-color: palevioletred;
+    border: 2px solid darkred;
+}
+
+.action #randomizeButton:hover {
+    background-color: darkred;
+    border: 2px solid palevioletred;
+    transform: scale(0.95);
+}
+
+.action #removePointButton {
+    border-radius: 10px;
+    background-color: lightcoral;
+    border: 2px solid coral;
+}
+
+.action #removePointButton:hover {
+    background-color: coral;
+    border: 2px solid lightcoral;
+    transform: scale(0.95);
+}
+
+.action #clearButton {
+    border-radius: 10px;
+    background-color: darkgray;
+    border: 2px solid gray;
+}
+
+.action #clearButton:hover {
+    background-color: gray;
+    border: 2px solid darkgray;
+    transform: scale(0.95);
+}
+
+#log_block {
+    display: flex;
+    align-items: center;
+    border: 5px solid coral;
+    background: #d5e6ff;
+    border-radius: 10px;
+    padding: 5px 5px 5px 5px;
+}
+
