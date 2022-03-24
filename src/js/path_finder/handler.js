@@ -127,8 +127,7 @@ function refreshTable() {
 
 
 function matrixBuilder() {
-    start = null;
-    finish = null;
+    dropPoints();
 
     for (let i = 0; i < height; i++) {
         maze[i] = new Array(width);
@@ -139,8 +138,8 @@ function matrixBuilder() {
 }
 
 function randomizeMatrix() {
-    start = null;
-    finish = null;
+    dropPoints();
+    disableCurrentFinder();
 
     for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
@@ -156,6 +155,14 @@ function randomizeMatrix() {
 }
 
 function generateMaze() {
+    dropPoints();
+    disableCurrentFinder();
+
+    for (let eraser of erasers) {
+        eraser.x = 0;
+        eraser.y = 0;
+    }
+
     for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
             maze[i][j] = 1;
@@ -293,6 +300,11 @@ function changeSizeX(event) {
     let sizeY = window.fieldSizeY.value;
     width = sizeX;
 
+    for (let eraser of erasers) {
+        eraser.x = 0;
+        eraser.y = 0;
+    }
+
     if (fixing) {
         height = +sizeX;
         init();
@@ -309,6 +321,11 @@ function changeSizeY(event) {
     let sizeX = window.fieldSizeX.value;
     let sizeY = event.target.value;
     height = sizeY;
+
+    for (let eraser of erasers) {
+        eraser.x = 0;
+        eraser.y = 0;
+    }
 
     if (fixing) {
         width = +sizeY;
@@ -393,10 +410,25 @@ function clearSolution() {
     visitedCells.forEach(cell => {cell.dataset.mode = "unchecked"});
 }
 
+function dropPoints() {
+    start = null;
+    finish = null;
+}
+
+function disableCurrentFinder() {
+    if (finder != null) {
+        finder.running = false;
+    }
+
+    window.log.textContent = defaultLog;
+    window.log_block.style.borderColor = defaultColor;
+}
+
 async function startFinder() {
     if (!await checkPoints()) {
         return;
     }
+    disableCurrentFinder();
     clearSolution();
 
     window.log.textContent = "Алгоритм запущен";
@@ -410,10 +442,6 @@ async function startFinder() {
         heuristic = euclidHeuristic;
     } else {
         heuristic = manhattanHeuristic;
-    }
-
-    if (finder != null) {
-        finder.running = false;
     }
 
     finder = new PathFinder(maze, heuristic, 1000 / speed);

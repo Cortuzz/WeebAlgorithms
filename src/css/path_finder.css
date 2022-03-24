@@ -83,6 +83,10 @@ table td {
     border: 1px solid gray;
 }
 
+table td:hover {
+    background-color: #b79501 !important;
+}
+
 table td[data-mode="unchecked"] {
     background-color: aliceblue;
 }
@@ -140,7 +144,6 @@ table td[data-mode="finish"] {
     cursor: inherit;
     line-height: inherit;
 }
-
 
 .currentAction, .currentSize, .fieldSize, .speed, .speedView, .random, .randomView {
     display: flex;

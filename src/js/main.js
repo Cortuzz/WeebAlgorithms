@@ -14,3 +14,20 @@ function shuffle(array) {
 
     return array;
 }
+
+function sigmoid(x) {
+    return 1 / (1 + Math.exp(-x));
+}
+
+function componentToHex(c) {
+    let hex = c.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function print(value) {
+    console.log(JSON.parse(JSON.stringify(value)))
+}

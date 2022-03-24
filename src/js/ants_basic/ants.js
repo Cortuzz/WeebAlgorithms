@@ -8,7 +8,7 @@ function randomIndex(array) {
 
 
 class AntFinder {
-    constructor(points, size, greed, gregariousness) {
+    constructor(points, size, sizeMultiplier, greed, gregariousness, spray, decay, attractionMultiplier) {
         this.bestDistance = Infinity;
         this.points = points;
         this.size = size;
@@ -16,12 +16,16 @@ class AntFinder {
         this.gregariousness = gregariousness;
 
         this.bestAnt = null;
+        this.autoSize = false;
 
-        this.pheromonesSpraying = 240;
-        this.pheromonesDecay = 0.7;
+        this.sizeMultiplier = sizeMultiplier;
+        this.pheromonesSpraying = spray;
+        this.pheromonesDecay = decay;
+        this.attractionMultiplier = attractionMultiplier;
 
         if (size == null) {
-            this.size = 2 * this.points.length;
+            this.size = this.sizeMultiplier * this.points.length;
+            this.autoSize = true;
         }
 
         this.ants = [ ];
@@ -31,40 +35,53 @@ class AntFinder {
             this.edges[i] = [ ];
             for (let j = 0; j < this.points.length; j++) {
                 let distance = this.getDistance(points[i], points[j]);
-                this.edges[i][j] = { distance: distance, attraction: 75 / distance, pheromones: 0.5 };
+                this.edges[i][j] = { distance: distance, attraction: this.attractionMultiplier / distance, pheromones: 0.5 };
             }
         }
     }
 
-    run() {
-        this.ants = [ ];
-        for (let i = 0; i < this.size; i++)
-        {
-            const ant = { edges: [ ], path: [ ] };
-
-            let currentPoint = randomIndex(this.points);
-            ant.path.push(currentPoint);
-
-            for (let j = 0; j < this.points.length; j++) {
-                let edge = this.edges[currentPoint][j];
-                let way = { index: j, distance: edge.distance, probability: edge.attraction };
-                ant.edges.push(way);
-            }
-            ant.edges.splice(currentPoint, 1);
-            let updatedAnt = null;
-
-            while (ant.edges.length !== 0) {
-                let sum = this.getSum(currentPoint, ant);
-                updatedAnt = this.updateAnt(currentPoint, ant, sum);
-                let index = this.randomMove(ant);
-
-                currentPoint = updatedAnt.edges[index].index;
-                updatedAnt.path.push(currentPoint);
-                updatedAnt.edges.splice(index,1);
-            }
-            updatedAnt.path.push(ant.path[0]);
-            this.ants.push(updatedAnt);
+    addPoint(point) {
+        if (this.autoSize) {
+            this.size += this.sizeMultiplier;
         }
+
+        this.points.push(point);
+        this.edges.push([ ]);
+        for (let i = 0; i < this.points.length; i++) {
+            let distance = this.getDistance(this.points[i], point);
+            let edge = { distance: distance, attraction: this.attractionMultiplier / distance, pheromones: 0.5 };
+
+            this.edges[i][this.points.length - 1] = edge;
+            this.edges[this.points.length - 1][i] = edge;
+        }
+        this.bestAnt = null;
+        this.bestDistance = Infinity;
+    }
+
+    run() {
+        let ant = { edges: [ ], path: [ ], distance: Infinity };
+        let currentPoint = randomIndex(this.points);
+        ant.path.push(currentPoint);
+
+        for (let j = 0; j < this.points.length; j++) {
+            let edge = this.edges[currentPoint][j];
+            let way = { index: j, distance: edge.distance, probability: edge.attraction };
+            ant.edges.push(way);
+        }
+        ant.edges.splice(currentPoint, 1);
+        let updatedAnt = null;
+        while (ant.edges.length !== 0) {
+            updatedAnt = this.updateAnt(currentPoint, ant);
+            let index = this.randomMove(ant);
+
+            currentPoint = updatedAnt.edges[index].index;
+            updatedAnt.path.push(currentPoint);
+            updatedAnt.edges.splice(index,1);
+        }
+        updatedAnt.path.push(ant.path[0]);
+        this.ants.push(updatedAnt);
+
+        return this.sprayPheromones(updatedAnt);
     }
 
     randomMove(ant) {
@@ -80,7 +97,7 @@ class AntFinder {
         }
     }
 
-    getSum(index, ant) {
+    updateAnt(index, ant) {
         let total = 0;
 
         for (let i = 0; i < ant.edges.length; i++)
@@ -90,17 +107,13 @@ class AntFinder {
             total += Math.pow(pheromonesValue, this.greed) * Math.pow(distanceValue, this.gregariousness);
         }
 
-        return total;
-    }
-
-    updateAnt(index, ant, ratio) {
         for (let i = 0; i < ant.edges.length; i++)
         {
             let pheromonesValue = this.edges[index][ant.edges[i].index].pheromones;
             let distanceValue = this.edges[index][ant.edges[i].index].attraction;
 
             let value = Math.pow(pheromonesValue, this.greed) * Math.pow(distanceValue, this.gregariousness);
-            ant.edges[i].probability = value / ratio;
+            ant.edges[i].probability = value / total;
         }
 
         return ant;
@@ -110,36 +123,34 @@ class AntFinder {
         return (Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2));
     }
 
-    sprayPheromones() {
+    sprayPheromones(ant) {
         let distance = 0;
-        for (let i = 0; i < this.size; i++)
+        for (let j = 0; j < this.points.length; j++)
         {
-            for (let j = 0; j < this.points.length; j++)
-            {
-                let first = this.ants[i].path[j];
-                let second = this.ants[i].path[j + 1];
+            let first = ant.path[j];
+            let second = ant.path[j + 1];
 
-                distance += this.edges[first][second].distance;
-            }
-
-            if (distance < this.bestDistance)
-            {
-                this.bestDistance = distance;
-                this.bestAnt = this.ants[i];
-            }
-
-            for (let j = 0; j < this.points.length; j++)
-            {
-                let first = this.ants[i].path[j];
-                let second = this.ants[i].path[j + 1];
-                if (first !== second)
-                {
-                    this.edges[first][second].pheromones += this.pheromonesSpraying / distance;
-                    this.edges[second][first].pheromones += this.pheromonesSpraying / distance;
-                }
-            }
-            distance = 0;
+            distance += this.edges[first][second].distance;
         }
+
+        if (distance < this.bestDistance)
+        {
+            this.bestDistance = distance;
+            this.bestAnt = ant;
+        }
+
+        for (let j = 0; j < this.points.length; j++)
+        {
+            let first = ant.path[j];
+            let second = ant.path[j + 1];
+            if (first !== second)
+            {
+                this.edges[first][second].pheromones += this.pheromonesSpraying / distance;
+                this.edges[second][first].pheromones += this.pheromonesSpraying / distance;
+            }
+        }
+        ant.distance = distance;
+        return ant;
     }
 
     updatePheromones() {
@@ -150,6 +161,14 @@ class AntFinder {
                 this.edges[i][j].pheromones *= this.pheromonesDecay;
             }
         }
+    }
+
+    getBestDistance() {
+        return this.bestAnt.distance;
+    }
+
+    getEdges() {
+        return this.edges;
     }
 
     getBestPath() {

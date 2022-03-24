@@ -1,3 +1,6 @@
+const width = 1200;
+const height = 800;
+
 class Point {
     constructor(x, y) {
         this.x = x;
@@ -10,6 +13,7 @@ function l2normSquared(point_a, point_b) {
     return (point_a.x - point_b.x) ** 2 + (point_a.y - point_b.y) ** 2;
 }
 
+//K-Means
 function recalculateMean(points, currClass) {
     let class_size = 0, total_x = 0, total_y = 0;
     for (let i = 0; i < points.length; i++) {
@@ -48,6 +52,110 @@ function kMeans(num_classes, points, iterations) {
         for (let i = 0; i < num_classes; i++) {
             means[i] = recalculateMean(points, i);
         }
+    }
+    return {points, means};
+}
+
+//Mean-Shift clustering
+class slidingCircle {
+    constructor(x, y, radius) {
+        this.center = new Point(x, y);
+        this.radius = radius;
+        this.pointCount = 0;
+    }
+}
+
+const c = 1e-5;
+const eps = 2e-5;
+
+async function convertToMeans(circles) {
+    let result = [circles.pop()];
+    while (circles.length > 0) {
+        let curr = circles.pop();
+        let isNewClass = true;
+        for (let j = 0; j < result.length; j++) {
+            if (l2normSquared(curr.center, result[j].center) <= (2 * curr.radius) ** 2) {
+                result[j] = curr.pointCount > result[j].pointCount ? curr : result[j];
+                isNewClass = false;
+                break;
+            }
+        }
+        if (isNewClass) {
+            result.push(curr);
+        }
+    }
+    print(result);
+    redrawInitial();
+    drawSlidingCircles(result);
+    await sleep(1000);
+    for (let i = 0; i < result.length; i++) {
+        let point = result[i].center;
+        point.class = i;
+        result[i] = point;
+    }
+    return result;
+}
+
+function recalculateCenter(circle, points) {
+    let newCenter = new Point(0, 0);
+    let kernelSum = 0;
+    let pointCounter = 0;
+    for (let i = 0; i < points.length; i++) {
+        if (l2normSquared(circle.center, points[i]) <= circle.radius ** 2) {
+            let kernel = Math.exp(-c * l2normSquared(circle.center, points[i]));
+            newCenter.x += kernel * points[i].x;
+            newCenter.y += kernel * points[i].y;
+            kernelSum += kernel;
+            pointCounter++;
+        }
+    }
+    if (kernelSum === 0) {
+        return [null, pointCounter];
+    }
+    newCenter.x /= kernelSum;
+    newCenter.y /= kernelSum;
+    return [newCenter, pointCounter];
+}
+
+async function meanShiftClustering(points, constant, radius) {
+    let circles = [];
+    for (let i = 5; i < width; i += width / 10) {
+        for (let j = 5; j < height; j += width / 10) {
+            let currCircle = new slidingCircle(i, j, parseInt(radius));
+            circles.push(currCircle);
+        }
+    }
+    let stopCondition = false;
+    while (stopCondition !== true) {
+        redrawInitial();
+        stopCondition = true;
+        for (let i = 0; i < circles.length; i++) {
+            let res = recalculateCenter(circles[i], points);
+            let newCenter = res[0];
+            let pointCounter = res[1];
+            if (newCenter != null) {
+                stopCondition = stopCondition && (Math.sqrt(l2normSquared(circles[i].center, newCenter)) <= eps);
+            }
+            circles[i].center = newCenter;
+            circles[i].pointCount = pointCounter;
+        }
+        circles = circles.filter(function (circle) {
+            return circle.center != null;
+        });
+        drawSlidingCircles(circles);
+        await sleep(90);
+    }
+    let means = await convertToMeans(circles);
+    for (let i = 0; i < points.length; i++) {
+        let minDist = l2normSquared(points[i], means[0]);
+        let minClass = 0;
+        for (let j = 1; j < means.length; j++) {
+            if (l2normSquared(points[i], means[j]) < minDist) {
+                minDist = l2normSquared(points[i], means[j]);
+                minClass = j;
+            }
+        }
+        points[i].class = minClass;
     }
     return {points, means};
 }
