@@ -17,12 +17,6 @@ class AntsSimulation {
         this.increasingPoplation = true;
 
         this.colony = colony;
-
-        for (let i = 0; i < this.height; i++) {
-            for (let j = 0; j < this.width; j++) {
-                this.field[i][j] = { value: field[i][j], green: 0, red: 0, density: 0, wallDistance: 5 };
-            }
-        }
     }
 
     updateField(points) {
@@ -69,6 +63,14 @@ class AntsSimulation {
         } else if (this.field[y][x].red < value) {
             this.field[y][x].red = value;
         }
+    }
+
+    getFoodValue(x, y) {
+        let value = this.field[y][x].value;
+        if (value <= 0) {
+            throw Error;
+        }
+        return value;
     }
 
     update() {
@@ -197,6 +199,9 @@ class Ant {
         if (this.foodFinding === false) {
             return;
         }
+
+        this.pheromoneValue = Math.sqrt(this.simulation.getFoodValue(Math.floor(this.x), Math.floor(this.y)) / 50);
+
         this.foodFinding = false;
         this.decayedPheromones = 0;
         this.angle += Math.PI //+ (Math.random() - 0.5) * Math.PI / 2; // random ?
@@ -308,6 +313,9 @@ class Ant {
     sprayPheromones() {
         this.decayedPheromones += 0.1;
         let value = 8000 * Math.exp(-0.05 * this.decayedPheromones);
+        if (!this.foodFinding) {
+            value *= this.pheromoneValue;
+        }
 
         this.simulation.increasePheromonesValue(Math.floor(this.x), Math.floor(this.y), value, !this.foodFinding);
     }
