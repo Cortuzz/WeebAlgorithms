@@ -115,13 +115,6 @@ function fieldBuilder() {
 }
 
 async function changeMode(event) {
-    if (running) {
-        changeLog("Отказано, алгоритм запущен", "B72626");
-        await sleep(3000);
-        changeLog("Алгоритм запущен", "lightgreen");
-        return;
-    }
-
     let action = event.target.dataset.mode;
 
     if (action == null) {
@@ -135,42 +128,6 @@ async function changeMode(event) {
 
     currentState = action;
     window.currentActionView.innerText = viewStates[action];
-}
-
-function convertCanvasToMatrix(rawData, w, h) {
-    let data = [ ];
-    let border = new Color(128, 128, 128, BORDER);
-    let colony = new Color(139, 0, 0, COLONY);
-    let empty = new Color(240, 248, 255, EMPTY);
-
-    let colors = [border, colony, empty];
-
-    for (let i = 0; i < h; i++) {
-        data[i] = [ ];
-        for (let j = 0; j < 4 * w; j += 4) {
-            let found = false;
-            let pixelIndex = 4 * i * w + j;
-
-            let pixel = {
-                r: rawData[pixelIndex],
-                g: rawData[pixelIndex + 1],
-                b: rawData[pixelIndex + 2],
-            };
-
-            colors.forEach(color => {
-                if (color.r === pixel.r && color.b === pixel.b && color.g === pixel.g) {
-                    data[i][j / 4] = color.value;
-                    found = true;
-                }
-            });
-
-            if (!found && pixel.r === 0 && pixel.b === 0) {
-                data[i][j / 4] = (parseInt(pixel.g) - 50) / 2;
-            }
-        }
-    }
-
-    return data;
 }
 
 function clearField() {
@@ -310,6 +267,10 @@ async function startAnts() {
 
     await drawDensity(simulation.field);
     for (let epoch = 0; epoch < epochs; epoch++) {
+        if (updatedPoints) {
+            simulation.updateField(updatedPoints);
+            updatedPoints = [ ];
+        }
         colony = simulation.update();
         await antsAlg(simulation, colony);
     }

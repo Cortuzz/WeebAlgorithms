@@ -18,8 +18,10 @@ class AntsSimulation {
         }
     }
 
-    markWall(x, y, distance) {
-        this.field[y][x].wallDistance = distance;
+    updateField(points) {
+        points.forEach(point => {
+            this.field[point.y][point.x].value = point.value;
+        });
     }
 
     checkBorder(x, y) {
