@@ -7,9 +7,15 @@ let drawing = false;
 let colonyPoint;
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d');
+const scale = 1;
 
 colors = {'colony': 'darkred', 'food': 'forestgreen', 'border': 'gray', 'clearBorder': 'aliceblue'};
-ctx.lineWidth = 40;
+ctx.lineWidth = 20;
+
+function setMouseCoords(client, e) {
+    mouse.x = Math.floor((e.clientX - client.left) / scale);
+    mouse.y = Math.floor((e.clientY - client.top) / scale);
+}
 
 canvas.addEventListener('mousedown', function(e) {
     if (running) {
@@ -26,8 +32,7 @@ canvas.addEventListener('mousedown', function(e) {
     }
 
     let ClientRect = this.getBoundingClientRect();
-    mouse.x = e.clientX - ClientRect.left;
-    mouse.y = e.clientY - ClientRect.top;
+    setMouseCoords(ClientRect, e);
 
     drawing = true;
     ctx.beginPath();
@@ -58,8 +63,7 @@ canvas.addEventListener('mouseup', function(e) {
 
 function draw(e) {
     let ClientRect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - ClientRect.left;
-    mouse.y = e.clientY - ClientRect.top;
+    setMouseCoords(ClientRect, e);
     ctx.lineTo(mouse.x, mouse.y);
     ctx.stroke();
 }
@@ -76,8 +80,7 @@ function changeSetup() {
 
 function drawCircle(e) {
     let ClientRect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - ClientRect.left;
-    mouse.y = e.clientY - ClientRect.top;
+    setMouseCoords(ClientRect, e);
 
     colonyPoint = {x: mouse.x.toFixed(0), y: mouse.y.toFixed(0)};
 
@@ -88,10 +91,9 @@ function drawCircle(e) {
 
 function drawRect(e) {
     let ClientRect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - ClientRect.left;
-    mouse.y = e.clientY - ClientRect.top;
+    setMouseCoords(ClientRect, e);
 
-    ctx.fillRect(mouse.x, mouse.y, 20, 20);
+    ctx.fillRect(mouse.x, mouse.y, 30, 30);
 }
 
 function checkBorderType() {

@@ -180,95 +180,104 @@ function clearField() {
     ctx.fill();
 }
 
-function drawAnt(x, y, color, w) {
-    if (checkFood(x, y) || field[y][x] === COLONY) {
-        return;
+function drawAnt(x, y, color, w, simulation) {
+    if (simulation != null) {
+        if (simulation.checkFood(x, y) || simulation.checkColony(x, y)) {
+            return;
+        }
     }
+
     let t = ctx.fillStyle;
     ctx.fillStyle = color;
     ctx.fillRect(x, y, w, w);
     ctx.fillStyle = t;
 }
 
-function checkFood(x, y) {
-    return field[y][x] > 0;
+function getGreenColor(value) {
+    let colorValue = (value / 500).toFixed(0);
+    return rgbToHex(240 - 4 * colorValue, 248 - colorValue, 255 - 4 * colorValue);
 }
-let path = [ ];
-async function antsAlg(simulation, colony) {
 
+async function drawAnts(ants, field, simulation) {
+    ants.forEach(ant => {
+        drawAnt(Math.floor(ant.x), Math.floor(ant.y), "#000000", 1, simulation);
 
-    for (let i = 0; i < colony.ants.length; i++) {
-        let ant = colony.ants[i];
+    })
+    await sleep(1);
+    for (let ant of ants) {
+        let x = Math.floor(ant.x);
+        let y = Math.floor(ant.y);
+        let density = field[y][x].density;
 
-        if (ant.found) {
-            let moves = simulation.getPossibleMoves(ant);
-            let bestMove;
-            let bestValue = 0;
+        /*let red = field[y][x].red;
+        let green = field[y][x].green;
 
-            moves.forEach(move => {
-                let prob = simulation.getMoveProbability(move.x, move.y, ant);
-                if (bestValue < prob) {
-                    bestValue = prob;
-                    bestMove = move;
-                }
-
-            /*moves.forEach(move => {
-                let prob = simulation.getMoveProbability(move.x, move.y, ant);
-                if (Math.random() < prob) {
-                    ant.move(move.x, move.y, simulation);
-                    if (checkFood(move.x, move.y)) {
-                        ant.found = true;
-                    }
-                }*/
-
-
-            });
-            if (bestMove != null) {
-                ant.move(bestMove.x, bestMove.y);
-                if (simulation.getDistance(bestMove.x, bestMove.y, colony) === 0) {
-                    ant.found = false;
-                }
-            }
-        } else {
-            let move = ant.getRandomDirectionByPheromones();
-
-            if (simulation.checkBounds(move.x, move.y)) {
-                ant.move(move.x, move.y);
-                if (checkFood(move.x, move.y)) {
-                    ant.pheromonesDecay = decay / simulation.getDistance(ant.x, ant.y, colony);
-                    ant.found = true;
-                }
-            }
+        if (red === 0) {
+            drawAnt(x, y, getGreenColor(green), 4, simulation);
+            return;
         }
 
-        let lastMoves = ant.getLastMoves();
+        //drawAnt(x, y, "red", 1, simulation);
+        drawAnt(x, y, getGreenColor(green), 4, simulation);*/
 
-        if (!ant.found) {
-            drawAnt(lastMoves.current.x, lastMoves.current.y, '#964B00', 3, 3);
-        } else {
-            path[path.length] = {ant: ant, x: lastMoves.current.x, y: lastMoves.current.y};
-            drawAnt(lastMoves.current.x, lastMoves.current.y, '#000000', 5, 5);
+        drawAnt(x, y, getDensityColor(density), 1, simulation);
+
+        //drawAnt(Math.floor(ant.x), Math.floor(ant.y), "aliceblue", 1, simulation);
+    }
+}
+
+function getDensityColor(value) {
+    let colorValue = (value).toFixed(0);
+    return rgbToHex(240 - colorValue, 248 - 4 * colorValue, 255 - 4 * colorValue);
+}
+
+async function drawPheromones(field, simulation) {
+    for (let i = 0; i < HEIGHT; i++) {
+        for (let j = 0; j < WIDTH; j++) {
+            let red = field[i][j].red;
+            let green = field[i][j].green;
+
+            if (green === 0) {
+                drawAnt(j, i, "darkred", 1, simulation);
+                return;
+            }
+            if (red === 0) {
+                drawAnt(j, i, "green", 1, simulation);
+                return;
+            }
+
+            drawAnt(j, i, "darkred", 1, simulation);
+            drawAnt(j, i, "green", 1, simulation);
         }
     }
 
     await sleep(1);
+}
 
+async function drawDensity(field, simulation) {
+    for (let i = 0; i < HEIGHT; i++) {
+        for (let j = 0; j < WIDTH; j++) {
+            let density = field[i][j].density;
+            if (density === 0) {
+                continue;
+            }
+
+            drawAnt(j, i, getDensityColor(density), 1, simulation);
+        }
+    }
+
+    await sleep(1);
+}
+
+async function antsAlg(simulation, colony) {
     for (let i = 0; i < colony.ants.length; i++) {
         let ant = colony.ants[i];
-        let lastMoves = ant.getLastMoves();
-
-        drawAnt(lastMoves.current.x, lastMoves.current.y, '#F0F8FF', 3, 3);
+        ant.move();
+        //await ant.drawRays();
+        ant.sprayPheromones();
     }
-
-    simulation.pheromoneTick();
-    if (renderFullPath) {
-        return;
-    }
-
-    while (path.length > 1000) {
-        let point = path.shift();
-        drawAnt(point.x, point.y, '#F0F8FF', 5, 5);
-    }
+    //await drawDensity(simulation.field);
+    await drawAnts(colony.ants, simulation.field, simulation);
 }
 
 function changeLog(text, color) {
@@ -277,7 +286,7 @@ function changeLog(text, color) {
 }
 
 async function startAnts() {
-    let canvasData = ctx.getImageData(0, 0, 1200, 600);
+    let canvasData = ctx.getImageData(0, 0, 900, 600);
     field = convertCanvasToMatrix(canvasData.data, canvasData.width, canvasData.height);
 
     if (colonyPoint == null) {
@@ -293,16 +302,15 @@ async function startAnts() {
     running = true;
     changeLog("Алгоритм запущен", "lightgreen");
 
-    let colony = new Colony(+colonyPoint.x, +colonyPoint.y, colonySize,0.01);
-    let simulation = new AntsSimulation(field, WIDTH, HEIGHT, greed, gregariousness, speed,
-        pheromoneMultiplier * pheromoneDecay, redPheromoneMultiplier * redPheromoneDecay, colony);
+    let colony = new Colony(+colonyPoint.x, +colonyPoint.y, 500,0.01);
+    let simulation = new AntsSimulation(field, WIDTH, HEIGHT, colony, ctx);
 
     colony.setAnts(simulation);
-
-    colony = simulation.colony;
     let epochs = 1000000;
 
+    await drawDensity(simulation.field);
     for (let epoch = 0; epoch < epochs; epoch++) {
+        colony = simulation.update();
         await antsAlg(simulation, colony);
     }
 }

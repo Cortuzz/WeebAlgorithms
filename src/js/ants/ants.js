@@ -1,96 +1,77 @@
 const BORDER = -2;
+const COLONY = -3;
 
 
 class AntsSimulation {
-    constructor(field, width, height, greed, gregariousness, speed, pheromoneDecay, redPheromoneDecay, colony) {
+    constructor(field, width, height, colony, a) {
         this.width = width;
         this.height = height;
-        this.greed = greed;
-        this.gregariousness = gregariousness;
-        this.speed = speed;
-        this.pheromoneDecay = pheromoneDecay;
-        this.redPheromoneDecay = redPheromoneDecay;
-
         this.field = field;
-        this.pheromoneMap = [ ];
-        this.redPheromoneMap = [ ];
-        this.pheromonePoints = [ ];
+        this.a = a;
 
         this.colony = colony;
 
         for (let i = 0; i < this.height; i++) {
-            this.pheromoneMap[i] = [ ];
-            this.redPheromoneMap[i] = [ ];
             for (let j = 0; j < this.width; j++) {
-                this.pheromoneMap[i][j] = 0;
-                this.redPheromoneMap[i][j] = 0.5;
+                this.field[i][j] = { value: field[i][j], green: 0, red: 0, density: 0, wallDistance: 5 };
             }
         }
     }
 
-    getDistance(x, y, colony) {
-        return Math.sqrt((x - colony.x) ** 2 + (y - colony.y) ** 2);
+    markWall(x, y, distance) {
+        this.field[y][x].wallDistance = distance;
     }
 
-    getMoveProbability(x, y, ant) {
-        let redPheromoneValue = this.redPheromoneMap[y][x];
-        let distance = this.getDistance(x, y, this.colony) + 1;
-
-        return Math.pow(-2 * (redPheromoneValue - 1), this.gregariousness) / Math.pow(distance, this.greed);
+    checkBorder(x, y) {
+        return this.field[y][x].value === BORDER;
     }
 
-    sprayPheromones(x, y, value) {
-        this.pheromoneMap[y][x] += value;
-        this.pheromonePoints[this.pheromonePoints.length] = { x: x, y: y };
+    checkFood(x, y) {
+        return this.field[y][x].value > 0;
     }
 
-    sprayRedPheromones(x, y, dif) {
-        if (this.redPheromoneMap[y][x] - dif > 0) {
-            this.redPheromoneMap[y][x] -= dif;
+    checkColony(x, y) {
+        //return this.field[y][x].value === COLONY;
+        return (x - this.colony.x) ** 2 + (y - this.colony.y) ** 2 < 300;
+    }
+
+    increaseDensity(x, y) {
+        this.field[y][x].density++;
+    }
+
+    getPheromonesValue(x, y, isGreen) {
+        let wallScore = Math.pow(this.field[y][x].wallDistance, 4);
+        if (isGreen) {
+            return this.field[y][x].green + wallScore;
         }
+        return this.field[y][x].red + wallScore;
     }
 
-    getPossibleMoves(ant) {
-        let moves = [[this.speed, 0], [0, this.speed], [-this.speed, 0], [0, -this.speed],
-            [this.speed, this.speed], [this.speed, -this.speed],
-            [-this.speed, this.speed], [-this.speed, -this.speed]];
-        let possibleMoves = [ ];
-        let count = 0;
-
-        moves.forEach(move => {
-            let moveX = ant.x + move[0];
-            let moveY = ant.y + move[1];
-
-            if (this.checkBounds(moveX, moveY)) {
-                    possibleMoves[count] = { x: moveX, y: moveY };
-                    count++;
-            }
-        });
-
-        return shuffle(possibleMoves);
-    }
-
-    checkBounds(x, y) {
-        if (x < 0 || y < 0 || x >= this.width || y >= this.height || this.field[y][x] === BORDER) {
-            return false;
+    increasePheromonesValue(x, y, value, isGreen) {
+        if (isGreen) {
+            this.field[y][x].green += value;
         }
-        return true;
+        this.field[y][x].red += value;
     }
 
-    pheromoneTick() {
-        this.pheromonePoints.forEach(point => {
-            let pheromone = this.pheromoneMap[point.y][point.x];
-            if (pheromone > 0) {
-                this.pheromoneMap[point.y][point.x] -= this.pheromoneDecay;
-            }
-        })
-
-        return;
+    update() {
         for (let i = 0; i < this.height; i++) {
             for (let j = 0; j < this.width; j++) {
-                this.redPheromoneMap[i][j] += this.redPheromoneDecay;
+                this.field[i][j].density *= 0.999;
+                this.field[i][j].red *= 0.4;
+                this.field[i][j].green *= 0.9;
             }
         }
+
+        this.colony.replaceAnts();
+        return this.colony;
+    }
+
+    addAnt() {
+        if (this.colony.ants.length > 1000) {
+            return;
+        }
+        this.colony.addAnt();
     }
 }
 
@@ -101,6 +82,7 @@ class Colony {
         this.y = y;
         this.simulation = null;
         this.antDirRand = antDirectionRandomBorder;
+        this.threshold = 10000;
 
         this.size = size;
         this.ants = [ ];
@@ -116,136 +98,229 @@ class Colony {
     addAnt() {
         this.ants[this.ants.length] = new Ant(this.x, this.y, this.simulation, this.antDirRand);
     }
+
+    replaceAnts() {
+        for (let i = 0; i < this.ants.length; i++) {
+            let ant = this.ants[i];
+            if (ant.decayedPheromones > this.threshold) {
+                ant.x = this.x;
+                ant.y = this.y;
+                ant.foodFinding = true;
+                ant.decayedPheromones = 0;
+            }
+        }
+    }
+}
+
+
+class Cooldown {
+    constructor(threshold) {
+        this.value = 0;
+        this.threshold = threshold;
+    }
+
+    tick() {
+        this.value++;
+    }
+
+    check() {
+        if (this.value >= this.threshold) {
+            this.value = 0;
+            return true;
+        }
+        return false;
+    }
+
+    tickAndCheck() {
+        this.tick();
+        return this.check();
+    }
 }
 
 
 class Ant {
     constructor(x, y, simulation, randomBorder) {
+        this.moveTimer = new Cooldown(5);
         this.simulation = simulation;
-        this.pheromones = 0.8;
-        this.pheromonesDecay = 0;
-        this.found = false;
-        this.x = x;
-        this.y = y;
-
-        this.prevX = null;
-        this.prevY = null;
-        this.randomBorder = randomBorder;
-
-        this.difX = 1;
-        this.difY = 0;
-    }
-
-    move(x, y) {
-        let pheromones = 0.05;
-        this.difX = x - this.x;
-        this.difY = y - this.y;
-
-        this.prevX = this.x;
-        this.prevY = this.y;
+        this.speed = 3;
 
         this.x = x;
         this.y = y;
 
+        this.decayedPheromones = 0;
+        this.foodFinding = true;
+        this.liberty = 0.005;
 
-        if (this.found) {
-            this.pheromones -= this.pheromonesDecay;
-            this.simulation.sprayPheromones(this.x, this.y, this.pheromones);
-            pheromones *= -1;
-        }
+        this.rays = [ ];
+        this.visionDistance = 30;
+        this.visionAngle = Math.PI;
+        this.visionAngleStep = this.visionAngle / 20;
 
-        if (this.pheromones < 0) {
-            this.pheromones = 0.8;
-            this.found = false;
-        }
-
-        this.simulation.sprayRedPheromones(this.x, this.y, pheromones);
+        this.angle = 2 * Math.PI * Math.random();
+        this.direction = null;
+        this.setDirection();
     }
 
-    getLastMoves() {
-        return {current: {x: this.x, y: this.y}, previous: {x: this.prevX, y: this.prevY}};
+    changeColony() {
+        if (this.foodFinding === true) {
+            return;
+        }
+        this.foodFinding = true;
+        this.decayedPheromones = 0;
+        this.angle += Math.PI// + (Math.random() - 0.5) * Math.PI / 2;
+        this.setDirection();
+        this.simulation.addAnt();
     }
 
-    tryGreenPheromone(moves) {
-        let moved = false;
-        let changeValue = Math.random();
+    changeFood() {
+        if (this.foodFinding === false) {
+            return;
+        }
+        this.foodFinding = false;
+        this.decayedPheromones = 0;
+        this.angle += Math.PI// + (Math.random() - 0.5) * Math.PI / 2;
+        this.setDirection();
+    }
 
-        moves.forEach(move => {
-            let greenPheromone = this.simulation.pheromoneMap[move.y][move.x];
-            if (greenPheromone > changeValue) {
-                moved = true;
+    setDirection() {
+        let x = Math.cos(this.angle);
+        let y = Math.sin(this.angle);
 
-                this.difX = move.x - this.x;
-                this.difY = move.y - this.y;
+        this.direction = { x: x, y: y };
+    }
+
+    changeDirection() {
+        this.angle = this.findBestAngle();
+        this.setDirection();
+    }
+
+    findBestAngle() {
+        let angle = this.angle - this.visionAngle / 2;
+        let endAngle = angle + this.visionAngle;
+
+        let valuablePointsAngles = [ ];
+        let bestAngles = [ ];
+        let bestPheromones = 0;
+        this.rays = [ ];
+
+        for (angle; angle <= endAngle; angle += this.visionAngleStep) {
+            this.rays.push(angle);
+            if (this.liberty > Math.random()) {
+                return angle;
             }
+
+            for (let distance = 1; distance < this.visionDistance; distance++) {
+                let x = Math.floor(this.x + distance * this.speed * Math.cos(angle));
+                let y = Math.floor(this.y + distance * this.speed * Math.sin(angle));
+                if (this.checkCollision(x, y)) {
+                    break;
+                }
+
+                if (this.simulation.checkColony(x, y) && !this.foodFinding) {
+                    valuablePointsAngles.push(angle);
+                    continue;
+                }
+
+                if (this.simulation.checkFood(x, y) && this.foodFinding) {
+                    valuablePointsAngles.push(angle);
+                    continue;
+                }
+
+                let pheromones = this.simulation.getPheromonesValue(x, y, this.foodFinding);
+
+                if (pheromones >= bestPheromones) {
+                    if (pheromones === bestPheromones && pheromones !== 0) {
+                        bestAngles.push(angle);
+                    } else {
+                        bestAngles = [ angle ];
+                    }
+
+                    bestPheromones = pheromones;
+                }
+            }
+        }
+
+        if (valuablePointsAngles.length > 0) {
+            return valuablePointsAngles[Math.floor(valuablePointsAngles.length / 2)];
+        }
+
+        if (bestPheromones > 0) {
+            return bestAngles[Math.floor(bestAngles.length / 2)];
+        }
+        return this.angle;
+    }
+
+    move() {
+        if (this.moveTimer.tickAndCheck()) {
+            this.changeDirection();
+        }
+
+        let x = this.x + this.speed * this.direction.x;
+        let y = this.y + this.speed * this.direction.y;
+
+        if (this.checkCollision(x, y)) {
+            this.angle += Math.PI// + (Math.random() - 0.5) * Math.PI / 2;
+            this.setDirection();
+            return;
+        }
+
+        this.x = x;
+        this.y = y;
+
+        this.simulation.increaseDensity(Math.floor(x), Math.floor(y));
+        if (this.simulation.checkFood(Math.floor(x), Math.floor(y))) {
+            this.changeFood();
+        }
+        if (this.simulation.checkColony(Math.floor(x), Math.floor(y))) {
+            this.changeColony();
+        }
+    }
+
+    checkCollision(x, y) {
+        let fieldCollision = x < 0 || x >= this.simulation.width || y < 0 || y >= this.simulation.height;
+        if (fieldCollision) {
+            return true;
+        }
+        return this.simulation.checkBorder(Math.floor(x), Math.floor(y));
+    }
+
+    sprayPheromones() {
+        this.decayedPheromones += 0.1;
+        let value = 8000 * Math.exp(-0.05 * this.decayedPheromones);
+
+        this.simulation.increasePheromonesValue(Math.floor(this.x), Math.floor(this.y), value, !this.foodFinding);
+    }
+
+    async drawRays() {
+        this.rays.forEach(ray => {
+            let x = Math.floor(this.x + this.visionDistance * this.speed * Math.cos(ray));
+            let y = Math.floor(this.y + this.visionDistance * this.speed * Math.sin(ray));
+            drawStroke(this.x, this.y, x, y, "black", 1);
         });
 
-        if (!moved) {
-            return undefined;
-        }
+        await sleep(20);
 
-        let moveX = this.x + this.difX;
-        let moveY = this.y + this.difY;
-
-        return { x: moveX, y: moveY };
-    }
-
-    getRandomDirection() {
-        let moves = shuffle(this.simulation.getPossibleMoves(this));
-
-        let changeValue = Math.random();
-
-        let greenPheromoneMove = this.tryGreenPheromone(moves);
-        if (greenPheromoneMove != null) {
-            return greenPheromoneMove;
-        }
-
-        if (changeValue < this.randomBorder) {
-            this.difX = moves[0].x - this.x;
-            this.difY = moves[0].y - this.y;
-        }
-
-        let moveX = this.x + this.difX;
-        let moveY = this.y + this.difY;
-
-        return { x: moveX, y: moveY };
-    }
-
-    getRandomDirectionByPheromones() {
-        let moves = shuffle(this.simulation.getPossibleMoves(this));
-        let moved = false;
-        let bestRedMove;
-        let bestRedPheromone = -100000000;
-        let changeValue = Math.random();
-
-        let greenPheromoneMove = this.tryGreenPheromone(moves);
-        if (greenPheromoneMove != null) {
-            return greenPheromoneMove;
-        }
-
-        moves.forEach(move => {
-            let redPheromone = this.simulation.redPheromoneMap[move.y][move.x];
-            if (redPheromone > changeValue) {
-                moved = true;
-
-                this.difX = move.x - this.x;
-                this.difY = move.y - this.y;
-            }
-
-            if (redPheromone > bestRedPheromone) {
-                bestRedMove = move;
-                bestRedPheromone = redPheromone;
-            }
+        this.rays.forEach(ray => {
+            let x = Math.floor(this.x + this.visionDistance * this.speed * Math.cos(ray));
+            let y = Math.floor(this.y + this.visionDistance * this.speed * Math.sin(ray));
+            drawStroke(this.x, this.y, x, y, "aliceblue", 3);
         });
-
-        if (!moved && bestRedMove != null) {
-            this.difX = bestRedMove.x - this.x;
-            this.difY = bestRedMove.y - this.y;
-        }
-
-        let moveX = this.x + this.difX;
-        let moveY = this.y + this.difY;
-
-        return { x: moveX, y: moveY };
     }
+}
+
+function drawStroke(x1, y1, x2, y2, color, width) {
+    let width_ = ctx.lineWidth;
+    let color_ = ctx.strokeStyle;
+
+    ctx.lineWidth = width;
+    ctx.strokeStyle = color;
+
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.lineWidth = width_;
+    ctx.strokeStyle = color_;
 }
