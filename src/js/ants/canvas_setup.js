@@ -21,13 +21,9 @@ canvas.addEventListener('mousedown', function(e) {
     if (running) {
         return;
     }
-    changeSetup();
-    if (!checkBorderType()) {
-        if (currentState === 'food') {
-            drawRect(e);
-            return;
-        }
-        drawCircle(e);
+
+    if (checkColonyType()) {
+        drawColony(e);
         return;
     }
 
@@ -35,30 +31,40 @@ canvas.addEventListener('mousedown', function(e) {
     setMouseCoords(ClientRect, e);
 
     drawing = true;
-    ctx.beginPath();
-    ctx.moveTo(mouse.x, mouse.y);
+    if (currentState === 'food') {
+        drawCircle(e, 10, undefined, getFoodColor());
+        return;
+    }
+    drawCircle(e, 10, undefined, colors.border);
+    //ctx.beginPath();
+    //ctx.moveTo(mouse.x, mouse.y);
 });
 
 canvas.addEventListener('mousemove', function(e) {
-    if (!(drawing && checkBorderType()) || running) {
+    if (!(drawing && !checkColonyType()) || running) {
+        return;
+    } else if (currentState === 'food') {
+        drawCircle(e, 10, undefined, getFoodColor());
         return;
     }
 
-    draw(e);
+    drawCircle(e, 10, undefined, colors.border);
 });
 
 canvas.addEventListener('mouseup', function(e) {
+    drawing = false;
     if (running) {
         return;
     }
-    changeSetup();
-    if (!checkBorderType()) {
+
+    if (checkColonyType()) {
+        return;
+    } else if (currentState === 'food') {
+        drawCircle(e, 10, undefined, getFoodColor());
         return;
     }
 
-    draw(e);
-    ctx.closePath();
-    drawing = false;
+    drawCircle(e, 10, undefined, colors.border);
 });
 
 function draw(e) {
@@ -68,34 +74,49 @@ function draw(e) {
     ctx.stroke();
 }
 
-function changeSetup() {
+function getFoodColor() {
     if (currentState !== 'food') {
         ctx.strokeStyle = colors[currentState];
         return;
     }
 
     let hexGreenValue = (2 * foodValue + 50).toString(16);
-    ctx.fillStyle = "#00" + hexGreenValue + "00";
+    return "#00" + hexGreenValue + "00";
 }
 
-function drawCircle(e) {
+function drawColony(e) {
+    colonyPoint = drawCircle(e, 3, colors.colony);
+}
+
+function drawCircle(e, radius, arcColor, fillColor) {
     let ClientRect = canvas.getBoundingClientRect();
+    let strokeStyle = ctx.strokeStyle;
+    let fillStyle = ctx.fillStyle;
+
     setMouseCoords(ClientRect, e);
 
-    colonyPoint = {x: mouse.x.toFixed(0), y: mouse.y.toFixed(0)};
+    ctx.strokeStyle = arcColor;
+    ctx.fillStyle = fillColor;
 
     ctx.beginPath();
-    ctx.arc(mouse.x, mouse.y, 3, 2 * Math.PI, 0);
-    ctx.stroke();
-}
+    ctx.arc(mouse.x, mouse.y, radius, 2 * Math.PI, 0);
 
-function drawRect(e) {
-    let ClientRect = canvas.getBoundingClientRect();
-    setMouseCoords(ClientRect, e);
+    if (fillColor) {
+        ctx.fill();
+    }
+    if (arcColor) {
+        ctx.stroke();
+    }
+    ctx.strokeStyle = strokeStyle;
+    ctx.fillStyle = fillStyle;
 
-    ctx.fillRect(mouse.x, mouse.y, 30, 30);
+    return { x: mouse.x.toFixed(0), y: mouse.y.toFixed(0) };
 }
 
 function checkBorderType() {
     return !(currentState !== 'border' && currentState !== 'clearBorder');
+}
+
+function checkColonyType() {
+    return currentState === 'colony';
 }
