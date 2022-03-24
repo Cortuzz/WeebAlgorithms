@@ -65,26 +65,32 @@ class slidingCircle {
     }
 }
 
-const c = 1e-5;
+const c = 2e-5;
 const eps = 2e-5;
 
 async function convertToMeans(circles) {
-    let result = [circles.pop()];
-    while (circles.length > 0) {
-        let curr = circles.pop();
+    let result = [];
+    for (let i = 0; i < circles.length; i++) {
         let isNewClass = true;
-        for (let j = 0; j < result.length; j++) {
-            if (l2normSquared(curr.center, result[j].center) <= (2 * curr.radius) ** 2) {
-                result[j] = curr.pointCount > result[j].pointCount ? curr : result[j];
+        for (let j = 0; j < circles.length; j++) {
+            if (l2normSquared(circles[i].center, circles[j].center) <= 4 * circles[i].radius ** 2 &&
+                circles[i].pointCount < circles[j].pointCount) {
                 isNewClass = false;
-                break;
             }
         }
-        if (isNewClass) {
-            result.push(curr);
+        if (isNewClass === true) {
+            for (let j = 0; j < result.length; j++) {
+                if (l2normSquared(circles[i].center, result[j].center) <= 4 * circles[i].radius ** 2 &&
+                    circles[i].pointCount <= result[j].pointCount) {
+                    isNewClass = false;
+                }
+            }
+            if (isNewClass === true) {
+                result.push(circles[i]);
+            }
         }
     }
-    print(result);
+    //print(result);
     redrawInitial();
     drawSlidingCircles(result);
     await sleep(1000);
@@ -117,11 +123,11 @@ function recalculateCenter(circle, points) {
     return [newCenter, pointCounter];
 }
 
-async function meanShiftClustering(points, constant, radius) {
+async function meanShiftClustering(points, radius) {
     let circles = [];
     for (let i = 5; i < width; i += width / 10) {
         for (let j = 5; j < height; j += width / 10) {
-            let currCircle = new slidingCircle(i, j, parseInt(radius));
+            let currCircle = new slidingCircle(i, j, parseFloat(radius));
             circles.push(currCircle);
         }
     }

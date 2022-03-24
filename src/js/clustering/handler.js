@@ -41,32 +41,17 @@ function redrawInitial() {
     }
 }
 
-function colorClasses(colorMap) {
+async function colorClasses(colorMap, alpha, angle) {
+    ctx.globalAlpha = alpha;
     for (let i = 0; i < means.length; i++) {
-        drawCircle(means[i].x, means[i].y, 20, colorMap[i]);
-    }
-    for (let i = 0; i < points.length; i++) {
-        drawCircle(points[i].x, points[i].y, 10, colorMap[points[i].class]);
-    }
-}
-
-function colorBoth(colorMapKMC, colorMapMSC, pointsMSC, meansMSC, classes) {
-    ctx.globalAlpha = 0.6;
-    for (let i = 0; i < meansMSC.length; i++) {
-        drawCircle(meansMSC[i].x, meansMSC[i].y, 20, colorMapMSC[i]);
-    }
-    ctx.globalAlpha = 0.4;
-    for (let i = 0; i < means.length; i++) {
-        drawCircle(means[i].x, means[i].y, 15, colorMapKMC[i]);
+        drawCircle(means[i].x, means[i].y, 22, colorMap[i]);
     }
     ctx.globalAlpha = 1;
     for (let i = 0; i < points.length; i++) {
-        drawCircle(points[i].x, points[i].y, 10, colorMapKMC[classes[i]]);
-    }
-    for (let i = 0; i < pointsMSC.length; i++) {
-        drawCircle(pointsMSC[i].x, pointsMSC[i].y, 10, colorMapMSC[pointsMSC[i].class], Math.PI);
+        drawCircle(points[i].x, points[i].y, 10, colorMap[points[i].class], angle);
     }
 }
+
 
 async function showError(text) {
     currentState.innerText = text;
@@ -95,7 +80,7 @@ async function startKMC() {
     for (let i = 0; i < classNum; i++) {
         colorMap.push(`hsl(${i * 360 / classNum},100%,60%)`);
     }
-    colorClasses(colorMap);
+    await colorClasses(colorMap, 0.6, 2 * Math.PI);
     running = false;
 }
 
@@ -111,9 +96,8 @@ async function startMSC() {
         return;
     }
     let radius = document.getElementById("radius").value;
-    let c = (100 - document.getElementById("const").value) * 1e-5;
     redrawInitial();
-    let result = await meanShiftClustering(points, c, radius);
+    let result = await meanShiftClustering(points, radius);
     redrawInitial();
     means = result.means;
     points = result.points;
@@ -122,7 +106,7 @@ async function startMSC() {
     for (let i = 0; i < classNum; i++) {
         colorMap.push(`hsl(${i * 360 / classNum},100%,40%)`);
     }
-    colorClasses(colorMap);
+    await colorClasses(colorMap, 0.6, 2 * Math.PI);
     running = false;
 }
 
@@ -138,29 +122,25 @@ async function startBoth() {
         return;
     }
     redrawInitial();
-    let result = kMeans(classNum, points, 999);
+
+    let radius = document.getElementById("radius").value;
+    let result = await meanShiftClustering(points, radius);
     means = result.means;
     points = result.points;
-    let classes = [];
-    for (let i = 0; i < points.length; i++) {
-        classes.push(points[i].class);
+    let colorMapMSC = [];
+    for (let i = 0; i < means.length; i++) {
+        colorMapMSC.push(`hsl(${i * 360 / means.length},80%,40%)`);
     }
+    redrawInitial();
+    await colorClasses(colorMapMSC, 0.67, 2 * Math.PI);
+    result = kMeans(classNum, points, 999);
+    means = result.means;
+    points = result.points;
     let colorMapKMC = [];
     for (let i = 0; i < classNum; i++) {
         colorMapKMC.push(`hsl(${i * 360 / classNum},100%,60%)`);
     }
-    let radius = document.getElementById("radius").value;
-    let c = document.getElementById("const").value * 1e-5;
-    result = await meanShiftClustering(points, c, radius);
-    let meansMSC = result.means;
-    let pointsMSC = result.points;
-    let classNumMSC = meansMSC.length;
-    let colorMapMSC = [];
-    for (let i = 0; i < classNumMSC; i++) {
-        colorMapMSC.push(`hsl(${i * 360 / classNumMSC},80%,40%)`);
-    }
-    redrawInitial();
-    colorBoth(colorMapKMC, colorMapMSC, pointsMSC, meansMSC, classes);
+    await colorClasses(colorMapKMC, 0.15, Math.PI);
     running = false;
 }
 
@@ -174,7 +154,6 @@ let startMeanShiftButton = document.getElementById("startMeanShift");
 let startBothButton = document.getElementById("startBoth");
 let scrollClasses = document.getElementById("classAmount");
 let scrollRadius = document.getElementById("radius");
-let scrollConst = document.getElementById("const");
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 let points = [];
@@ -187,4 +166,3 @@ startBothButton.addEventListener("click", startBoth);
 canvas.addEventListener("mousedown", createPoint);
 scrollClasses.addEventListener("input", () => document.getElementById("classAmountView").innerText = scrollClasses.value);
 scrollRadius.addEventListener("input", () => document.getElementById("radiusView").innerText = scrollRadius.value);
-scrollConst.addEventListener("input", () => document.getElementById("constView").innerText = scrollConst.value);
