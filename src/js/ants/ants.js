@@ -51,9 +51,19 @@ class AntsSimulation {
 
     increasePheromonesValue(x, y, value, isGreen) {
         if (isGreen) {
-            this.field[y][x].green += value;
+            if (this.increasingPheromones) {
+                this.field[y][x].red += value;
+            } else if (this.field[y][x].green < value) {
+                this.field[y][x].green = value;
+            }
+            return;
         }
-        this.field[y][x].red += value;
+
+        if (this.increasingPheromones) {
+            this.field[y][x].red += value;
+        } else if (this.field[y][x].red < value) {
+            this.field[y][x].red = value;
+        }
     }
 
     update() {

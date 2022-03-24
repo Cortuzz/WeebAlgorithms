@@ -37,9 +37,9 @@ let defaultColor = "coral";
 let renderFullPath = true;
 let unlock = false;
 let colonySize = 1000;
-let decay = 0.75, greed = 0.4, gregariousness = 0.75, speed = 5;
-const pheromoneDecay = 0.0001, redPheromoneDecay = 0.000001;
-let pheromoneMultiplier = 1, redPheromoneMultiplier = 1;
+
+let speed = 3, moveCooldown = 5, liberty = 0.005;
+let redDecay = 0.9, greenDecay = 0.9, densityDecay = 0.999;
 
 const EMPTY = -1, BORDER = -2, COLONY = -3;
 let colony;
