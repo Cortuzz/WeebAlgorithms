@@ -40,13 +40,6 @@ function init() {
     window.changePopulation.value = colonySize;
     window.populationView.textContent = colonySize;
 
-    window.changeGreed.value = greed;
-    window.changeGregariousness.value = gregariousness;
-    window.changeAntSpeed.value = speed;
-    window.changePheromoneDecay.value = pheromoneMultiplier;
-    window.changeRedPheromoneDecay.value = redPheromoneMultiplier;
-    window.changeDecay.value = 100 * decay;
-
     ctx.fillStyle = "aliceblue";
     ctx.rect(0, 0, WIDTH, HEIGHT);
     ctx.fill();
@@ -222,9 +215,6 @@ function changeLog(text, color) {
 }
 
 async function startAnts() {
-    let canvasData = ctx.getImageData(0, 0, 900, 600);
-    field = convertCanvasToMatrix(canvasData.data, canvasData.width, canvasData.height);
-
     if (colonyPoint == null) {
         changeLog("Отсутствует колония", "B72626");
         await sleep(3000);

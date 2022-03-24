@@ -40,8 +40,7 @@ class AntsSimulation {
     }
 
     checkColony(x, y) {
-        //return this.field[y][x].value === COLONY;
-        return (x - this.colony.x) ** 2 + (y - this.colony.y) ** 2 < 300;
+        return this.field[y][x].value === COLONY;
     }
 
     increaseDensity(x, y) {
@@ -49,7 +48,6 @@ class AntsSimulation {
     }
 
     getPheromonesValue(x, y, isGreen) {
-        let wallScore = Math.pow(this.field[y][x].wallDistance, 4);
         if (isGreen) {
             return this.field[y][x].green;
         }
@@ -96,7 +94,7 @@ class AntsSimulation {
 
 
 class Colony {
-    constructor(x, y, size, antDirectionRandomBorder) {
+    constructor(x, y, size, antSpeed, liberty, antMoveCooldown, dyingThreshold) {
         this.x = x;
         this.y = y;
         this.simulation = null;
