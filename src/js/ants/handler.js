@@ -6,28 +6,7 @@ window.addEventListener("load", () => {
 
     window.locker.addEventListener("click", changeLock);
 
-    window.pathViewChecker.addEventListener("click", e => {renderFullPath = e.checked; })
-
-    window.changePopulation.addEventListener("input", e =>
-    { colonySize = +e.target.value; window.populationView.textContent = colonySize; });
-
-    window.changeGreed.addEventListener("input", e =>
-    { greed = +e.target.value; window.greedView.textContent = greed; });
-
-    window.changeGregariousness.addEventListener("input", e =>
-    { gregariousness = +e.target.value; window.gregariousnessView.textContent = gregariousness; });
-
-    window.changeAntSpeed.addEventListener("input", e =>
-    { speed = +e.target.value; window.speedView.textContent = speed; });
-
-    window.changePheromoneDecay.addEventListener("input", e =>
-    { pheromoneMultiplier = +e.target.value; window.pheromoneDecayView.textContent = pheromoneMultiplier; });
-
-    window.changeRedPheromoneDecay.addEventListener("input", e =>
-    { redPheromoneMultiplier = +e.target.value; window.redPheromoneDecayView.textContent = redPheromoneMultiplier; });
-
-    window.changeDecay.addEventListener("input", e =>
-    { decay = +e.target.value / 100; window.decayView.textContent = (100 * decay).toFixed(2) + '%'; });
+    window.pathViewChecker.addEventListener("click", e => { renderFullPath = e.checked; })
 });
 
 const WIDTH = 900, HEIGHT = 600;
@@ -109,7 +88,7 @@ function fieldBuilder() {
     for (let i = 0; i < canvas.height; i++) {
         field[i] = new Array(canvas.width);
         for (let j = 0; j < canvas.width; j++) {
-            field[i][j] = EMPTY;
+            field[i][j] = { value: EMPTY, red: 1, green: 1, density: 0 };
         }
     }
 }
@@ -259,8 +238,8 @@ async function startAnts() {
     running = true;
     changeLog("Алгоритм запущен", "lightgreen");
 
-    let colony = new Colony(+colonyPoint.x, +colonyPoint.y, 500,0.01);
-    let simulation = new AntsSimulation(field, WIDTH, HEIGHT, colony, ctx);
+    let colony = new Colony(+colonyPoint.x, +colonyPoint.y, 500, speed, liberty, moveCooldown);
+    let simulation = new AntsSimulation(field, WIDTH, HEIGHT, colony, redDecay, greenDecay, densityDecay);
 
     colony.setAnts(simulation);
     let epochs = 1000000;

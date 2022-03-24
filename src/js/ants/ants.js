@@ -3,11 +3,18 @@ const COLONY = -3;
 
 
 class AntsSimulation {
-    constructor(field, width, height, colony, a) {
+    constructor(field, width, height, colony, redDecay, greenDecay, densityDecay) {
         this.width = width;
         this.height = height;
         this.field = field;
-        this.a = a;
+
+        this.redDecay = redDecay;
+        this.greenDecay = greenDecay;
+        this.densityDecay = densityDecay;
+
+        this.increasingPheromones = false;
+        this.maxColonySize = 1000;
+        this.increasingPoplation = true;
 
         this.colony = colony;
 
@@ -44,9 +51,9 @@ class AntsSimulation {
     getPheromonesValue(x, y, isGreen) {
         let wallScore = Math.pow(this.field[y][x].wallDistance, 4);
         if (isGreen) {
-            return this.field[y][x].green + wallScore;
+            return this.field[y][x].green;
         }
-        return this.field[y][x].red + wallScore;
+        return this.field[y][x].red;
     }
 
     increasePheromonesValue(x, y, value, isGreen) {
@@ -69,9 +76,9 @@ class AntsSimulation {
     update() {
         for (let i = 0; i < this.height; i++) {
             for (let j = 0; j < this.width; j++) {
-                this.field[i][j].density *= 0.999;
-                this.field[i][j].red *= 0.4;
-                this.field[i][j].green *= 0.9;
+                this.field[i][j].density *= this.densityDecay;
+                this.field[i][j].red *= this.redDecay;
+                this.field[i][j].green *= this.greenDecay;
             }
         }
 
@@ -80,7 +87,7 @@ class AntsSimulation {
     }
 
     addAnt() {
-        if (this.colony.ants.length > 1000) {
+        if (this.colony.ants.length > this.maxColonySize && this.increasingPoplation) {
             return;
         }
         this.colony.addAnt();
@@ -93,8 +100,11 @@ class Colony {
         this.x = x;
         this.y = y;
         this.simulation = null;
-        this.antDirRand = antDirectionRandomBorder;
-        this.threshold = 10000;
+
+        this.antSpeed = antSpeed;
+        this.threshold = dyingThreshold;
+        this.moveCooldown = antMoveCooldown;
+        this.liberty = liberty;
 
         this.size = size;
         this.ants = [ ];
@@ -103,22 +113,21 @@ class Colony {
     setAnts(simulation) {
         this.simulation = simulation;
         for (let i = 0; i < this.size; i++) {
-            this.ants[i] = new Ant(this.x, this.y, this.simulation, this.antDirRand);
+            this.addAnt();
         }
     }
 
     addAnt() {
-        this.ants[this.ants.length] = new Ant(this.x, this.y, this.simulation, this.antDirRand);
+        let ant = new Ant(this.x, this.y, this.simulation, this.antSpeed, this.moveCooldown, this.liberty);
+        this.ants.push(ant);
     }
 
     replaceAnts() {
         for (let i = 0; i < this.ants.length; i++) {
             let ant = this.ants[i];
             if (ant.decayedPheromones > this.threshold) {
-                ant.x = this.x;
-                ant.y = this.y;
-                ant.foodFinding = true;
-                ant.decayedPheromones = 0;
+                this.ants.splice(i, 1);
+                this.addAnt();
             }
         }
     }
@@ -151,17 +160,18 @@ class Cooldown {
 
 
 class Ant {
-    constructor(x, y, simulation, randomBorder) {
-        this.moveTimer = new Cooldown(5);
+    constructor(x, y, simulation, speed, moveCooldown, liberty) {
+        this.moveTimer = new Cooldown(moveCooldown);
         this.simulation = simulation;
-        this.speed = 3;
+        this.speed = speed;
 
         this.x = x;
         this.y = y;
 
         this.decayedPheromones = 0;
         this.foodFinding = true;
-        this.liberty = 0.005;
+        this.liberty = liberty;
+        this.pheromoneValue = 1;
 
         this.rays = [ ];
         this.visionDistance = 30;
@@ -173,13 +183,14 @@ class Ant {
         this.setDirection();
     }
 
+    // todo: create common function for colony and food
     changeColony() {
         if (this.foodFinding === true) {
             return;
         }
         this.foodFinding = true;
         this.decayedPheromones = 0;
-        this.angle += Math.PI// + (Math.random() - 0.5) * Math.PI / 2;
+        this.angle += Math.PI //+ (Math.random() - 0.5) * Math.PI / 2; // random ?
         this.setDirection();
         this.simulation.addAnt();
     }
@@ -190,7 +201,7 @@ class Ant {
         }
         this.foodFinding = false;
         this.decayedPheromones = 0;
-        this.angle += Math.PI// + (Math.random() - 0.5) * Math.PI / 2;
+        this.angle += Math.PI //+ (Math.random() - 0.5) * Math.PI / 2; // random ?
         this.setDirection();
     }
 
@@ -271,7 +282,7 @@ class Ant {
         let y = this.y + this.speed * this.direction.y;
 
         if (this.checkCollision(x, y)) {
-            this.angle += Math.PI// + (Math.random() - 0.5) * Math.PI / 2;
+            this.angle += Math.PI; // + (Math.random() - 0.5) * Math.PI / 2;
             this.setDirection();
             return;
         }
