@@ -73,8 +73,7 @@ function getFoodColor() {
         return;
     }
 
-    let hexGreenValue = (2 * foodValue + 50).toString(16);
-    return "#00" + hexGreenValue + "00";
+    return rgbToHex(0, 2 * foodValue + 50, 0);
 }
 
 function drawColony(e) {
@@ -113,6 +112,11 @@ function drawCircle(x, y, radius, arcColor, fillColor) {
     if (arcColor) {
         ctx.stroke();
     }
+}
+
+function drawRect(x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, w, h);
 }
 
 function setValue(x, y, radius, value_) {
