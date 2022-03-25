@@ -38,12 +38,8 @@ function fieldBuilder() {
 async function changeMode(event) {
     let action = event.target.dataset.mode;
 
-    if (action == null) {
-        return;
-    }
-
-    if (action === 'clear') {
-        clearField();
+    if (action == null || action === 'clear') {
+        action && clearField();
         return;
     }
 
@@ -58,76 +54,34 @@ function clearField() {
     ctx.fill();
 }
 
-function drawAnt(x, y, color, w, simulation) {
+function drawPoint(x, y, color, w, simulation) {
     if (simulation != null) {
         if (simulation.checkFood(x, y) || simulation.checkColony(x, y)) {
             return;
         }
     }
 
-    let t = ctx.fillStyle;
-    ctx.fillStyle = color;
-    ctx.fillRect(x, y, w, w);
-    ctx.fillStyle = t;
-}
-
-function getGreenColor(value) {
-    let colorValue = (value / 500).toFixed(0);
-    return rgbToHex(240 - 4 * colorValue, 248 - colorValue, 255 - 4 * colorValue);
+    drawRect(x, y, w, w, color);
 }
 
 async function drawAnts(ants, field, simulation) {
     ants.forEach(ant => {
-        drawAnt(Math.floor(ant.x), Math.floor(ant.y), "#000000", 1, simulation);
+        drawPoint(Math.floor(ant.x), Math.floor(ant.y), "#000000", 1, simulation);
 
     })
     await sleep(1);
-    for (let ant of ants) {
+    ants.forEach(ant => {
         let x = Math.floor(ant.x);
         let y = Math.floor(ant.y);
         let density = field[y][x].density;
 
-        /*let red = field[y][x].red;
-        let green = field[y][x].green;
-
-        if (red === 0) {
-            drawAnt(x, y, getGreenColor(green), 4, simulation);
-            return;
-        }
-
-        //drawAnt(x, y, "red", 1, simulation);
-        drawAnt(x, y, getGreenColor(green), 4, simulation);*/
-
-        drawAnt(x, y, getDensityColor(density), 1, simulation);
-
-        //drawAnt(Math.floor(ant.x), Math.floor(ant.y), "aliceblue", 1, simulation);
-    }
+        drawPoint(x, y, getDensityColor(density), 1, simulation);
+    });
 }
 
 function getDensityColor(value) {
-    let colorValue = (value).toFixed(0);
+    let colorValue = value.toFixed(0);
     return rgbToHex(240 - colorValue, 248 - 4 * colorValue, 255 - 4 * colorValue);
-}
-
-async function drawPheromones(field, simulation) {
-    for (let i = 0; i < HEIGHT; i++) {
-        for (let j = 0; j < WIDTH; j++) {
-            let red = field[i][j].red;
-            let green = field[i][j].green;
-
-            if (green === 0) {
-                drawAnt(j, i, "darkred", 1, simulation);
-                return;
-            }
-            if (red === 0) {
-                drawAnt(j, i, "green", 1, simulation);
-                return;
-            }
-
-            drawAnt(j, i, "darkred", 1, simulation);
-            drawAnt(j, i, "green", 1, simulation);
-        }
-    }
 }
 
 async function drawDensity(field, simulation) {
@@ -138,7 +92,7 @@ async function drawDensity(field, simulation) {
                 continue;
             }
 
-            drawAnt(j, i, getDensityColor(density), 1, simulation);
+            drawPoint(j, i, getDensityColor(density), 1, simulation);
         }
     }
 
@@ -188,6 +142,7 @@ async function startAnts() {
             simulation.updateField(updatedPoints);
             updatedPoints = [ ];
         }
+
         colony = simulation.update();
         await antsAlg(simulation, colony);
     }
