@@ -20,6 +20,9 @@ function sigmoid(x) {
 }
 
 function componentToHex(c) {
+    c = c < 0 ? 0 : c;
+    c = c > 255 ? 255 : c;
+
     let hex = c.toString(16);
     return hex.length === 1 ? "0" + hex : hex;
 }
