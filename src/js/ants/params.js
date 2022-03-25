@@ -1,21 +1,110 @@
-window.changePopulation.addEventListener("input", e =>
-{ colonySize = +e.target.value; window.populationView.textContent = colonySize; });
+window.changeRedDecay.addEventListener("input", e =>
+{ redDecay = +e.target.value; window.redDecayView.textContent = redDecay; });
 
-window.changeGreed.addEventListener("input", e =>
-{ greed = +e.target.value; window.greedView.textContent = greed; });
+window.changeGreenDecay.addEventListener("input", e =>
+{ greenDecay = +e.target.value; window.greenDecayView.textContent = greenDecay; });
 
-window.changeGregariousness.addEventListener("input", e =>
-{ gregariousness = +e.target.value; window.gregariousnessView.textContent = gregariousness; });
+window.changeDensityDecay.addEventListener("input", e =>
+{ densityDecay = +e.target.value; window.densityDecayView.textContent = densityDecay; });
+
+window.changeSize.addEventListener("input", e =>
+{ colonySize = +e.target.value; window.sizeView.textContent = colonySize; });
+
+window.changeMaxSize.addEventListener("input", e =>
+{ maxColonySize = +e.target.value; window.maxSizeView.textContent = maxColonySize; });
 
 window.changeAntSpeed.addEventListener("input", e =>
 { speed = +e.target.value; window.speedView.textContent = speed; });
 
-window.changePheromoneDecay.addEventListener("input", e =>
-{ pheromoneMultiplier = +e.target.value; window.pheromoneDecayView.textContent = pheromoneMultiplier; });
+window.changeMoveCooldown.addEventListener("input", e =>
+{ moveCooldown = +e.target.value; window.moveCooldownView.textContent = moveCooldown; });
 
-window.changeRedPheromoneDecay.addEventListener("input", e =>
-{ redPheromoneMultiplier = +e.target.value; window.redPheromoneDecayView.textContent = redPheromoneMultiplier; });
+window.changeLiberty.addEventListener("input", e =>
+{ liberty = +e.target.value; window.libertyView.textContent = liberty; });
 
-window.changeDecay.addEventListener("input", e =>
-{ decay = +e.target.value / 100; window.decayView.textContent = (100 * decay).toFixed(2) + '%'; });
+window.changeVisionDistance.addEventListener("input", e =>
+{ visionDistance = +e.target.value; window.visionDistanceView.textContent = visionDistance; });
 
+window.changeVisionAngle.addEventListener("input", e =>
+{ visionAngle = +e.target.value; window.visionAngleView.textContent = visionAngle; });
+
+window.changeVisionAngleStep.addEventListener("input", e =>
+{ visionAngleStep = +e.target.value; window.visionAngleStepView.textContent = visionAngleStep; });
+
+
+let colonySize = 500, maxColonySize = 1000;
+
+let speed = 5, moveCooldown = 5, liberty = 0.005;
+let visionDistance = 30, visionAngle = Math.PI, visionAngleStep = 0.05;
+let redDecay = 0.9, greenDecay = 0.9, densityDecay = 0.999;
+
+window.dropbtn1.addEventListener("click", changeMenuView);
+window.dropbtn2.addEventListener("click", changeMenuView);
+window.dropbtn3.addEventListener("click", changeMenuView);
+
+function changeMenuView(e) {
+    let parent = e.target.parentNode;
+    parent.childNodes.forEach(child => {
+        try {
+            if (child.style.display === "block" && child !== e.target) {
+                child.style.display = "none";
+                return;
+            }
+            child.style.display = "block";
+        }
+        catch (e) { }
+    })
+}
+
+function changeLock() {
+    let dangerParams = document.querySelectorAll(".dangerParam");
+    let dangerParamsView = document.querySelectorAll(".dangerParamView");
+
+    unlock = this.checked;
+    if (unlock) {
+        window.lockerView.innerText = "Параметры разблокированы";
+        dangerParams.forEach(param => {
+            param.disabled = false;
+        })
+
+        window.redDecayView.textContent = redDecay;
+        window.greenDecayView.textContent = greenDecay;
+        window.densityDecayView.textContent = densityDecay;
+
+        window.sizeView.textContent = colonySize;
+        window.maxSizeView.textContent = maxColonySize;
+
+        window.speedView.textContent = speed;
+        window.moveCooldownView.textContent = moveCooldown;
+        window.libertyView.textContent = liberty;
+
+        window.visionDistanceView.textContent = visionDistance;
+        window.visionAngleView.textContent = visionAngle.toFixed(1);
+        window.visionAngleStepView.textContent = visionAngleStep;
+
+    } else {
+        window.lockerView.innerText = "Параметры заблокированы";
+        dangerParams.forEach(param => {
+            param.disabled = true;
+        })
+
+        dangerParamsView.forEach(paramView => {
+            paramView.textContent = "Заблокировано";
+        })
+    }
+}
+
+window.changeRedDecay.value = redDecay;
+window.changeGreenDecay.value = greenDecay;
+window.changeDensityDecay.value = densityDecay;
+
+window.changeSize.value = colonySize;
+window.changeMaxSize.value = maxColonySize;
+
+window.changeAntSpeed.value = speed;
+window.changeMoveCooldown.value = moveCooldown;
+window.changeLiberty.value = liberty;
+
+window.changeVisionDistance.value = visionDistance;
+window.changeVisionAngle.value = visionAngle;
+window.changeVisionAngleStep.value = visionAngleStep;

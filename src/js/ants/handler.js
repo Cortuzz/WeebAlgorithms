@@ -149,7 +149,6 @@ async function antsAlg(simulation, colony) {
     for (let i = 0; i < colony.ants.length; i++) {
         let ant = colony.ants[i];
         ant.move();
-        //await ant.drawRays();
         ant.sprayPheromones();
     }
     await sleep(1);
@@ -176,7 +175,8 @@ async function startAnts() {
     running = true;
     changeLog("Алгоритм запущен", "lightgreen");
 
-    let colony = new Colony(+colonyPoint.x, +colonyPoint.y, 500, speed, liberty, moveCooldown);
+    let colony = new Colony(+colonyPoint.x, +colonyPoint.y, colonySize, maxColonySize,
+        speed, liberty, moveCooldown, 1000, visionDistance, visionAngle, visionAngleStep);
     let simulation = new AntsSimulation(field, WIDTH, HEIGHT, colony, redDecay, greenDecay, densityDecay);
 
     colony.setAnts(simulation);
