@@ -71,6 +71,26 @@
                 <input class="fieldSize" id="changeFoodValue" type="range" min="0" max="100">
                 <h6>100%</h6>
             </div>
+
+            <div class="fieldSize">
+                <h6 style="margin-top: 3px">Рендеринг муравьев:&nbsp</h6>
+                <input type="checkbox" id="antsViewChecker" class="toggle" checked>
+                <label for="antsViewChecker"></label>
+
+                <h6 style="margin-top: 3px; margin-left: 50px; margin-right: 14px">Рендеринг кр. феромонов:&nbsp</h6>
+                <input type="checkbox" id="redPheromoneViewChecker" class="toggle">
+                <label for="redPheromoneViewChecker"></label>
+            </div>
+
+            <div class="fieldSize">
+                <h6 style="margin-top: 3px; margin-right: 14px">Рендеринг потока:&nbsp</h6>
+                <input type="checkbox" id="densityViewChecker" class="toggle" checked>
+                <label for="densityViewChecker"></label>
+
+                <h6 style="margin-top: 3px; margin-right:8px; margin-left: 50px">Рендеринг зел. феромонов:&nbsp</h6>
+                <input type="checkbox" id="greenPheromoneViewChecker" class="toggle" checked>
+                <label for="greenPheromoneViewChecker"></label>
+            </div>
         </div>
     </div>
 
@@ -232,6 +252,34 @@
                     </div>
                 </div>
             </div>
+
+            <div class="dropdown">
+                <div class="dropbtn" id="dropbtn4">Настройки феромонов</div>
+
+                <div class="dropdown-content">
+                    <div class="valueView">
+                        <h6>Количество феромонов:&nbsp</h6>
+                        <h6 id="initialPheromonesView" class="dangerParamView">Заблокировано</h6>
+                    </div>
+
+                    <div class="inputValue">
+                        <h6>1000</h6>
+                        <input disabled class="dangerParam" id="changeInitialPheromones" type="range" min="1000" max="10000">
+                        <h6>10000</h6>
+                    </div>
+
+                    <div class="valueView">
+                        <h6>Потеря феромонов:&nbsp</h6>
+                        <h6 id="decayingPheromonesView" class="dangerParamView">Заблокировано</h6>
+                    </div>
+
+                    <div class="inputValue">
+                        <h6>1</h6>
+                        <input disabled class="dangerParam" id="changeDecayingPheromones" type="range" min="0.01" max="1" step="0.01">
+                        <h6>2000</h6>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -241,6 +289,8 @@
 <script src="../js/ants/alg/ant.js"></script>
 <script src="../js/ants/alg/colony.js"></script>
 <script src="../js/ants/alg/cooldown.js"></script>
+<script src="../js/ants/alg/worker.js"></script>
+<script src="../js/ants/alg/fighter.js"></script>
 <script src="../js/ants/canvas_setup.js"></script>
 <script src="../js/ants/params.js"></script>
 <script src="../js/main.js"></script>

@@ -6,8 +6,6 @@ window.addEventListener("load", () => {
 });
 
 const WIDTH = 900, HEIGHT = 600;
-let defaultLog = "Алгоритм не запущен";
-let defaultColor = "coral";
 
 let unlock = false;
 
@@ -65,19 +63,16 @@ function drawPoint(x, y, color, w, simulation) {
     drawRect(x, y, w, w, color);
 }
 
-async function drawAnts(ants, field, simulation) {
+function clearPoints(ants, simulation) {
     ants.forEach(ant => {
-        drawPoint(Math.floor(ant.x), Math.floor(ant.y), "#000000", 1, simulation);
-
+        drawPoint(Math.floor(ant.x), Math.floor(ant.y), "aliceblue", pointWidth, simulation);
     })
-    await sleep(1);
-    ants.forEach(ant => {
-        let x = Math.floor(ant.x);
-        let y = Math.floor(ant.y);
-        let density = field[y][x].density;
+}
 
-        drawPoint(x, y, getDensityColor(density), 1, simulation);
-    });
+function drawAnts(ants, simulation) {
+    ants.forEach(ant => {
+        drawPoint(Math.floor(ant.x), Math.floor(ant.y), colonyColors[ant.colonyIndex], pointWidth, simulation);
+    })
 }
 
 function getDensityColor(value) {
@@ -85,7 +80,17 @@ function getDensityColor(value) {
     return rgbToHex(240 - colorValue, 248 - 4 * colorValue, 255 - 4 * colorValue);
 }
 
-async function drawDensity(field, simulation) {
+function drawDensity(ants, field, simulation) {
+    ants.forEach(ant => {
+        let x = Math.floor(ant.x);
+        let y = Math.floor(ant.y);
+        let density = field[y][x].density;
+
+        drawPoint(x, y, getDensityColor(density), pointWidth, simulation);
+    });
+}
+
+function drawFullDensity(field, simulation) {
     for (let i = 0; i < HEIGHT; i++) {
         for (let j = 0; j < WIDTH; j++) {
             let density = field[i][j].density;
@@ -96,8 +101,36 @@ async function drawDensity(field, simulation) {
             drawPoint(j, i, getDensityColor(density), 1, simulation);
         }
     }
+}
 
-    await sleep(1);
+function getGreenPheromoneColor(value) {
+    let colorValue = value.toFixed(0);
+    return rgbToHex( Math.floor(240 - colorValue / 40), 248,  Math.floor(255 - colorValue / 40));
+}
+
+function getRedPheromoneColor(value) {
+    let colorValue = value.toFixed(0);
+    return rgbToHex(240, Math.floor(248 - colorValue / 40), Math.floor(255 - colorValue / 40));
+}
+
+function drawPheromones(ants, simulation, red, green) {
+    ants.forEach(ant => {
+        let x = Math.floor(ant.x);
+        let y = Math.floor(ant.y);
+
+        let field = simulation.getColony(ant.colonyIndex).field;
+
+        let greenPheromone = field[y][x].green;
+        let redPheromone = field[y][x].red;
+
+        if (red && redPheromone > 1) {
+            drawPoint(x, y, getRedPheromoneColor(redPheromone), pointWidth, simulation);
+        }
+        if (green && greenPheromone > 1) {
+            drawPoint(x + 1, y, getGreenPheromoneColor(greenPheromone), pointWidth, simulation);
+        }
+
+    });
 }
 
 async function antsAlg(simulation, colony) {
@@ -113,19 +146,9 @@ async function antsAlg(simulation, colony) {
     }
 }
 
-function changeLog(text, color) {
-    window.log.textContent = text;
-    window.log_block.style.borderColor = color;
-}
-
 async function startAnts() {
-    if (colonyPoint == null) {
-        changeLog("Отсутствует колония", "B72626");
-        await sleep(3000);
-
-        if (window.log.textContent !== "Алгоритм запущен") {
-            changeLog(defaultLog, defaultColor);
-        }
+    if (!colonyPoints.length) {
+        await showError("Отсутствует колония");
         return;
     }
 
@@ -158,7 +181,26 @@ async function startAnts() {
             updatedPoints = [ ];
         }
 
-        colony = simulation.update();
-        await antsAlg(simulation, colony);
+        for (let i = 0; i < colonies.length; i++) {
+            colonies[i] = simulation.updateColony(i);
+            ants.push(...colonies[i].ants);
+
+            simulation.update();
+            await antsAlg(simulation, colonies[i]);
+        }
+
+        if (drawingAnts) {
+            drawAnts(ants, simulation);
+        }
+        await sleep(1);
+        if (drawingDensity || drawingPheromones) {
+            if (drawingDensity) {
+                drawDensity(ants, simulation.field, simulation);
+            } else {
+                drawPheromones(ants, simulation, drawingRedPheromones, drawingGreenPheromones);
+            }
+        } else {
+            clearPoints(ants, simulation);
+        }
     }
 }

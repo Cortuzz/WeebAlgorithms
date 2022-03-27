@@ -31,16 +31,42 @@ window.changeVisionAngle.addEventListener("input", e =>
 window.changeVisionAngleStep.addEventListener("input", e =>
 { visionAngleStep = +e.target.value; window.visionAngleStepView.textContent = visionAngleStep; });
 
+window.changeInitialPheromones.addEventListener("input", e =>
+{ initialPheromones = +e.target.value; window.initialPheromonesView.textContent = initialPheromones; });
+
+window.changeDecayingPheromones.addEventListener("input", e =>
+{ decayingPheromones = +e.target.value; window.decayingPheromonesView.textContent = decayingPheromones; });
+
+let defaultLog = "Алгоритм не запущен";
+let defaultColor = "coral";
+
+let drawingAnts = false, drawingRedPheromones = true, drawingGreenPheromones = true, drawingDensity = false;
 
 let colonySize = 500, maxColonySize = 1000;
 
 let speed = 5, moveCooldown = 5, liberty = 0.005;
 let visionDistance = 30, visionAngle = Math.PI, visionAngleStep = 0.05;
-let redDecay = 0.9, greenDecay = 0.9, densityDecay = 0.999;
+let redDecay = 0.999, greenDecay = 0.999, densityDecay = 0.999;
+let decayingPheromones = 0.1, initialPheromones = 8000;
 
 window.dropbtn1.addEventListener("click", changeMenuView);
 window.dropbtn2.addEventListener("click", changeMenuView);
 window.dropbtn3.addEventListener("click", changeMenuView);
+window.dropbtn4.addEventListener("click", changeMenuView);
+
+function changeLog(text, color) {
+    window.log.textContent = text;
+    window.log_block.style.borderColor = color;
+}
+
+async function showError(text) {
+    changeLog(text, "B72626");
+    await sleep(3000);
+
+    if (window.log.textContent !== "Алгоритм запущен") {
+        changeLog(defaultLog, defaultColor);
+    }
+}
 
 function changeMenuView(e) {
     let parent = e.target.parentNode;
@@ -82,6 +108,9 @@ function changeLock() {
         window.visionAngleView.textContent = visionAngle.toFixed(1);
         window.visionAngleStepView.textContent = visionAngleStep;
 
+        window.initialPheromonesView.textContent = initialPheromones;
+        window.decayingPheromonesView.textContent = decayingPheromones;
+
     } else {
         window.lockerView.innerText = "Параметры заблокированы";
         dangerParams.forEach(param => {
@@ -108,3 +137,6 @@ window.changeLiberty.value = liberty;
 window.changeVisionDistance.value = visionDistance;
 window.changeVisionAngle.value = visionAngle;
 window.changeVisionAngleStep.value = visionAngleStep;
+
+window.changeInitialPheromones.value = initialPheromones;
+window.changeDecayingPheromones.value = decayingPheromones;
