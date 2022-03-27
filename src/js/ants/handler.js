@@ -48,7 +48,8 @@ async function changeMode(event) {
 }
 
 function clearField() {
-    colonyPoint = undefined;
+    colonyPoints = [ ];
+    fieldBuilder();
     ctx.fillStyle = "aliceblue";
     ctx.rect(0, 0, WIDTH, HEIGHT);
     ctx.fill();
@@ -56,7 +57,7 @@ function clearField() {
 
 function drawPoint(x, y, color, w, simulation) {
     if (simulation != null) {
-        if (simulation.checkFood(x, y) || simulation.checkColony(x, y)) {
+        if (simulation.checkFood(x, y) || field[y][x].value <= COLONY) {
             return;
         }
     }
@@ -103,11 +104,13 @@ async function antsAlg(simulation, colony) {
     for (let i = 0; i < colony.ants.length; i++) {
         let ant = colony.ants[i];
         ant.move();
-        ant.sprayPheromones();
+        if (ant instanceof Worker) {
+            ant.checkPermanents();
+            ant.sprayPheromones();
+        } else {
+            ant.fight();
+        }
     }
-    await sleep(1);
-
-    await drawAnts(colony.ants, simulation.field, simulation);
 }
 
 function changeLog(text, color) {
@@ -128,16 +131,28 @@ async function startAnts() {
 
     running = true;
     changeLog("Алгоритм запущен", "lightgreen");
+    let colonies = [ ];
 
-    let colony = new Colony(+colonyPoint.x, +colonyPoint.y, colonySize, maxColonySize,
-        speed, liberty, moveCooldown, 1000, visionDistance, visionAngle, visionAngleStep);
-    let simulation = new AntsSimulation(field, WIDTH, HEIGHT, colony, redDecay, greenDecay, densityDecay);
+    let count = 0;
+    colonyPoints.forEach(colonyPoint => {
+        let colony = new Colony(field, count, +colonyPoint.x, +colonyPoint.y, colonySize, maxColonySize,
+            speed, liberty, moveCooldown, 1000, visionDistance, visionAngle, visionAngleStep,
+            initialPheromones, decayingPheromones);
+        colonies.push(colony);
 
-    colony.setAnts(simulation);
+        count++;
+    });
+
+    let simulation = new AntsSimulation(field, WIDTH, HEIGHT, colonies, redDecay, greenDecay, densityDecay);
+
+    colonies.forEach(colony => {
+        colony.setAnts(simulation);
+    });
+
     let epochs = 1000000;
 
-    await drawDensity(simulation.field);
     for (let epoch = 0; epoch < epochs; epoch++) {
+        let ants = [ ];
         if (updatedPoints) {
             simulation.updateField(updatedPoints);
             updatedPoints = [ ];

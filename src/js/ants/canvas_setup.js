@@ -4,13 +4,16 @@ let foodValue = 50;
 let currentState = 'colony';
 let mouse = { x: 0, y: 0 };
 let drawing = false;
-let colonyPoint;
+let colonyPoints = [ ];
 let updatedPoints = [ ];
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d');
 const scale = 1;
+const pointWidth = 1;
 
+colonyColors = { 0: "black", 1: "darkred", 2: "yellow", 3: "darkblue" };
+const maxColonyCounts = 4;
 colors = { 'colony': 'darkred', 'food': 'forestgreen', 'border': 'gray', 'clearBorder': 'aliceblue' };
 links = { 'colony': COLONY, 'border': BORDER, 'empty': EMPTY };
 ctx.lineWidth = 20;
@@ -23,9 +26,9 @@ function setMouseCoords(client, e) {
     mouse.y = Math.floor((e.clientY - client.top) / scale);
 }
 
-canvas.addEventListener('mousedown', function(e) {
+canvas.addEventListener('mousedown', async function(e) {
     if (currentState === 'colony') {
-        drawColony(e);
+        await drawColony(e);
         return;
     }
 
@@ -76,8 +79,12 @@ function getFoodColor() {
     return rgbToHex(0, 2 * foodValue + 50, 0);
 }
 
-function drawColony(e) {
-    colonyPoint = draw(e, 3, colors.colony);
+async function drawColony(e) {
+    if (colonyPoints.length >= maxColonyCounts) {
+        await showError("Нельзя размещать более 4 колоний")
+        return;
+    }
+    colonyPoints.push(draw(e, 3, colonyColors[colonyPoints.length]));
 }
 
 function draw(e, radius, arcColor, fillColor) {
@@ -91,7 +98,7 @@ function draw(e, radius, arcColor, fillColor) {
     if (currentState === 'food') {
         setValue(+x_, +y_, radius, foodValue);
     } else if (currentState === 'colony') {
-        setValue(+x_, +y_, radius + ctx.lineWidth / 2 + 1, COLONY);
+        setValue(+x_, +y_, radius + ctx.lineWidth / 2 + 1, COLONY - colonyPoints.length);
     } else {
         setValue(+x_, +y_, radius, links[currentState]);
     }
