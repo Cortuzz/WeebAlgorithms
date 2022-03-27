@@ -121,3 +121,9 @@ input {
     padding: 5px 5px 5px 5px;
 }
 
+.fieldSize {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+

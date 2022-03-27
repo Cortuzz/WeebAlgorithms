@@ -1,16 +1,42 @@
-let population = [];
-let fitness = [];
-let bestOrder = []
+let totalPopulation;
+let numGeneration;
+let numBest;
+let population ;
+let bestGene;
 
-const totalPopulation = 1000
-let shortestDistance = Infinity;
+function swap(arr, i, j) {
+    let temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+
+    return arr;
+}
+
+function shuffle(arr) {
+    for (let i = 0; i < 100; i++) {
+        let index1 = Math.floor(Math.random() * arr.length);
+        let index2 = index1;
+
+        while (index2 == index1) {
+            index2 = Math.floor(Math.random() * arr.length);
+        }
+
+        arr = swap(arr, index1, index2);
+    }
+
+    console.log(arr);
+    return arr;
+}
+
+function createStructure(individ, fitness) {
+    return {
+        individ: individ,
+        fitness: fitness,
+    };
+}
 
 function createFirstGeneration() {
-    shortestDistance = Infinity;
-    population.slice();
-    fitness.slice();
-    bestOrder.slice();
-
+    let newPopulation = [];
     let order = []
 
     for (let i = 0; i < cities.length; i++) {
@@ -19,62 +45,70 @@ function createFirstGeneration() {
 
     for (let i = 0; i < totalPopulation; i++) {
         let copyOfOrder = order.slice();
-        population[i] = shuffle(copyOfOrder);
+        copyOfOrder = shuffle(copyOfOrder);
+        newPopulation[i] = createStructure(copyOfOrder, getCurrentDistance(copyOfOrder));
+
+        if (newPopulation[i].fitness < bestGene.fitness) {
+            bestGene = newPopulation[i];
+        }
     }
+    return newPopulation.slice();
 }
 
 async function geneticAlg() {
-    createFirstGeneration()
+    totalPopulation = cities.length;
+    numGeneration = 1;
+    numBest = 1;
 
-    while(cities.length != 0) {
-        renewCanvas()
-        calculateFitness();
+    population = [];
 
-        for (let i = 0; i < cities.length - 1; i++) {
-            drawCircle(cities[i].x, cities[i].y, 10, CIRCLE_COLOR);
-            drawLine(cities[bestOrder[i]].x, cities[bestOrder[i]].y, cities[bestOrder[i + 1]].x, cities[bestOrder[i + 1]].y);
-        }
+    bestGene = {
+        individ: [],
+        fitness: Infinity
+    };
 
-        drawCircle(cities[cities.length - 1].x, cities[cities.length - 1].y, 10, CIRCLE_COLOR);
+    population = createFirstGeneration();
+    renewCanvas();
+    drawLines(bestGene.individ);
+    drawPoints();
 
-        await delay(100 / renderSpeed ** 4);
-
-        normalizeFitness();
+    while (numGeneration - numBest <= 1000) {
         population = createNextGeneration();
+        numGeneration++;
 
+        if (population[0].fitness < bestGene.fitness) {
+            bestGene = population[0];
+            numBest = numGeneration;
+            renewCanvas();
+            drawLines(bestGene.individ, 2);
+            drawPoints();
+            await delay(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+        }
+        else if (!bestView) {
+            renewCanvas();
+            drawLines(bestGene.individ, 3);
+            drawLines(population[0].individ, 1);
+            drawPoints();
+            await delay(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+        }
     }
+
+    if (!bestView) {
+        renewCanvas();
+        drawLines(bestGene.individ, 2);
+        drawPoints();
+        await delay(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+    }
+
+    running = false;
+    window.log.textContent = `Минимальная длина пути равна ${bestGene.fitness.toFixed(2)}`;
+    window.log_block.style.borderColor = "forestgreen";
+    await sleep(3000);
+    window.log.textContent = DEFAULT_LOG_TEXT;
+    window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
 }
 
 function delay(timeout) {
     return new Promise(resolve => setTimeout(resolve, timeout))
 }
 
-function getCurrentDistance(order) {
-    let sum = 0;
-
-    for (let i = 0; i < cities.length - 1; i++) {
-        sum += getDistanceBetweenTwoCities(cities[order[i]], cities[order[i + 1]]);
-    }
-
-    return sum;
-}
-
-function getDistanceBetweenTwoCities(city1, city2) {
-    return Math.sqrt(Math.pow(city1.x - city2.x, 2) + Math.pow(city1.y - city2.y, 2));
-}
-
-function swap(arr, i, j) {
-    let temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-}
-
-function shuffle(arr) {
-    for (let i = 0; i < 100; i++) {
-        let index1 = Math.floor(Math.random() * arr.length);
-        let index2 = Math.floor(Math.random() * arr.length);
-        swap(arr, index1, index2)
-    }
-
-    return arr;
-}
