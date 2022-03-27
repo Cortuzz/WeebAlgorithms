@@ -193,7 +193,7 @@ async function startAnts() {
             drawAnts(ants, simulation);
         }
         await sleep(1);
-        if (drawingDensity || drawingPheromones) {
+        if (drawingDensity || drawingRedPheromones || drawingGreenPheromones) {
             if (drawingDensity) {
                 drawDensity(ants, simulation.field, simulation);
             } else {
