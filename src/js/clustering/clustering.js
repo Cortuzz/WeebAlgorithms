@@ -148,7 +148,7 @@ async function meanShiftClustering(points, radius) {
             return circle.center != null;
         });
         drawSlidingCircles(circles);
-        await sleep(200);
+        await sleep(90);
     }
     let means = await convertToMeans(circles);
     for (let i = 0; i < points.length; i++) {
