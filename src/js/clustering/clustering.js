@@ -89,8 +89,7 @@ async function convertToMeans(circles) {
                 result.push(circles[i]);
             }
         }
-    }
-    //print(result);
+    }   
     redrawInitial();
     drawSlidingCircles(result);
     await sleep(1000);
