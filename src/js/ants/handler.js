@@ -5,8 +5,6 @@ window.addEventListener("load", () => {
     window.locker.addEventListener("click", changeLock);
 });
 
-const WIDTH = 900, HEIGHT = 600;
-
 let unlock = false;
 
 const EMPTY = -1, BORDER = -2, COLONY = -3;
@@ -51,16 +49,6 @@ function clearField() {
     ctx.fillStyle = "aliceblue";
     ctx.rect(0, 0, WIDTH, HEIGHT);
     ctx.fill();
-}
-
-function drawPoint(x, y, color, w, simulation) {
-    if (simulation != null) {
-        if (simulation.checkFood(x, y) || field[y][x].value <= COLONY) {
-            return;
-        }
-    }
-
-    drawRect(x, y, w, w, color);
 }
 
 function clearPoints(ants, simulation) {
@@ -126,10 +114,12 @@ function drawPheromones(ants, simulation, red, green) {
         if (red && redPheromone > 1) {
             drawPoint(x, y, getRedPheromoneColor(redPheromone), pointWidth, simulation);
         }
+
         if (green && greenPheromone > 1) {
             drawPoint(x + 1, y, getGreenPheromoneColor(greenPheromone), pointWidth, simulation);
+        } else if (greenPheromone <= 1) {
+            drawPoint(x, y, "aliceblue", pointWidth, simulation);
         }
-
     });
 }
 

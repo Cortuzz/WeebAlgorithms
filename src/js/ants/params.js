@@ -1,3 +1,15 @@
+window.antsViewChecker.addEventListener("click", e =>
+{ drawingAnts = window.antsViewChecker.checked; });
+
+window.redPheromoneViewChecker.addEventListener("click", e =>
+{ drawingRedPheromones = window.redPheromoneViewChecker.checked; });
+
+window.greenPheromoneViewChecker.addEventListener("click", e =>
+{ drawingGreenPheromones = window.greenPheromoneViewChecker.checked; });
+
+window.densityViewChecker.addEventListener("click", e =>
+{ drawingDensity = window.densityViewChecker.checked; });
+
 window.changeRedDecay.addEventListener("input", e =>
 { redDecay = +e.target.value; window.redDecayView.textContent = redDecay; });
 
@@ -37,10 +49,11 @@ window.changeInitialPheromones.addEventListener("input", e =>
 window.changeDecayingPheromones.addEventListener("input", e =>
 { decayingPheromones = +e.target.value; window.decayingPheromonesView.textContent = decayingPheromones; });
 
+const WIDTH = 900, HEIGHT = 600;
 let defaultLog = "Алгоритм не запущен";
 let defaultColor = "coral";
 
-let drawingAnts = false, drawingRedPheromones = true, drawingGreenPheromones = true, drawingDensity = false;
+let drawingAnts = true, drawingRedPheromones = false, drawingGreenPheromones = false, drawingDensity = false;
 
 let colonySize = 500, maxColonySize = 1000;
 
@@ -120,6 +133,14 @@ function changeLock() {
         dangerParamsView.forEach(paramView => {
             paramView.textContent = "Заблокировано";
         })
+    }
+}
+
+function clearMarkers() {
+    for (let i = 0; i < HEIGHT; i++) {
+        for (let j = 0; j < WIDTH; j++) {
+            drawRect(i, j, 1, 1, "aliceblue");
+        }
     }
 }
 

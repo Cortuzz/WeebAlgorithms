@@ -141,3 +141,13 @@ function setValue(x, y, radius, value_) {
         }
     }
 }
+
+function drawPoint(x, y, color, w, simulation) {
+    if (simulation != null) {
+        if (simulation.checkFood(x, y) || field[y][x].value <= COLONY) {
+            return;
+        }
+    }
+
+    drawRect(x, y, w, w, color);
+}
