@@ -20,18 +20,12 @@ class Activaton:
         y[y<0] = 0
         return y
     def sigmoid(x):
-        if(not np.isnan(x[0][0])):
-            print("sigm ",x)
         return (1/1+np.exp(-x))
 
     def d_sigmoid(x):
-        if(not np.isnan(x[0][0])):
-            print("d sigm ",x)
         return -np.exp(-x)/((1+np.exp(-x))*(1+np.exp(-x)))
 
     def softmax(x):
-        if(not np.isnan(x[0][0])):
-            print("soft max ",x)
         y = np.exp(x)
         return  y / np.sum(np.exp(x))
     def d_relu(x):
@@ -107,19 +101,32 @@ class Model:
                 self.update_weights(grads,learning_rate)
             print(f"epoch {i}")
 
+def accuracy(n,X_test,y_test):
+    ans=0
+    for i in range(n):
+        a=model.forward(X_test[i].reshape(28*28,1))
+        predicted=np.argmax(a)
+        if(predicted==np.argmax(y_test[i])):
+            ans+=1
+        else:
+            print("predicted: ",predicted,"given ", np.argmax(y_test[i]))
+    print("accuracy: ",ans/n)
 
 (X_train,y_train),(X_test,y_test)=np.asarray(mnist.load_data())
 X_train=X_train/255
 X_test=X_test/255
 y_train=binarize(y_train)
 y_test=binarize(y_test)
-plt.imshow(X_train[0],cmap=plt.cm.binary)
-plt.show()
+#plt.imshow(X_train[0],cmap=plt.cm.binary)
+#plt.show()
 
 model=Model()
 model.add(Layer_Dense(28*28,32,"relu"))
-model.add(Layer_Dense(32,10,"sigmoid"))
+model.add(Layer_Dense(32,16,"relu"))
+model.add(Layer_Dense(16,10,"softmax"))
 
-model.forward(X_train[0:1].reshape(28*28,1))
+accuracy(1000,X_test,y_test)
 
-model.train(X_train,y_train,0.01,3,2)
+model.train(X_train,y_train,0.002,15,1)
+
+accuracy(1000,X_test,y_test)
