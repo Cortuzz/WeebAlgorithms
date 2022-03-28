@@ -1,5 +1,5 @@
 class Matrix {
-    static Trans(A)
+    static trans(A)
     {
         let m = A.length, n = A[0].length, AT = [ ];
 
@@ -12,7 +12,7 @@ class Matrix {
         return AT;
     }
 
-    static Sum(A, B)
+    static sum(A, B)
     {
         let m = A.length, n = A[0].length, C = [ ];
 
@@ -25,7 +25,7 @@ class Matrix {
         return C;
     }
 
-    static MultiplyNumber(a, A)
+    static multiplyNumber(a, A)
     {
         let m = A.length, n = A[0].length, B = [ ] ;
 
@@ -38,7 +38,7 @@ class Matrix {
         return B;
     }
 
-    static Multiply(A, B)
+    static multiply(A, B)
     {
         let rowsA = A.length, colsA = A[0].length,
             rowsB = B.length, colsB = B[0].length,
