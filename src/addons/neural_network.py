@@ -15,7 +15,7 @@ def cost(y_hat,y):
     return -np.sum(y*np.log(y_hat))
 
 #abstract class
-class Activaton:
+class Activation:
     def relu(x):
         y = np.copy(x)
         y[y<0] = 0
@@ -35,22 +35,22 @@ class Activaton:
         y[y>0]=1
         return y
 class Layer_Dense:
-    def __init__(self,n_input,n_neurons,activaton_function=None):
-        if(activaton_function=="relu"):
-            self.activaton=Activaton.relu
-            self.derivative=Activaton.d_relu
-        elif(activaton_function=="sigmoid"):
-            self.activaton=Activaton.sigmoid
-            self.derivative=Activaton.d_sigmoid
-        elif(activaton_function=="softmax"):
-            self.activaton=Activaton.softmax
+    def __init__(self,n_input,n_neurons,activation_function=None):
+        if(activation_function=="relu"):
+            self.activation=Activation.relu
+            self.derivative=Activation.d_relu
+        elif(activation_function=="sigmoid"):
+            self.activation=Activation.sigmoid
+            self.derivative=Activation.d_sigmoid
+        elif(activation_function=="softmax"):
+            self.activation=Activation.softmax
         else:
             raise Exception("gg")
         self.weights=np.random.randn(n_neurons,n_input)/np.sqrt(n_neurons)
         self.biases=np.random.randn(n_neurons,1)
     def forward(self,input):
         self.linear_comb=np.dot(self.weights,input)+self.biases
-        self.output=self.activaton(self.linear_comb)
+        self.output=self.activation(self.linear_comb)
 class Model:
     def __init__(self):
         self.size=0
