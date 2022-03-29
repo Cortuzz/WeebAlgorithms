@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from keras.datasets import mnist
+from tensorflow import keras
+import json
 
 np.random.seed(0)
 
@@ -101,6 +102,17 @@ class Model:
                 self.update_weights(grads,learning_rate)
             print(f"epoch {i}")
 
+    def save(self):
+        f = open("weights.txt", "w")
+        count = 0
+        for layer in self.layers:
+            data = {"layer{}".format(count): {"weights": [weights.tolist() for weights in layer.weights],
+                    "biases": [biases.tolist() for biases in layer.biases]}}
+
+            count += 1
+            json.dump(data, f)
+        f.close()
+
 def accuracy(n,X_test,y_test):
     ans=0
     for i in range(n):
@@ -112,21 +124,18 @@ def accuracy(n,X_test,y_test):
             print("predicted: ",predicted,"given ", np.argmax(y_test[i]))
     print("accuracy: ",ans/n)
 
-(X_train,y_train),(X_test,y_test)=np.asarray(mnist.load_data())
+(X_train,y_train),(X_test,y_test)=np.asarray(keras.datasets.mnist.load_data())
 X_train=X_train/255
 X_test=X_test/255
 y_train=binarize(y_train)
 y_test=binarize(y_test)
-#plt.imshow(X_train[0],cmap=plt.cm.binary)
-#plt.show()
 
 model=Model()
 model.add(Layer_Dense(28*28,32,"relu"))
 model.add(Layer_Dense(32,16,"relu"))
 model.add(Layer_Dense(16,10,"softmax"))
 
-accuracy(1000,X_test,y_test)
+model.train(X_train,y_train,0.002,1,1)
+model.save()
 
-model.train(X_train,y_train,0.002,15,1)
-
-accuracy(1000,X_test,y_test)
+accuracy(10000,X_test,y_test)
