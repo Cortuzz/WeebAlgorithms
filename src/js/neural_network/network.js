@@ -117,7 +117,6 @@ class Model {
     }*/
 }
 
-let digit = mnist[7].get();
 let model = new Model();
 
 let weights1 = []
@@ -150,7 +149,25 @@ model.add(new LayerDense(28*28,32,"relu", weights1, biases1))
 model.add(new LayerDense(32,16,"relu", weights2, biases2))
 model.add(new LayerDense(16,10,"softmax", weights3, biases3))
 
-console.log(model.forward(math.reshape(digit, [28 * 28, 1])))
+let digit = mnist[7].get();
+let response = model.forward(math.reshape(digit, [28 * 28, 1]))._data
+probWidth = probCanvas.width;
+
+for (let i = 0; i < 10; i++) {
+    let height = i * step;
+    let prob = response[i][0];
+    let lineWidth = prob * probWidth * 0.9;
+
+    if (lineWidth > 40) {
+        lineWidth -= 40;
+    }
+
+    drawRect(probCtx, 40, height + 8, lineWidth, 20, probGradient);
+    drawCircle(probCtx, 45, height  + 18, 10.3, undefined, probGradient);
+    if (lineWidth > 5) {
+        drawCircle(probCtx, 40 + lineWidth, height  + 18, 10.3, undefined, probGradient);
+    }
+}
 
 trainingSet.forEach(data => {
 

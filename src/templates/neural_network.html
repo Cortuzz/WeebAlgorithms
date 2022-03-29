@@ -54,15 +54,15 @@
     </div>
 
     <div class="canvas_block">
-        <canvas id="canvas">
-            <script>
-                const canvas = document.getElementById('canvas')
-                const ctx = canvas.getContext('2d')
+        <canvas id="canvas" width="640" height="640"> </canvas>
+    </div>
 
-                ctx.fillStyle = 'black'
-                ctx.fillRect(0, 0, 1000, 1000)
-            </script>
-        </canvas>
+    <div class="visualization_block">
+        <div class="probability_block">
+            <h3>Вероятности:</h3>
+            <canvas id="probs" width="390" height="255">
+            </canvas>
+        </div>
     </div>
 </div>
 <div class="picture">
@@ -87,6 +87,7 @@
 
 <script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
 <script src="../js/neural_network/handler.js" type="module"></script>
+<script src="../js/neural_network/canvas_setup.js"></script>
 <script src="../js/neural_network/network.js"></script>
 <script src="../js/main.js"></script>
 </body>
