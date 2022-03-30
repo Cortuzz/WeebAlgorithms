@@ -25,7 +25,7 @@ class Activation:
 
     def softmax(x):
         y = np.exp(x)
-        return y / np.sum(np.exp(x),axis=1)
+        return y / np.sum(y,axis=0)
 
     def d_relu(x):
         y = np.copy(x)
@@ -102,8 +102,8 @@ class Model:
             for j in range(0, X.shape[0], batch_size):
                 X_batch = X[j:j + batch_size]
                 y_batch = y[j:j + batch_size]
-                X_batch = X_batch.reshape(28 * 28, batch_size)
-                y_batch = y_batch.reshape(10, batch_size)
+                X_batch = X_batch.T
+                y_batch = y_batch.T
                 grads, loss = self.backward(X_batch, y_batch)
                 self.update_weights(grads, learning_rate)
             print(f"epoch {i}"," cost:",cost(self.forward(X[0].reshape(28 * 28, 1)), y[0].reshape(10, 1)))
@@ -128,7 +128,7 @@ def accuracy(n, X_test, y_test,show_misses=False):
             ans += 1
         elif(show_misses==True):
             print("predicted: ", predicted, "given ", np.argmax(y_test[i]))
-    print("accuracy: ", ans / n)
+    print(ans / n)
 
 
 (X_train, y_train), (X_test, y_test) = np.asarray(keras.datasets.mnist.load_data())
@@ -143,8 +143,10 @@ model = Model()
 model.add(LayerDense(28 * 28, 32, "relu"))
 model.add(LayerDense(32, 16, "relu"))
 model.add(LayerDense(16, 10, "softmax"))
-model.train(X_train, y_train, 0.002, 1, 1)
+model.train(X_train, y_train, 0.2, 6, 200)
 model.save()
 
+print("\naccuracy: ",end="")
 accuracy(10000, X_train, y_train)
+print("validation accuracy: ",end="")
 accuracy(10000, X_test, y_test)
