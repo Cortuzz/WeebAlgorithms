@@ -1,48 +1,53 @@
-let mouse = { x: 0, y: 0 };
+let mouse = {x: 0, y: 0};
 let drawing = false;
-scale = 1;
 
+const debug = document.getElementById('pause')
+const buttonClear = document.getElementById('clear')
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
-const probCanvas = document.getElementById('probs')
-const probCtx = probCanvas.getContext('2d')
-
-function setMouseCoords(client, e) {
-    mouse.x = Math.floor((e.clientX - client.left) / scale);
-    mouse.y = Math.floor((e.clientY - client.top) / scale);
+function setMouseCoords(e) {
+    mouse.x = e.clientX - canvas.offsetLeft;
+    mouse.y = e.clientY - canvas.offsetTop;
 }
 
-canvas.addEventListener('mousedown', async function(e) {
-    let ClientRect = this.getBoundingClientRect();
-    setMouseCoords(ClientRect, e);
-
+debug.addEventListener('click', () => {
+    console.log(matrix);
+})
+buttonClear.addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    probCtx.clearRect(30, 0, probCanvas.width, probCanvas.height)
+    clearMatrix();
+})
+canvas.addEventListener('mousedown', (e) => {
     drawing = true;
-    draw(e, 10, undefined, "black");
+    setMouseCoords(e);
+});
+canvas.addEventListener('mousemove', (e) => makeStroke(e));
+canvas.addEventListener('mouseup', () => {
+    drawing = false;
+    ctx.stroke();
+    ctx.beginPath();
 });
 
-canvas.addEventListener('mousemove', function(e) {
+
+async function makeStroke(e) {
     if (!drawing) {
         return;
     }
+    let start = Object.assign({}, mouse);
+    setMouseCoords(e);
+    let end = Object.assign({}, mouse);
+    writeToMatrix(start, end);
+    draw(25)
+    await evaluate();
+}
 
-    draw(e, 10, undefined, "black");
-});
-
-canvas.addEventListener('mouseup', function(e) {
-    drawing = false;
-    draw(e, 10, undefined, "black");
-});
-
-function draw(e, radius, arcColor, fillColor) {
-    let ClientRect = canvas.getBoundingClientRect();
-
-    setMouseCoords(ClientRect, e);
-    drawCircle(ctx, mouse.x, mouse.y, radius, arcColor, fillColor);
-
-    let x_ = mouse.x.toFixed(0);
-    let y_ = mouse.y.toFixed(0);
-    //setValue(+x_, +y_, radius, links[currentState]);
+function draw(radius) {
+    ctx.lineWidth = radius;
+    ctx.lineCap = 'round';
+    ctx.lineTo(mouse.x, mouse.y);
+    ctx.stroke();
 }
 
 function drawCircle(context, x, y, radius, arcColor, fillColor) {
@@ -65,14 +70,35 @@ function drawRect(context, x, y, w, h, color) {
     context.fillRect(x, y, w, h);
 }
 
-probCtx.font = "25px serif";
+function drawProbs(response) {
+    probCtx.clearRect(30, 0, probCanvas.width, probCanvas.height)
+    for (let i = 0; i < 10; i++) {
+        let height = i * step;
+        let prob = response[i][0];
+        let lineWidth = prob * probCanvas.width * 0.9;
 
+        if (lineWidth > 40) {
+            lineWidth -= 40;
+        }
+
+        drawRect(probCtx, 40, height + 8, lineWidth, 20, probGradient);
+        drawCircle(probCtx, 45, height + 18, 10.3, undefined, probGradient);
+        if (lineWidth > 5) {
+            drawCircle(probCtx, 40 + lineWidth, height + 18, 10.3, undefined, probGradient);
+        }
+    }
+}
+
+const probCanvas = document.getElementById('probs')
+const probCtx = probCanvas.getContext('2d')
+
+probCtx.font = "25px serif";
 const step = 25;
 for (let i = 0; i < 10; i++) {
     probCtx.fillText(i + ": ", 10, (i + 1) * step);
 }
 
-let probGradient = ctx.createLinearGradient(10,0, probCanvas.width, 0);
+let probGradient = ctx.createLinearGradient(10, 0, probCanvas.width, 0);
 probGradient.addColorStop(0, 'darkred');
 probGradient.addColorStop(.5, 'darkorange');
 probGradient.addColorStop(.8, 'forestgreen');
