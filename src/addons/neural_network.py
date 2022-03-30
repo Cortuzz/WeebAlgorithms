@@ -25,7 +25,7 @@ class Activation:
 
     def softmax(x):
         y = np.exp(x)
-        return y / np.sum(np.exp(x))
+        return y / np.sum(np.exp(x),axis=1)
 
     def d_relu(x):
         y = np.copy(x)
