@@ -14,7 +14,7 @@ async function initialize_network() {
 }
 
 async function evaluate() {
-    let response = model.forward(math.reshape(matrix, [28 * 28, 1]))._data
+    let response = model.forward(nj.array(matrix).reshape(28 * 28, 1)).tolist()
     drawProbs(response);
 }
 

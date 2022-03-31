@@ -1,48 +1,51 @@
 function cost(y_hat, y) {
-    return -math.sum(math.multiply(y, math.log(y_hat)))
+    return -nj.sum(nj.dot(y, nj.log(y_hat)))
 }
 
-class Activation {
-    static relu(x) {
-        let y = math.clone(x)
-        y[y < 0] = 0
-        return y
-    }
 
-    static softmax(x) {
-        let y = math.exp(x)
-        return math.divide(y, math.sum(math.exp(x)))
+function relu(x) {
+    let y = x.clone();
+    for (let i = 0; i < y.shape[0]; i++) {
+        y.set(i, 1, y.get(i, 1) > 0 ? y.get(i, 1) : 0);
     }
-
-    static d_relu(x) {
-        let y = math.clone(x)
-        y[y < 0] = 0
-        y[y > 0] = 1
-        return y
-    }
+    return y
 }
+
+function softmax(x) {
+    let y = nj.exp(x)
+    return nj.divide(y, nj.sum(nj.exp(x)))
+}
+
+function d_relu(x) {
+    let y = x.clone()
+    for (let i = 0; i < y.shape[0]; i++) {
+        y.set(i, 1, y.get(i, 1) > 0 ? 1 : 0);
+    }
+    return x
+}
+
 
 class LayerDense {
     constructor(n_input, n_neurons, activationFunction, weights, biases) {
         if (activationFunction === "relu") {
-            this.activaton = Activation.relu
-            this.derivative = Activation.d_relu
+            this.activaton = relu
+            this.derivative = d_relu
         } else {
-            this.activaton = Activation.softmax
+            this.activaton = softmax
         }
 
         if (weights && biases) {
-            this.weights = math.matrix(weights);
-            this.biases = math.matrix(biases);
+            this.weights = nj.array(weights);
+            this.biases = nj.array(biases);
         } else {
-            this.weights = math.random([n_neurons, n_input], 0, 1 / math.sqrt(n_neurons))
-            this.biases = math.random([n_neurons, 1])
+            this.weights = nj.random([n_neurons, n_input]) / nj.sqrt(n_neurons)
+            this.biases = nj.random([n_neurons, 1])
         }
     }
 
     forward(input) {
-        this.linear_comb = math.add(math.multiply(this.weights, input), this.biases);
-        this.output = this.activaton(this.linear_comb)
+        self.linear_comb = nj.add(nj.dot(this.weights, input), this.biases);
+        this.output = this.activaton(self.linear_comb)
     }
 }
 
@@ -67,6 +70,7 @@ class Model {
         return this.layers[this.size - 1].output
     }
 
+    /*
     backward(input, y) {
         let output = this.forward(input)
         let m = output.shape[1]
@@ -89,5 +93,9 @@ class Model {
         let loss = cost(output, y)
         return [grads, loss]
     }
+    */
 }
 
+let a = nj.array([1, 2, 3])
+let b = a.clone()
+print(b)

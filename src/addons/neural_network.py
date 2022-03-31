@@ -35,7 +35,7 @@ class Activation:
 
 
 class LayerDense:
-    def __init__(self, n_input, n_neurons, activation_function=None):
+    def __init__(self, n_input, n_neurons, activation_function=None,weights=None):
         self.linear_comb = None
         self.output = None
         if activation_function == "relu":
@@ -48,8 +48,13 @@ class LayerDense:
             self.activation = Activation.softmax
         else:
             raise Exception("not supported activation function")
-        self.weights = np.random.randn(n_neurons, n_input) / np.sqrt(n_neurons)
-        self.biases = np.random.randn(n_neurons, 1)
+
+        if weights==None:
+            self.weights = np.random.randn(n_neurons, n_input) / np.sqrt(n_neurons)
+            self.biases = np.random.randn(n_neurons, 1)
+        else:
+            self.weights=weights[0]
+            self.biases=weights[1]
 
     def forward(self, input):
         self.linear_comb = np.dot(self.weights, input) + self.biases
@@ -108,6 +113,15 @@ class Model:
                 self.update_weights(grads, learning_rate)
             print(f"epoch {i}"," cost:",cost(self.forward(X[0].reshape(28 * 28, 1)), y[0].reshape(10, 1)))
 
+    def load(self,file_path):
+        dict=json.load(open(file_path))
+        try:
+            for i in range(self.size):
+                self.layers[i].weights=np.array(dict[f"layer{i}"]["weights"])
+                self.layers[i].biases=np.array(dict[f"layer{i}"]["biases"])
+        except:
+            raise Exception("network and weights architectures are different")
+
     def save(self):
         file = open("weights.json", "w")
         data={}
@@ -136,17 +150,18 @@ X_train = X_train / 255
 X_test = X_test / 255
 y_train = binarize(y_train)
 y_test = binarize(y_test)
-test=np.loadtxt('five.txt',delimiter=",")
-#plt.imshow(X_train[0],cmap=plt.cm.binary)
-#plt.imshow(test,cmap=plt.cm.binary)
+
+
 model = Model()
 model.add(LayerDense(28 * 28, 32, "relu"))
 model.add(LayerDense(32, 16, "relu"))
 model.add(LayerDense(16, 10, "softmax"))
-model.train(X_train, y_train, 0.02, 10, 5)
-model.save()
 
-print("\naccuracy: ",end="")
-accuracy(10000, X_train, y_train)
-print("validation accuracy: ",end="")
-accuracy(10000, X_test, y_test)
+model.load("./weights.json")
+#plt.imshow(X_train[0],cmap=plt.cm.binary)
+#model.train(X_train, y_train, 0.02, 10, 5)
+#model.save()
+
+test=np.loadtxt('digit.txt',delimiter=",")
+plt.imshow(test,cmap=plt.cm.binary)
+np.argmax(model.forward(test.reshape(784,1)))
