@@ -1,0 +1,56 @@
+.main {
+    display: flex;
+}
+
+.main_block {
+    width: 30%;
+}
+
+.description, .csv {
+    background-color: aliceblue;
+    border-radius: 20px;
+    margin-left: 17%;
+    margin-top: 1%;
+    padding: 20px 20px 20px 20px;
+}
+
+.description div, .csv div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.description button {
+    width: 60%;
+    transition: all .4s ease;
+    margin: 0 auto 10px;
+}
+
+.csv textarea {
+    width: 100%;
+}
+
+.description button {
+    margin-top: 2% !important;
+}
+
+#startButton, .action #startCellButton {
+    border-radius: 10px;
+    background-color: lightgreen;
+    border: 2px solid forestgreen;
+}
+
+#startButton:hover, .action #startCellButton:hover {
+    background-color: forestgreen;
+    border: 2px solid lightgreen;
+    transform: scale(0.95);
+}
+
+#log_block {
+    display: flex;
+    align-items: center;
+    border: 5px solid coral;
+    background: #d5e6ff;
+    border-radius: 10px;
+    padding: 5px 5px 5px 5px;
+}
