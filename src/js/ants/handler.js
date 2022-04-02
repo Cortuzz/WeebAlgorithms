@@ -123,7 +123,7 @@ function drawPheromones(ants, simulation, red, green) {
     });
 }
 
-async function antsAlg(simulation, colony) {
+async function antsAlg(colony) {
     for (let i = 0; i < colony.ants.length; i++) {
         let ant = colony.ants[i];
         ant.move();
@@ -176,7 +176,7 @@ async function startAnts() {
             ants.push(...colonies[i].ants);
 
             simulation.update();
-            await antsAlg(simulation, colonies[i]);
+            await antsAlg(colonies[i]);
         }
 
         if (drawingAnts) {
