@@ -15,10 +15,6 @@ function shuffle(array) {
     return array;
 }
 
-function sigmoid(x) {
-    return 1 / (1 + Math.exp(-x));
-}
-
 function componentToHex(c) {
     c = c < 0 ? 0 : c;
     c = c > 255 ? 255 : c;
@@ -33,4 +29,12 @@ function rgbToHex(r, g, b) {
 
 function print(value) {
     console.log(JSON.parse(JSON.stringify(value)))
+}
+
+async function fetch_data() {
+    return fetch('../addons/weights.json')
+        .then(response => response.json())
+        .then(json => {
+            return json;
+        })
 }
