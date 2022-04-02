@@ -14,6 +14,7 @@ window.addEventListener("load", () => {
     window.generateButton.addEventListener("click", generateMaze);
     window.clearButton.addEventListener("click", clear);
     window.changeRandBorder.addEventListener("input", changeRandomBorder);
+    window.generatingMazeChecker.addEventListener("click", e => { mazeChecker = window.generatingMazeChecker.checked; });
 });
 
 let defaultLog = "Алгоритм не запущен";
@@ -26,17 +27,8 @@ let randomBorder = 0.5;
 
 let finder;
 let start, finish;
+let mazeChecker = true;
 let currentState = 'start', handleStates, viewStates;
-
-const ERASERS_NUMBER = 100;
-let erasers = [];
-for (let i = 0; i < ERASERS_NUMBER; i++) {
-    erasers.push({
-            x: 0,
-            y: 0
-        }
-    )
-}
 
 function init() {
     maze = [];
@@ -58,11 +50,6 @@ function init() {
 }
 
 function clear() {
-    for (let eraser of erasers) {
-        eraser.x = 0;
-        eraser.y = 0;
-    }
-
     window.log.textContent = defaultLog;
 
     if (finder != null) {
@@ -156,14 +143,9 @@ function randomizeMatrix() {
     refreshTable();
 }
 
-function generateMaze() {
+async function generateMaze() {
     dropPoints();
     disableCurrentFinder();
-
-    for (let eraser of erasers) {
-        eraser.x = 0;
-        eraser.y = 0;
-    }
 
     for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
@@ -171,61 +153,61 @@ function generateMaze() {
         }
     }
 
-    maze[0][0] = 0;
-
-    while (!isValid()) {
-        for (const eraser of erasers) {
-            moveEraser(eraser);
-        }
+    let start = {
+        x: 0,
+        y: 0
     }
 
-    refreshTable();
-}
+    let select = document.getElementById('selectMaze');
+    let value = select.options[select.selectedIndex].value;
 
-function moveEraser(eraser) {
-    const directions = [];
-
-    if (eraser.x > 1) {
-        directions.push([0, -2]);
+    if (value == 'dfs') {
+        await dfs(start);
+    }
+    else if (value == 'prim') {
+        await Prim(start);
+    }
+    else if (value = 'kruscal') {
+        await Kruskal();
     }
 
-    if (eraser.x < width - 2) {
-        directions.push([0, 2]);
-    }
+    if (width % 2 === 0) {
+        let i = 0;
+        while (i < height - 1) {
+            if (maze[i][width - 2] === 0 && Math.random() < 0.3) {
+                maze[i][width - 1] = 0;
+                i += 2;
+            }
+            i++;
 
-    if (eraser.y > 1) {
-        directions.push([-2, 0]);
-    }
-
-    if (eraser.y < height - 2) {
-        directions.push([2, 0]);
-    }
-
-    const [dy, dx] = getRandomDirection(directions)
-    eraser.x += dx;
-    eraser.y += dy;
-
-    if (maze[eraser.y][eraser.x]) {
-        maze[eraser.y][eraser.x] = 0;
-        maze[eraser.y - dy / 2][eraser.x - dx / 2] = 0;
-    }
-}
-
-function getRandomDirection(array) {
-    const index = Math.floor(Math.random() * array.length)
-    return array[index]
-}
-
-function isValid() {
-    for (let i = 0; i < height; i+=2) {
-        for (let j = 0; j < width; j+=2) {
-            if (maze[i][j]) {
-                return false;
+            if (mazeChecker) {
+                refreshTable();
+                await delay(10);
             }
         }
     }
 
-    return true;
+    if (height % 2 === 0) {
+        let i = 0;
+        while (i < width - 1) {
+            if (maze[height - 2][i] === 0 && Math.random() < 0.3) {
+                maze[height - 1][i] = 0;
+                i += 2;
+            }
+            i++;
+
+            if (mazeChecker) {
+                refreshTable();
+                await delay(10);
+            }
+        }
+    }
+
+    if (maze[height - 1][width - 2] !== maze[height - 2][width - 1]) {
+        maze[height - 1][width - 1] = 0;
+    }
+
+    refreshTable();
 }
 
 function changeCellMode(event) {
@@ -302,11 +284,6 @@ function changeSizeX(event) {
     let sizeY = window.fieldSizeY.value;
     width = sizeX;
 
-    for (let eraser of erasers) {
-        eraser.x = 0;
-        eraser.y = 0;
-    }
-
     if (fixing) {
         height = +sizeX;
         init();
@@ -323,11 +300,6 @@ function changeSizeY(event) {
     let sizeX = window.fieldSizeX.value;
     let sizeY = event.target.value;
     height = sizeY;
-
-    for (let eraser of erasers) {
-        eraser.x = 0;
-        eraser.y = 0;
-    }
 
     if (fixing) {
         width = +sizeY;
