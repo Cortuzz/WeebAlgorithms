@@ -44,8 +44,8 @@ class LayerDense {
     }
 
     forward(input) {
-        self.linear_comb = nj.add(nj.dot(this.weights, input), this.biases);
-        this.output = this.activaton(self.linear_comb)
+        this.linear_comb = nj.add(nj.dot(this.weights, input), this.biases);
+        this.output = this.activaton(this.linear_comb)
     }
 }
 
