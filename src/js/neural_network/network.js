@@ -68,34 +68,6 @@ class Model {
         }
 
         return this.layers[this.size - 1].output
-    }
-
-    /*
-    backward(input, y) {
-        let output = this.forward(input)
-        let m = output.shape[1]
-        let grads = [0] * this.size
-        let delta = output - y
-        let d_w
-        let d_b
-
-        for (let i = this.size - 1; i > 0; i--) {
-            d_w = math.multiply(delta, this.layers[i - 1].output.T) / m
-            d_b = math.sum(delta) / m // math.sum(delta, axis=1, keepdims=true)
-            grads[i] = [d_w, d_b]
-
-            delta = math.multiply(this.layers[i].weights.T, delta) * this.layers[i - 1].derivative(this.layers[i - 1].linear_comb)
-        }
-
-        d_w = math.multiply(delta, input.T) / m
-        d_b = math.sum(delta) / m // math.sum(delta, axis=1, keepdims=True) / m
-        grads[0] = [d_w, d_b]
-        let loss = cost(output, y)
-        return [grads, loss]
-    }
-    */
+    }   
 }
 
-let a = nj.array([1, 2, 3])
-let b = a.clone()
-print(b)
