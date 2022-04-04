@@ -18,7 +18,6 @@ async function initialize_network() {
 }
 
 async function evaluate() {
-    console.log(nj.array(matrix).reshape(28,28, 1))
     let response = model.forward(nj.array(matrix).reshape(28,28, 1)).tolist()
     drawProbs(response);
 }

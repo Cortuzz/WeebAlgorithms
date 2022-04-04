@@ -41,7 +41,7 @@ function makeStroke(e) {
     let end = Object.assign({}, mouse);
     writeToMatrix(start, end);
     draw(start,25)
-    //evaluate();
+    evaluate();
 }
 
 function draw(start,radius) {

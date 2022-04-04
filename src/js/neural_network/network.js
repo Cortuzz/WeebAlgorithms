@@ -11,8 +11,8 @@ function denseRelu(x) {
 
 function convRelu(x) {
   for (let i = 0; i < x.shape[0]; i++) {
-    for (let j = 0; j < x.shape[1]; i++) {
-      for (let k = 0; k < x.shape[2]; i++) {
+    for (let j = 0; j < x.shape[1]; j++) {
+      for (let k = 0; k < x.shape[2]; k++) {
         x.set(i, j, k, x.get(i, j, k) > 0 ? x.get(i, j, k) : 0);
       }
     }
@@ -22,8 +22,8 @@ function convRelu(x) {
 }
 
 function softmax(x) {
-  let y = nj.exp(x - y.max());
-  return nj.divide(y, nj.sum(y))
+  let y = nj.exp(x)
+  return nj.divide(y, nj.sum(nj.exp(x)))
 }
 
 
