@@ -7,14 +7,19 @@ async function initialize_network() {
     l0 = weights['layer0']
     l1 = weights['layer1']
     l2 = weights['layer2']
+    l3 = weights['layer3']
     model = new Model();
-    model.add(new LayerDense(28 * 28, 32, "relu", l0.weights, l0.biases))
-    model.add(new LayerDense(32, 16, "relu", l1.weights, l1.biases))
-    model.add(new LayerDense(16, 10, "softmax", l2.weights, l2.biases))
+    model.add(new LayerConv2d(1, 4, kernel_size=4, padding=0,
+          stride=1, activationFunction="relu",l0.kernels,l0.biases))
+    model.add(new LayerConv2d(4, 3, kernel_size=3, padding=0,
+              stride=2, activationFunction="relu",l1.kernels,l1.biases))
+    model.add(new LayerDense(432, 32, "relu",l2.weights,l2.biases))
+    model.add(new LayerDense(32, 10, "softmax",l3.weights,l3.biases))
 }
 
 async function evaluate() {
-    let response = model.forward(nj.array(matrix).reshape(28 * 28, 1)).tolist()
+    console.log(nj.array(matrix).reshape(28,28, 1))
+    let response = model.forward(nj.array(matrix).reshape(28,28, 1)).tolist()
     drawProbs(response);
 }
 
@@ -37,4 +42,3 @@ function writeToMatrix(start, end) {
         }
     }
 }
-

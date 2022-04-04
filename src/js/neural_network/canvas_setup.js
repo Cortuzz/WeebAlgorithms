@@ -7,11 +7,12 @@ const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
 function setMouseCoords(e) {
-    mouse.x = e.clientX - canvas.offsetLeft;
-    mouse.y = e.clientY - canvas.offsetTop;
+    mouse.x = e.offsetX;
+    mouse.y = e.offsetY;
 }
 
 debug.addEventListener('click', () => {
+    evaluate();
     console.log(matrix);
 })
 buttonClear.addEventListener('click', () => {
@@ -31,7 +32,7 @@ canvas.addEventListener('mouseup', () => {
 });
 
 
-async function makeStroke(e) {
+function makeStroke(e) {
     if (!drawing) {
         return;
     }
@@ -39,13 +40,14 @@ async function makeStroke(e) {
     setMouseCoords(e);
     let end = Object.assign({}, mouse);
     writeToMatrix(start, end);
-    draw(25)
-    await evaluate();
+    draw(start,25)
+    //evaluate();
 }
 
-function draw(radius) {
+function draw(start,radius) {
     ctx.lineWidth = radius;
     ctx.lineCap = 'round';
+    ctx.moveTo(start.x, start.y);
     ctx.lineTo(mouse.x, mouse.y);
     ctx.stroke();
 }
