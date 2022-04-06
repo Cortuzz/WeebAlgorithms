@@ -13,7 +13,7 @@
     width: 30%;
 }
 
-.description, .control, .probability_block, .micro_canvas_block {
+.description, .control, .probability_block, .micro_canvas_block_left, .micro_canvas_block_right {
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 100px;
@@ -21,19 +21,24 @@
     padding: 20px 20px 20px 20px;
 }
 
-.probability_block, .micro_canvas_block {
+.probability_block, .micro_canvas_block_right {
     margin-top: 2.5%;
     margin-left: 3% !important;
     width: 100%;
 }
 
-.micro_canvas_block {
+.micro_canvas_block_right, .micro_canvas_block_left {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     height: 400px
 }
 
-#micro_canvas, #conv_canvas, #conv_canvas1, #conv_canvas2 {
+.micro_canvas_block_left {
+    grid-template-columns: repeat(3, 1fr);
+    height: 420px;
+}
+
+.conv {
     height: 181.5px;
     padding: 8px 5px 5px 0;
 }

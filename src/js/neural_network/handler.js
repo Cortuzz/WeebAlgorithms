@@ -29,11 +29,7 @@ function displayConv(ctx, matrix, size, depth) {
     for (let y = 0; y < size; y++) {
         for (let x = 0; x < size; x++) {
             let color = Math.round(255 * matrix[y][x][depth]);
-            if (color === 255) {
-                drawRect(ctx, x, y, 1, 1, "#f0f8ff")
-            } else {
-                drawRect(ctx, x, y, 1, 1, rgbToHex(color, color, color))
-            }
+            drawRect(ctx, x, y, 1, 1, rgbToHex(240 - color, 248 - color, 255 - color))
         }
     }
 }
