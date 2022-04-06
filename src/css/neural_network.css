@@ -13,6 +13,10 @@
     width: 30%;
 }
 
+.visualization_block {
+    width: 22.2%;
+}
+
 .description, .control, .probability_block, .micro_canvas_block_left, .micro_canvas_block_right {
     background-color: aliceblue;
     border-radius: 20px;
@@ -25,14 +29,15 @@
 }
 
 .probability_block, .micro_canvas_block_right {
-    margin-top: 2.5%;
-    margin-left: 3% !important;
-    width: 100%;
+    margin-top: 1.5%;
+    margin-left: 2% !important;
+    width: 107%;
 }
 
 .micro_canvas_block_right, .micro_canvas_block_left {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
 }
 
 .micro_canvas_block_left {
@@ -41,6 +46,7 @@
 }
 
 .conv {
+    position: relative;
     margin: 4px 4px 4px 4px;
     border: #1e1d1d solid 1px;
     border-radius: 10px;

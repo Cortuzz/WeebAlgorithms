@@ -24,6 +24,7 @@ async function initialize_network() {
 }
 
 function evaluate() {
+    clearAveragesMatrix();
     let response = model.forward(nj.array(matrix).reshape(28, 28, 1)).tolist()
     drawProbs(response);
 }
@@ -34,11 +35,20 @@ function displayConv(ctx, matrix, size, depth) {
         for (let x = 0; x < size; x++) {
             let color = Math.round(255 * matrix[y][x][depth]);
             if (size === 25) {
-                avgConvMatrix1[y][x] = Math.min(avgConvMatrix1[y][x] + color / 7, 240);
+                avgConvMatrix1[y][x] = Math.min(avgConvMatrix1[y][x] + color / 6, 240);
+            } else {
+                avgConvMatrix2[y][x] = Math.min(avgConvMatrix2[y][x] + color / 15, 240);
             }
             drawRect(ctx, x, y, 1, 1, rgbToHex(240 - color, 248 - color, 255 - color))
         }
     }
+
+    /*
+    ctx.font = `${size / 3}px serif`;
+    ctx.fillStyle = "red"
+    ctx.fillText(`Layer ${depth}`, 0, size);
+    ctx.fill();
+    */
 }
 
 function displayAverage(ctx, matrix, size) {
@@ -50,11 +60,14 @@ function displayAverage(ctx, matrix, size) {
     }
 }
 
-function clearMatrix() {
-    matrix = math.zeros([28, 28]);
-
+function clearAveragesMatrix() {
     avgConvMatrix1 = math.zeros([25, 25]);
     avgConvMatrix2 = math.zeros([12, 12]);
+}
+
+function clearMatrix() {
+    matrix = math.zeros([28, 28]);
+    clearAveragesMatrix();
 }
 
 function writeToMatrix(microContext) {

@@ -4,31 +4,43 @@ const debug = document.getElementById('pause');
 const buttonClear = document.getElementById('clear');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const microCanvas = document.getElementById('micro_canvas');
 
+const microCanvas = document.getElementById('micro_canvas');
 const convCtx0 = document.getElementById('conv_canvas0').getContext('2d');
 const convCtx1 = document.getElementById('conv_canvas1').getContext('2d');
 const convCtx2 = document.getElementById('conv_canvas2').getContext('2d');
-const convCtx3 = document.getElementById('conv_canvas3').getContext('2d');
 
+const convCtx3 = document.getElementById('conv_canvas3').getContext('2d');
 const convCtx4 = document.getElementById('conv_canvas4').getContext('2d');
 const convCtx5 = document.getElementById('conv_canvas5').getContext('2d');
 const convCtx6 = document.getElementById('conv_canvas6').getContext('2d');
-const convCtx7 = document.getElementById('conv_canvas7').getContext('2d');
 
+const convCtx7 = document.getElementById('conv_canvas7').getContext('2d');
 const convCtx8 = document.getElementById('conv_canvas8').getContext('2d');
 const convCtx9 = document.getElementById('conv_canvas9').getContext('2d');
-const convCtx10 = document.getElementById('conv_canvas10').getContext('2d');
 const avgConvCtx1 = document.getElementById('avg_conv_canvas1').getContext('2d');
 
+const convCtx10 = document.getElementById('conv_canvas10').getContext('2d');
 const convCtx11 = document.getElementById('conv_canvas11').getContext('2d');
 const convCtx12 = document.getElementById('conv_canvas12').getContext('2d');
 const convCtx13 = document.getElementById('conv_canvas13').getContext('2d');
+
+const convCtx14 = document.getElementById('conv_canvas14').getContext('2d');
+const convCtx15 = document.getElementById('conv_canvas15').getContext('2d');
+const convCtx16 = document.getElementById('conv_canvas16').getContext('2d');
+const convCtx17 = document.getElementById('conv_canvas17').getContext('2d');
+
+const convCtx18 = document.getElementById('conv_canvas18').getContext('2d');
+const convCtx19 = document.getElementById('conv_canvas19').getContext('2d');
+const avgConvCtx2 = document.getElementById('avg_conv_canvas2').getContext('2d');
 
 const microCtx = microCanvas.getContext('2d');
 
 const firstLayerCtxs = [ convCtx0, convCtx1, convCtx2, convCtx3,
     convCtx4, convCtx5, convCtx6, convCtx7, convCtx8, convCtx9 ];
+
+const secondLayerCtxs = [ convCtx10, convCtx11, convCtx12, convCtx13,
+    convCtx14, convCtx15, convCtx16, convCtx17, convCtx18, convCtx19]
 
 function setMouseCoords(e) {
     mouse.x = e.offsetX;
@@ -44,10 +56,10 @@ debug.addEventListener('click', () => {
     }
     displayAverage(avgConvCtx1, avgConvMatrix1, 25);
 
-    displayConv(convCtx10, convMatrix1, 12, 0);
-    displayConv(convCtx11, convMatrix1, 12, 1);
-    displayConv(convCtx12, convMatrix1, 12, 2);
-    displayConv(convCtx13, convMatrix1, 12, 3);
+    for (let i = 0; i < 10; i++) {
+        displayConv(secondLayerCtxs[i], convMatrix1, 12, i);
+    }
+    displayAverage(avgConvCtx2, avgConvMatrix2, 25);
 });
 
 buttonClear.addEventListener('click', () => {
