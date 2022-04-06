@@ -1,4 +1,6 @@
 .main {
+    height: 80%;
+    margin-left: 5%;
     display: flex;
 }
 
@@ -9,9 +11,18 @@
 .description, .csv {
     background-color: aliceblue;
     border-radius: 20px;
-    margin-left: 17%;
     margin-top: 1%;
     padding: 20px 20px 20px 20px;
+}
+
+.tree_block {
+    width: 100%;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+    margin-right: 5%;
+    margin-left: 0.3%;
+    margin-top: 0.3%;
+    background-color: aliceblue;
 }
 
 .description div, .csv div {
@@ -27,6 +38,7 @@
 }
 
 .csv textarea {
+    height: 30%;
     width: 100%;
 }
 
@@ -53,4 +65,120 @@
     background: #d5e6ff;
     border-radius: 10px;
     padding: 5px 5px 5px 5px;
+}
+
+
+.tree,
+.tree ul,
+.tree li
+{
+    color: #e0e0e0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.tree
+{
+    margin: auto;
+    margin-top: 1em;
+    text-align: center;
+}
+
+.tree,
+.tree ul
+{
+    display: table;
+}
+
+.tree ul
+{
+    width: 100%;
+}
+
+.tree li
+{
+    display: table-cell;
+    padding: .5em 0;
+    vertical-align: top;
+}
+
+.tree li:before
+{
+    border-bottom: solid 2px #e0e0e0;
+    content: "";
+    font-size: 1.25em;
+    color: #9e9e9e;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: -1.1em;
+}
+
+.tree li:first-child:before
+{
+    content: 'yes';
+    text-align: start;
+    left: 50%;
+}
+
+.tree li:last-child:before
+{
+    content: 'no';
+    text-align: end;
+    right: 50%;
+}
+
+.tree>li:last-child:before
+{
+    content: '';
+}
+
+.tree span
+{
+    border: solid .1em #e0e0e0;
+    background-color: #b27c7c;
+    font-size: 1.3em;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 0 1em 1.5em;  /* changing height/width of tree */
+    padding: .2em .5em;
+    position: relative;
+    transition: all .4s ease;
+}
+
+
+.tree ul:before,
+.tree span:before
+{
+    outline: solid 1px #e0e0e0;
+    content: "";
+    left: 50%;
+    position: absolute;
+}
+
+/* next 2 selectors is for changing heights of tree's edges */
+.tree ul:before
+{
+    height: 1.9em;
+    top: -1.9em;
+}
+
+.tree span:before
+{
+    height: .3em;
+    top: -.4em;
+}
+
+.tree>li
+{
+    margin-top: 0;
+}
+
+.tree>li:before,
+.tree>li:after,
+.tree>li>span:before
+{
+    outline: none;
 }
