@@ -15,7 +15,7 @@ function setMouseCoords(e) {
 
 
 debug.addEventListener('click', () => {
-    writeToMatrix(microCtx)
+    writeToMatrix(microCtx);
     displayMicro();
     evaluate();
 })

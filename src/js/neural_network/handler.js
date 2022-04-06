@@ -23,13 +23,10 @@ function evaluate() {
 }
 
 function displayMicro() {
-    let data = microCtx.getImageData(0, 0, 28, 28).data
-    let count = 0
     for (let y = 0; y < 28; y++) {
         for (let x = 0; x < 28; x++) {
-            let color = data[count];
+            let color = 255 * matrix[y][x];
             drawRect(microCtx, x, y, 1, 1, rgbToHex(color, color, color))
-            count += 4
         }
     }
 }
@@ -40,11 +37,14 @@ function clearMatrix() {
 
 function writeToMatrix(microContext) {
     let data = microContext.getImageData(0, 0, 28, 28).data
+
     for (let y = 0; y < 28; y++) {
         for (let x = 0; x < 28; x++) {
-            let index = (y * 28 + x) * 4 + 1;
+            let index = (y * 28 + x) * 4 + 3;
             console.log(data[index] / 255);
-            matrix[y][x] = data[index];
+            matrix[y][x] = data[index] / 255;
         }
     }
+
+    console.log(matrix);
 }
