@@ -1,5 +1,5 @@
 window.onload = initialize_network;
-let weights, l0, l1, l2, model;
+let weights, l0, l1, l2, l3, model;
 let matrix = math.zeros([28, 28]);
 
 async function initialize_network() {
@@ -9,35 +9,42 @@ async function initialize_network() {
     l2 = weights['layer2']
     l3 = weights['layer3']
     model = new Model();
-    model.add(new LayerConv2d(1, 4, kernel_size=4, padding=0,
-          stride=1, activationFunction="relu",l0.kernels,l0.biases))
-    model.add(new LayerConv2d(4, 3, kernel_size=3, padding=0,
-              stride=2, activationFunction="relu",l1.kernels,l1.biases))
-    model.add(new LayerDense(432, 32, "relu",l2.weights,l2.biases))
-    model.add(new LayerDense(32, 10, "softmax",l3.weights,l3.biases))
+    model.add(new LayerConv2d(1, 10, 4, 0,
+        1, "relu", l0.kernels, l0.biases))
+    model.add(new LayerConv2d(10, 10, 3, 0,
+        2, "relu", l1.kernels, l1.biases))
+    model.add(new LayerDense(1440, 32, "relu", l2.weights, l2.biases))
+    model.add(new LayerDense(32, 10, "softmax", l3.weights, l3.biases))
 }
 
-async function evaluate() {
-    let response = model.forward(nj.array(matrix).reshape(28,28, 1)).tolist()
+function evaluate() {
+    let response = model.forward(nj.array(matrix).reshape(28, 28, 1)).tolist()
     drawProbs(response);
 }
 
+function displayMicro() {
+    let data = microCtx.getImageData(0, 0, 28, 28).data
+    let count = 0
+    for (let y = 0; y < 28; y++) {
+        for (let x = 0; x < 28; x++) {
+            let color = data[count];
+            drawRect(microCtx, x, y, 1, 1, rgbToHex(color, color, color))
+            count += 4
+        }
+    }
+}
 
 function clearMatrix() {
     matrix = math.zeros([28, 28]);
 }
 
-function writeToMatrix(start, end) {
-    let x_s = Math.floor(27 * start.x / canvas.width);
-    let y_s = Math.floor(27 * start.y / canvas.height);
-    let x_e = Math.floor(27 * end.x / canvas.width);
-    let y_e = Math.floor(27 * end.y / canvas.height);
-    matrix[y_s][x_s] = 1;
-    matrix[y_e][x_e] = 1;
-    for (let x = -1; x <= 1; x++) {
-        for (let y = -1; y <= 1; y++) {
-            matrix[y_s + y][x_s + x] = Math.min(1, matrix[y_s + y][x_s + x] + 0.1);
-            matrix[y_e + y][x_e + x] = Math.min(1, matrix[y_e + y][x_e + x] + 0.1);
+function writeToMatrix(microContext) {
+    let data = microContext.getImageData(0, 0, 28, 28).data
+    for (let y = 0; y < 28; y++) {
+        for (let x = 0; x < 28; x++) {
+            let index = (y * 28 + x) * 4 + 1;
+            console.log(data[index] / 255);
+            matrix[y][x] = data[index];
         }
     }
 }

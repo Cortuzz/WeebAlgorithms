@@ -1,22 +1,27 @@
 let mouse = {x: 0, y: 0};
 let drawing = false;
-
+let cnt = 0;
 const debug = document.getElementById('pause')
 const buttonClear = document.getElementById('clear')
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
+const microCanvas = document.getElementById('micro_canvas')
+const microCtx = microCanvas.getContext('2d')
 
 function setMouseCoords(e) {
     mouse.x = e.offsetX;
     mouse.y = e.offsetY;
 }
 
+
 debug.addEventListener('click', () => {
+    writeToMatrix(microCtx)
+    displayMicro();
     evaluate();
-    console.log(matrix);
 })
 buttonClear.addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    microCtx.clearRect(0, 0, 28, 28);
     probCtx.clearRect(30, 0, probCanvas.width, probCanvas.height)
     clearMatrix();
 })
@@ -24,12 +29,20 @@ canvas.addEventListener('mousedown', (e) => {
     drawing = true;
     setMouseCoords(e);
 });
+
+function stopDrawing() {
+    if (drawing) {
+        drawing = false;
+        ctx.stroke();
+        ctx.beginPath();
+        microCtx.stroke();
+        microCtx.beginPath();
+    }
+}
+
 canvas.addEventListener('mousemove', (e) => makeStroke(e));
-canvas.addEventListener('mouseup', () => {
-    drawing = false;
-    ctx.stroke();
-    ctx.beginPath();
-});
+canvas.addEventListener('mouseout', stopDrawing);
+canvas.addEventListener('mouseup', stopDrawing);
 
 
 function makeStroke(e) {
@@ -39,17 +52,20 @@ function makeStroke(e) {
     let start = Object.assign({}, mouse);
     setMouseCoords(e);
     let end = Object.assign({}, mouse);
-    writeToMatrix(start, end);
-    draw(start,25)
-    evaluate();
+    draw(ctx, start, end, 25)
+    let microStart = {x: 27 * start.x / canvas.width, y: 27 * start.y / canvas.height};
+    let microEnd = {x: 27 * end.x / canvas.width, y: 27 * end.y / canvas.height};
+    draw(microCtx, microStart, microEnd, 1)
+
+    cnt++;
 }
 
-function draw(start,radius) {
-    ctx.lineWidth = radius;
-    ctx.lineCap = 'round';
-    ctx.moveTo(start.x, start.y);
-    ctx.lineTo(mouse.x, mouse.y);
-    ctx.stroke();
+function draw(context, start, end, radius) {
+    context.lineWidth = radius;
+    context.lineCap = 'round';
+    context.moveTo(start.x, start.y);
+    context.lineTo(end.x, end.y);
+    context.stroke();
 }
 
 function drawCircle(context, x, y, radius, arcColor, fillColor) {
