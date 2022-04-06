@@ -4,8 +4,8 @@ async function dfs(eraser) {
     directions = createDirections(eraser, directions);
 
     while (directions.length > 0) {
-        const index = getRandomIndex(directions);
-        const [dy, dx] = directions[index];
+        let index = getRandomIndex(directions);
+        let [dy, dx] = directions[index];
         let newEraser =  {
             x: eraser.x + dx,
             y: eraser.y + dy
@@ -15,7 +15,7 @@ async function dfs(eraser) {
 
             if (mazeChecker) {
                 refreshTable();
-                await delay(10);
+                await sleep(10);
             }
             await dfs(newEraser);
         }
@@ -45,7 +45,7 @@ async function Prim(start) {
 
             if (mazeChecker) {
                 refreshTable();
-                await delay(10);
+                await sleep(10);
             }
 
             directions = [];
@@ -70,7 +70,7 @@ async function Prim(start) {
 
             if (mazeChecker) {
                 refreshTable();
-                await delay(10);
+                await sleep(10);
             }
 
             for (let i = 0; i < directions.length; i++) {
@@ -160,7 +160,7 @@ async function Kruskal() {
 
             if (mazeChecker) {
                 refreshTable();
-                await delay(10);
+                await sleep(10);
             }
         }
 
@@ -189,15 +189,9 @@ function createDirections(cell, arr) {
 }
 
 function getRandomIndex(array) {
-    const index = Math.floor(Math.random() * array.length);
-    return index;
+    return Math.floor(Math.random() * array.length);
 }
 
 function equals(cell1, cell2) {
     return cell1.x === cell2.x && cell1.y === cell2.y
 }
-
-function delay(timeout) {
-    return new Promise(resolve => setTimeout(resolve, timeout))
-}
-

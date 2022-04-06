@@ -14,7 +14,7 @@ window.addEventListener("load", () => {
     window.generateButton.addEventListener("click", generateMaze);
     window.clearButton.addEventListener("click", clear);
     window.changeRandBorder.addEventListener("input", changeRandomBorder);
-    window.generatingMazeChecker.addEventListener("click", e => { mazeChecker = window.generatingMazeChecker.checked; });
+    window.generatingMazeChecker.addEventListener("click", ()=> { mazeChecker = window.generatingMazeChecker.checked; });
 });
 
 let defaultLog = "Алгоритм не запущен";
@@ -28,6 +28,7 @@ let randomBorder = 0.5;
 let finder;
 let start, finish;
 let mazeChecker = true;
+let runningMaze = false;
 let currentState = 'start', handleStates, viewStates;
 
 function init() {
@@ -147,27 +148,33 @@ async function generateMaze() {
     dropPoints();
     disableCurrentFinder();
 
+    if (runningMaze) {
+        window.log.textContent = "Лабиринт генерируется";
+        window.log_block.style.borderColor = "red";
+        await sleep(1500);
+        window.log.textContent = defaultLog;
+        window.log_block.style.borderColor = defaultColor;
+
+        return;
+    }
+
     for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
             maze[i][j] = 1
         }
     }
 
-    let start = {
-        x: 0,
-        y: 0
-    }
-
     let select = document.getElementById('selectMaze');
     let value = select.options[select.selectedIndex].value;
+    runningMaze = true;
 
-    if (value == 'dfs') {
-        await dfs(start);
+    if (value === 'dfs') {
+        await dfs({x:0, y: 0});
     }
-    else if (value == 'prim') {
-        await Prim(start);
+    else if (value === 'prim') {
+        await Prim({x:0, y: 0});
     }
-    else if (value = 'kruscal') {
+    else if (value === 'kruscal') {
         await Kruskal();
     }
 
@@ -182,7 +189,7 @@ async function generateMaze() {
 
             if (mazeChecker) {
                 refreshTable();
-                await delay(10);
+                await sleep(10);
             }
         }
     }
@@ -198,7 +205,7 @@ async function generateMaze() {
 
             if (mazeChecker) {
                 refreshTable();
-                await delay(10);
+                await sleep(10);
             }
         }
     }
@@ -208,6 +215,7 @@ async function generateMaze() {
     }
 
     refreshTable();
+    runningMaze = false
 }
 
 function changeCellMode(event) {
