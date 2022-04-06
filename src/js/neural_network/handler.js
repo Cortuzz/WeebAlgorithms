@@ -1,8 +1,12 @@
 window.onload = initialize_network;
 let weights, l0, l1, l2, l3, model;
 let matrix = math.zeros([28, 28]);
+
 let convMatrix = math.zeros([25, 25]);
 let convMatrix1 = math.zeros([12, 12]);
+
+let avgConvMatrix1 = math.zeros([25, 25]);
+let avgConvMatrix2 = math.zeros([12, 12]);
 
 async function initialize_network() {
     weights = await fetch_data();
@@ -29,6 +33,18 @@ function displayConv(ctx, matrix, size, depth) {
     for (let y = 0; y < size; y++) {
         for (let x = 0; x < size; x++) {
             let color = Math.round(255 * matrix[y][x][depth]);
+            if (size === 25) {
+                avgConvMatrix1[y][x] = Math.min(avgConvMatrix1[y][x] + color / 7, 240);
+            }
+            drawRect(ctx, x, y, 1, 1, rgbToHex(240 - color, 248 - color, 255 - color))
+        }
+    }
+}
+
+function displayAverage(ctx, matrix, size) {
+    for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+            let color = matrix[y][x];
             drawRect(ctx, x, y, 1, 1, rgbToHex(240 - color, 248 - color, 255 - color))
         }
     }
@@ -36,6 +52,9 @@ function displayConv(ctx, matrix, size, depth) {
 
 function clearMatrix() {
     matrix = math.zeros([28, 28]);
+
+    avgConvMatrix1 = math.zeros([25, 25]);
+    avgConvMatrix2 = math.zeros([12, 12]);
 }
 
 function writeToMatrix(microContext) {

@@ -18,6 +18,9 @@
     border-radius: 20px;
     margin-left: 100px;
     margin-top: 1%;
+}
+
+.description, .control, .probability_block {
     padding: 20px 20px 20px 20px;
 }
 
@@ -30,19 +33,20 @@
 .micro_canvas_block_right, .micro_canvas_block_left {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    height: 400px
 }
 
 .micro_canvas_block_left {
-    grid-template-columns: repeat(3, 1fr);
-    height: 420px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
 }
 
 .conv {
-    height: 181.5px;
-    padding: 8px 5px 5px 0;
+    margin: 4px 4px 4px 4px;
+    border: #1e1d1d solid 1px;
+    border-radius: 10px;
+    height: 120px;
+    width: 92%;
 }
-
 
 .control div {
     display: flex;

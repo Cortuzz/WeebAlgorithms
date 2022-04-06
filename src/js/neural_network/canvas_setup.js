@@ -1,50 +1,62 @@
 let mouse = {x: 0, y: 0};
 let drawing = false;
-const debug = document.getElementById('pause')
-const buttonClear = document.getElementById('clear')
-const canvas = document.getElementById('canvas')
-const ctx = canvas.getContext('2d')
-const microCanvas = document.getElementById('micro_canvas')
+const debug = document.getElementById('pause');
+const buttonClear = document.getElementById('clear');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const microCanvas = document.getElementById('micro_canvas');
 
-const convCtx1 = document.getElementById('conv_canvas1').getContext('2d')
-const convCtx2 = document.getElementById('conv_canvas2').getContext('2d')
-const convCtx3 = document.getElementById('conv_canvas3').getContext('2d')
-const convCtx4 = document.getElementById('conv_canvas4').getContext('2d')
-const convCtx5 = document.getElementById('conv_canvas5').getContext('2d')
-const convCtx6 = document.getElementById('conv_canvas6').getContext('2d')
-const convCtx7 = document.getElementById('conv_canvas7').getContext('2d')
-const convCtx8 = document.getElementById('conv_canvas8').getContext('2d')
-const convCtx9 = document.getElementById('conv_canvas9').getContext('2d')
+const convCtx0 = document.getElementById('conv_canvas0').getContext('2d');
+const convCtx1 = document.getElementById('conv_canvas1').getContext('2d');
+const convCtx2 = document.getElementById('conv_canvas2').getContext('2d');
+const convCtx3 = document.getElementById('conv_canvas3').getContext('2d');
 
-const microCtx = microCanvas.getContext('2d')
+const convCtx4 = document.getElementById('conv_canvas4').getContext('2d');
+const convCtx5 = document.getElementById('conv_canvas5').getContext('2d');
+const convCtx6 = document.getElementById('conv_canvas6').getContext('2d');
+const convCtx7 = document.getElementById('conv_canvas7').getContext('2d');
+
+const convCtx8 = document.getElementById('conv_canvas8').getContext('2d');
+const convCtx9 = document.getElementById('conv_canvas9').getContext('2d');
+const convCtx10 = document.getElementById('conv_canvas10').getContext('2d');
+const avgConvCtx1 = document.getElementById('avg_conv_canvas1').getContext('2d');
+
+const convCtx11 = document.getElementById('conv_canvas11').getContext('2d');
+const convCtx12 = document.getElementById('conv_canvas12').getContext('2d');
+const convCtx13 = document.getElementById('conv_canvas13').getContext('2d');
+
+const microCtx = microCanvas.getContext('2d');
+
+const firstLayerCtxs = [ convCtx0, convCtx1, convCtx2, convCtx3,
+    convCtx4, convCtx5, convCtx6, convCtx7, convCtx8, convCtx9 ];
 
 function setMouseCoords(e) {
     mouse.x = e.offsetX;
     mouse.y = e.offsetY;
 }
 
-
 debug.addEventListener('click', () => {
     writeToMatrix(microCtx);
     evaluate();
 
-    displayConv(convCtx1, convMatrix, 25, 0);
-    displayConv(convCtx2, convMatrix, 25, 1);
-    displayConv(convCtx3, convMatrix, 25, 2);
-    displayConv(convCtx4, convMatrix, 25, 3);
-    displayConv(convCtx5, convMatrix, 25, 4);
+    for (let i = 0; i < 10; i++) {
+        displayConv(firstLayerCtxs[i], convMatrix, 25, i);
+    }
+    displayAverage(avgConvCtx1, avgConvMatrix1, 25);
 
-    displayConv(convCtx6, convMatrix1, 12, 0);
-    displayConv(convCtx7, convMatrix1, 12, 1);
-    displayConv(convCtx8, convMatrix1, 12, 2);
-    displayConv(convCtx9, convMatrix1, 12, 3);
-})
+    displayConv(convCtx10, convMatrix1, 12, 0);
+    displayConv(convCtx11, convMatrix1, 12, 1);
+    displayConv(convCtx12, convMatrix1, 12, 2);
+    displayConv(convCtx13, convMatrix1, 12, 3);
+});
+
 buttonClear.addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     microCtx.clearRect(0, 0, 28, 28);
     probCtx.clearRect(30, 0, probCanvas.width, probCanvas.height)
     clearMatrix();
-})
+});
+
 canvas.addEventListener('mousedown', (e) => {
     drawing = true;
     setMouseCoords(e);
