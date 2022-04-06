@@ -1,6 +1,8 @@
 window.onload = initialize_network;
 let weights, l0, l1, l2, l3, model;
 let matrix = math.zeros([28, 28]);
+let convMatrix = math.zeros([25, 25]);
+let convMatrix1 = math.zeros([12, 12]);
 
 async function initialize_network() {
     weights = await fetch_data();
@@ -22,11 +24,16 @@ function evaluate() {
     drawProbs(response);
 }
 
-function displayMicro() {
-    for (let y = 0; y < 28; y++) {
-        for (let x = 0; x < 28; x++) {
-            let color = 255 * matrix[y][x];
-            drawRect(microCtx, x, y, 1, 1, rgbToHex(color, color, color))
+function displayConv(ctx, matrix, size, depth) {
+    matrix = matrix.tolist();
+    for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+            let color = Math.round(255 * matrix[y][x][depth]);
+            if (color === 255) {
+                drawRect(ctx, x, y, 1, 1, "#f0f8ff")
+            } else {
+                drawRect(ctx, x, y, 1, 1, rgbToHex(color, color, color))
+            }
         }
     }
 }
@@ -41,10 +48,7 @@ function writeToMatrix(microContext) {
     for (let y = 0; y < 28; y++) {
         for (let x = 0; x < 28; x++) {
             let index = (y * 28 + x) * 4 + 3;
-            console.log(data[index] / 255);
             matrix[y][x] = data[index] / 255;
         }
     }
-
-    console.log(matrix);
 }

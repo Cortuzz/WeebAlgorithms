@@ -1,11 +1,13 @@
 let mouse = {x: 0, y: 0};
 let drawing = false;
-let cnt = 0;
 const debug = document.getElementById('pause')
 const buttonClear = document.getElementById('clear')
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 const microCanvas = document.getElementById('micro_canvas')
+const convCtx = document.getElementById('conv_canvas').getContext('2d')
+const convCtx1 = document.getElementById('conv_canvas1').getContext('2d')
+const convCtx2 = document.getElementById('conv_canvas2').getContext('2d')
 const microCtx = microCanvas.getContext('2d')
 
 function setMouseCoords(e) {
@@ -16,8 +18,10 @@ function setMouseCoords(e) {
 
 debug.addEventListener('click', () => {
     writeToMatrix(microCtx);
-    displayMicro();
     evaluate();
+    displayConv(convCtx, convMatrix, 25, 0);
+    displayConv(convCtx1, convMatrix, 25, 1);
+    displayConv(convCtx2, convMatrix1, 12, 0);
 })
 buttonClear.addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -57,7 +61,6 @@ function makeStroke(e) {
     let microEnd = {x: 27 * end.x / canvas.width, y: 27 * end.y / canvas.height};
     draw(microCtx, microStart, microEnd, 1)
 
-    cnt++;
 }
 
 function draw(context, start, end, radius) {

@@ -2,11 +2,18 @@
     display: flex;
 }
 
+.picture {
+    position: fixed;
+    top: 30% !important;
+    left: 2% !important;
+    transform: scale(0.4) scaleX(-1) translateX(40%) !important;
+}
+
 .main_block {
     width: 30%;
 }
 
-.description, .instruction, .control, .probability_block,.micro_canvas_block{
+.description, .control, .probability_block, .micro_canvas_block {
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 100px;
@@ -14,18 +21,23 @@
     padding: 20px 20px 20px 20px;
 }
 
-.probability_block,.micro_canvas_block{
+.probability_block, .micro_canvas_block {
     margin-top: 2.5%;
     margin-left: 3% !important;
     width: 100%;
 }
-.micro_canvas_block{
-  height: 200px
+
+.micro_canvas_block {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 400px
 }
 
-#micro_canvas{
-    height: 100%
+#micro_canvas, #conv_canvas, #conv_canvas1, #conv_canvas2 {
+    height: 181.5px;
+    padding: 8px 5px 5px 0;
 }
+
 
 .control div {
     display: flex;

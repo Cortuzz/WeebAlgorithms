@@ -90,6 +90,7 @@ class Model {
 
     forward(input) {
         this.layers[0].forward(input)
+        convMatrix = this.layers[0].output.clone()
         for (let i = 1; i < this.size; i++) {
             if (this.layers[i] instanceof LayerDense) {
                 let prev_input = this.layers[i - 1].output;
@@ -97,6 +98,7 @@ class Model {
                 this.layers[i].forward(prev_input)
             } else {
                 this.layers[i].forward(this.layers[i - 1].output);
+                convMatrix1 = this.layers[i].output.clone()
             }
 
         }
