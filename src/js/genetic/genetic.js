@@ -71,9 +71,9 @@ async function geneticAlg() {
     drawLines(bestGene.individ);
     drawPoints();
 
-    while (numGeneration - numBest <= 1000) {
+    while (numGeneration - numBest < 1000) {
         await sleep(1);
-        population = createNextGeneration();
+        createNextGeneration();
         numGeneration++;
 
         if (population[0].fitness < bestGene.fitness) {
