@@ -9,11 +9,11 @@ function swap(arr, i, j) {
     arr[i] = arr[j];
     arr[j] = temp;
 
-    return arr;
+    return arr.slice();
 }
 
 function shuffle(arr) {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 10000; i++) {
         let index1 = Math.floor(Math.random() * arr.length);
         let index2 = index1;
 
@@ -24,8 +24,7 @@ function shuffle(arr) {
         arr = swap(arr, index1, index2);
     }
 
-    console.log(arr);
-    return arr;
+    return arr.slice();
 }
 
 function createStructure(individ, fitness) {
@@ -73,6 +72,7 @@ async function geneticAlg() {
     drawPoints();
 
     while (numGeneration - numBest <= 1000) {
+        await sleep(1);
         population = createNextGeneration();
         numGeneration++;
 

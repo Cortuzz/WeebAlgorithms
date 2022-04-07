@@ -42,12 +42,28 @@ function createNextGeneration() {
     return newPopulation.slice();
 }
 
+// if (newPopulation.length < totalPopulation) {
+//     newPopulation.push(createStructure(child.slice(), getCurrentDistance(child)));
+// }
+// else if (getCurrentDistance(child) < newPopulation[totalPopulation - 1].fitness) {
+//     newPopulation[totalPopulation - 1] = createStructure(child.slice(), getCurrentDistance(child));
+//     newPopulation.sort(function (a, b) {
+//         if (a.fitness < b.fitness) {
+//             return -1;
+//         } else if (a.fitness > b.fitness) {
+//             return 1;
+//         }
+//         else {
+//             return 0;
+//         }
+//     });
+// }
+
 function crossOver(parent1, parent2) {
     let child = [];
     let index1 = Math.floor(Math.random() * (parent1.length - 1));
     let index2 = Math.floor(Math.random() * (parent1.length - (index1 - 1)) + (index1 + 1));
     child = parent1.slice(index1, index2 + 1);
-    console.log(index1, index2 + 1)
 
     for (let num of parent2) {
         if (!child.includes(num)) {
