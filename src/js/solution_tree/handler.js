@@ -1,4 +1,5 @@
-window.startButton.addEventListener("click", generateTree);
+//window.startButton.addEventListener("click");
+window.buildTree.addEventListener("click", generateTree);
 let csvText = document.getElementById("csv");
 let ulTree = document.getElementById("tree");
 
@@ -115,7 +116,6 @@ function generateTree() {
     let tree = new Tree(trainingData);
     tree.createTree(0, trainingData);
     printTree(tree.root, ulTree);
-    console.log(ulTree.childElementCount);
 }
 
 /*

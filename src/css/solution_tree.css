@@ -64,15 +64,27 @@
     margin-top: 2% !important;
 }
 
-#startButton, .action #startCellButton {
+#startButton {
     border-radius: 10px;
     background-color: lightgreen;
     border: 2px solid forestgreen;
 }
 
-#startButton:hover, .action #startCellButton:hover {
+#startButton:hover {
     background-color: forestgreen;
     border: 2px solid lightgreen;
+    transform: scale(0.95);
+}
+
+#buildTree {
+    border-radius: 10px;
+    background-color: palevioletred;
+    border: 2px solid darkred;
+}
+
+#buildTree:hover {
+    background-color: darkred;
+    border: 2px solid palevioletred;
     transform: scale(0.95);
 }
 
@@ -160,7 +172,7 @@
     font-size: 1.3em;
     border-radius: 10px;
     display: inline-block;
-    margin: 0 1em 1.5em;  /* changing height/width of tree */
+    margin: 0 1em 1.5em;
     padding: .2em .5em;
     position: relative;
     transition: all .4s ease;
@@ -176,7 +188,6 @@
     position: absolute;
 }
 
-/* next 2 selectors is for changing heights of tree's edges */
 .tree ul:before
 {
     height: 1.9em;

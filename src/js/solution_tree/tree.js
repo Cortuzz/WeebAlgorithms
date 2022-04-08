@@ -29,35 +29,34 @@ class Tree {
     }
 
     getGiniImpurityForLeaf(data) {
-        let impurity = 1;
+        let impurity = 0;
         let uniqueParams = [];
         let lastColumn = headline.length - 1;
 
         for (let i = 0; i < data.length; i++) {
             if (!uniqueParams.includes(data[i][lastColumn])) {
                 let probability = this.getAlignmentNumber(data, lastColumn, data[i][lastColumn]) / data.length;
-                impurity -= Math.pow(probability, 2);
+                impurity += Math.pow(probability, 2);
                 uniqueParams.push(data[i][lastColumn]);
             }
         }
 
-        return impurity;
+        return 1 - impurity;
     }
 
-    getTotalGiniImpurity(trueBranch, falseBranch) {
-        let probabilityTrue = trueBranch.length / (trueBranch.length + falseBranch.length);
-        let probabilityFalse = falseBranch.length / (trueBranch.length + falseBranch.length);
+    getTotalGiniImpurity(dataForTrueBranch, dataForFalseBranch) {
+        let probabilityTrue = dataForTrueBranch.length / (dataForTrueBranch.length + dataForFalseBranch.length);
+        let probabilityFalse = dataForFalseBranch.length / (dataForTrueBranch.length + dataForFalseBranch.length);
 
-        return probabilityTrue * this.getGiniImpurityForLeaf(trueBranch) + probabilityFalse * this.getGiniImpurityForLeaf(falseBranch);
+        return probabilityTrue * this.getGiniImpurityForLeaf(dataForTrueBranch) + probabilityFalse * this.getGiniImpurityForLeaf(dataForFalseBranch);
     }
 
     createNameForNode(columnName, value) {
         let name = columnName;
 
         if (typeof value !== "string") {
-            name += ` >= ${value}`;
-        }
-        else {
+            name += ` < ${value}`;
+        } else {
             name += ` = ${value}`;
         }
 
@@ -66,60 +65,60 @@ class Tree {
     }
 
     divideBranches(data, column, value) {
-        let trueBranch = [];
-        let falseBranch = [];
+        let dataForTrueBranch = [];
+        let dataForFalseBranch = [];
 
         if (typeof value === "string") {
             for (let i = 0; i < data.length; i++) {
                 if (data[i][column] === value) {
-                    trueBranch.push(data[i]);
-                }
-                else {
-                    falseBranch.push(data[i]);
+                    dataForTrueBranch.push(data[i]);
+                } else {
+                    dataForFalseBranch.push(data[i]);
                 }
             }
         }
         else {
             for (let i = 0; i < data.length; i++) {
-                if (data[i][column] >= value) {
-                    trueBranch.push(data[i]);
-                }
-                else {
-                    falseBranch.push(data[i]);
+                if (data[i][column] < value) {
+                    dataForTrueBranch.push(data[i]);
+                } else {
+                    dataForFalseBranch.push(data[i]);
                 }
             }
         }
 
-        return [trueBranch, falseBranch];
+        return [dataForTrueBranch, dataForFalseBranch];
     }
 
-    //!!!!!!!!!
     getBestSplit(data) {
         let uniqueParams = [];
-        let bestSplitNode = new Node("", -1, "", -1, "", Infinity);
+        let bestSplitNode = new Node("split", -1, "", -1, "", Infinity);
+        let sameImpurity = [bestSplitNode];
 
         for (let i = 0; i < headline.length - 1; i++) {
             for (let j = 0; j < data.length - 1; j++) {
                 if (!uniqueParams.includes(data[j][i])) {
                     let nameForNode = this.createNameForNode(headline[i], data[j][i]);
-                    let [trueBranch, falseBranch] = this.divideBranches(data, i, data[j][i]);
+                    let [dataForTrueBranch, dataForFalseBranch] = this.divideBranches(data, i, data[j][i]);
 
-                    if (trueBranch.length === 0 || falseBranch.length === 0) {
-                        continue;
+                    if (dataForTrueBranch.length !== 0 && dataForFalseBranch.length !== 0) {
+
+                        let currentImpurity = this.getTotalGiniImpurity(dataForTrueBranch, dataForFalseBranch);
+
+                        if (currentImpurity < bestSplitNode.impurirty) {
+                            bestSplitNode = new Node("split", -1, data[j][i], i, nameForNode, currentImpurity);
+                            sameImpurity = [bestSplitNode];
+                        } else if (currentImpurity == bestSplitNode.impurirty) {
+                            sameImpurity.push(new Node("split", -1, data[j][i], i, nameForNode, currentImpurity));
+                        }
+
+                        uniqueParams.push(data[j][i]);
                     }
-
-                    let currentImpurity = this.getTotalGiniImpurity(trueBranch, falseBranch);
-
-                    if (currentImpurity <= bestSplitNode.impurirty) {
-                        bestSplitNode = new Node("", -1, data[j][i], i, nameForNode, currentImpurity);
-                    }
-
-                    uniqueParams.push(data[j][i]);
                 }
             }
         }
 
-        return bestSplitNode;
+        return sameImpurity[Math.floor(Math.random() * sameImpurity.length)];
     }
 
     createLeaf(level, data) {
@@ -135,7 +134,7 @@ class Tree {
             }
         }
 
-        return new Node("leaf", level, uniqueParams, lastColumn, names, -1);
+        return new Node("leaf", level, uniqueParams, lastColumn, names);
     }
 
     createDecisionNode(level, node, trueBranch, falseBranch) {
@@ -163,6 +162,7 @@ class Tree {
         let trueBranch = this.createTree(level, dataForTrueBranch);
         let falseBranch = this.createTree(level, dataForFalseBranch);
         this.root = this.createDecisionNode(level, bestSplitNode, trueBranch, falseBranch);
+
         return this.root;
     }
 }
