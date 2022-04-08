@@ -148,15 +148,17 @@ class Tree {
 
     createTree(level, data) {
         level++;
-
         let bestSplitNode = this.getBestSplit(data);
+
         if (bestSplitNode.impurirty === Infinity) {
-            return this.createLeaf(level, data);
+            this.root = this.createLeaf(level, data);
+            return this.root;
         }
 
         let [dataForTrueBranch, dataForFalseBranch] = this.divideBranches(data, bestSplitNode.columnOfValue, bestSplitNode.value);
         if (this.getGiniImpurityForLeaf(data) === this.getTotalGiniImpurity(dataForTrueBranch, dataForFalseBranch)) {
-            return this.createLeaf(level, data);
+            this.root = this.createLeaf(level, data);
+            return this.root;
         }
 
         let trueBranch = this.createTree(level, dataForTrueBranch);

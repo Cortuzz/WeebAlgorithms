@@ -6,22 +6,24 @@ let ulTree = document.getElementById("tree");
 let headline;
 let tree;
 
+let defaultLog = "Алгоритм не запущен";
+let defaultColor = "coral";
+
 function csvNormalizer(text) {
     let data = [ ];
     let currentData = [ ];
     let textString = "";
 
     for (let symbol of text) {
-        if (symbol === " ") {
-        } else if (symbol === "\n") {
+        if (symbol === "\n") {
             if (textString) {
-                currentData.push(textString);
+                currentData.push(textString.trim());
             }
             data.push(currentData);
             textString = "";
             currentData = [ ];
         } else if (symbol === ",") {
-            currentData.push(textString);
+            currentData.push(textString.trim());
             textString = "";
         } else {
             textString += symbol;
@@ -34,19 +36,26 @@ function csvNormalizer(text) {
         data.push(currentData);
     }
 
+    while (getIndexOfEmptyString(data) !== -1) {
+        data.splice(getIndexOfEmptyString(data), 1);
+    }
+
+    if (data.length === 0) {
+        return data;
+    }
+
     headline = data[0];
     data.splice(0, 1);
 
     if (isCorrect(data)) {
         return toFloat(data);
-    }
-    else {
-        console.log("error");
+    } else {
+        return [];
     }
 }
 
 function isCorrect(data) {
-    const columnsNumber = headline.length;
+    let columnsNumber = headline.length;
 
     for (let i = 0; i < data.length; i++) {
         if (data[i].length !== columnsNumber) {
@@ -55,6 +64,16 @@ function isCorrect(data) {
     }
 
     return true;
+}
+
+function getIndexOfEmptyString(data) {
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].length == 0) {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 function toFloat(data) {
@@ -109,13 +128,22 @@ function clearTree(parent, node) {
     });
 }
 
-function generateTree() {
-    clearTree(ulTree, ulTree.childNodes[0]);
-
+async function generateTree() {
     let trainingData = csvNormalizer(csvText.value);
-    let tree = new Tree(trainingData);
-    tree.createTree(0, trainingData);
-    printTree(tree.root, ulTree);
+
+    if (trainingData.length !== 0) {
+        clearTree(ulTree, ulTree.childNodes[0]);
+        let tree = new Tree(trainingData);
+        tree.createTree(0, trainingData);
+        printTree(tree.root, ulTree);
+    } else {
+        window.log.textContent = "Неверные данные";
+        window.log_block.style.borderColor = "red";
+        await sleep(1500);
+
+        window.log.textContent = defaultLog;
+        window.log_block.style.borderColor = defaultColor;
+    }
 }
 
 /*
