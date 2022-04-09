@@ -98,24 +98,70 @@ function toFloat(data) {
 }
 
 function printTree(node, ulTree) {
-    let li = document.createElement("li");
-    let span = document.createElement("span");
+    //let li = document.createElement("li");
+    //let span = document.createElement("span");
 
-    span.innerHTML = `${node.name}`;
-    li.appendChild(span);
-    ulTree.appendChild(li);
-    node.domElement = span;
+    let ul = document.createElement("ul");
+
+    if (node.type === "leaf") {
+        while (node.name.length !== 0) {
+            let li = document.createElement("li");
+            let span = document.createElement("span");
+            console.log(node.name)
+            span.innerHTML = `${node.name.pop()}`;
+            li.appendChild(span);
+            ulTree.appendChild(li);
+            node.domElement = span;
+        }
+    } else {
+        let li = document.createElement("li");
+        let span = document.createElement("span");
+        span.innerHTML = `${node.name}`;
+        li.appendChild(span);
+        ulTree.appendChild(li);
+        node.domElement = span;
+        li.appendChild(ul);
+    }
 
     if (node.type === "leaf") {
         return;
     }
 
-    let ul = document.createElement("ul");
-    li.appendChild(ul);
+    //let ul = document.createElement("ul");
+    //li.appendChild(ul);
 
     printTree(node.trueBranch, ul);
     printTree(node.falseBranch, ul);
 }
+
+// if (node.type === "leaf") {
+//     while (node.name.length !== 0) {
+//         let li = document.createElement("li");
+//         let span = document.createElement("span");
+//         console.log(node.name)
+//         span.innerHTML = `${node.name.pop()}`;
+//         li.appendChild(span);
+//         ulTree.appendChild(li);
+//         node.domElement = span;
+//     }
+// } else {
+//     let li = document.createElement("li");
+//     let span = document.createElement("span");
+//     span.innerHTML = `${node.name}`;
+//     li.appendChild(span);
+//     ulTree.appendChild(li);
+//     node.domElement = span;
+// }
+//
+// if (node.type === "leaf") {
+//     return;
+// }
+//
+// let ul = document.createElement("ul");
+// li.appendChild(ul);
+//
+// printTree(node.trueBranch, ul);
+// printTree(node.falseBranch, ul);
 
 function clearTree(parent, node) {
     if (node == null || !node.childElementCount) {

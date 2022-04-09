@@ -150,7 +150,7 @@ class Tree {
         level++;
         let bestSplitNode = this.getBestSplit(data);
 
-        if (bestSplitNode.impurirty === Infinity) {
+        if (bestSplitNode.impurirty === Infinity || level > 2) {
             this.root = this.createLeaf(level, data);
             return this.root;
         }
