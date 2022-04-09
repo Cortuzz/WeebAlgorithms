@@ -1,11 +1,13 @@
 class Node {
-    constructor(type, level, value, columnOfValue, name, impurity) {
+    constructor(type, level, value, columnOfValue, name, impurity, fromTrueBranch) {
         this.type = type;
         this.level = level;
         this.value = value;
         this.columnOfValue = columnOfValue;
         this.name = name;
-        this.impurirty = impurity
+        this.impurirty = impurity;
+        this.fromTrueBranch = !!fromTrueBranch;
+
         this.trueBranch = null;
         this.falseBranch = null;
     }
@@ -121,7 +123,7 @@ class Tree {
         return sameImpurity[Math.floor(Math.random() * sameImpurity.length)];
     }
 
-    createLeaf(level, data) {
+    createLeaf(level, data, isTrueBranch) {
         let uniqueParams = [];
         let names = [];
         let lastColumn = headline.length - 1;
@@ -134,7 +136,7 @@ class Tree {
             }
         }
 
-        return new Node("leaf", level, uniqueParams, lastColumn, names);
+        return new Node("leaf", level, uniqueParams, lastColumn, names, undefined, isTrueBranch);
     }
 
     createDecisionNode(level, node, trueBranch, falseBranch) {
@@ -146,23 +148,23 @@ class Tree {
         return node;
     }
 
-    createTree(level, data) {
+    createTree(level, data, isTrueBranch) {
         level++;
         let bestSplitNode = this.getBestSplit(data);
 
         if (bestSplitNode.impurirty === Infinity || level > 2) {
-            this.root = this.createLeaf(level, data);
+            this.root = this.createLeaf(level, data, isTrueBranch);
             return this.root;
         }
 
         let [dataForTrueBranch, dataForFalseBranch] = this.divideBranches(data, bestSplitNode.columnOfValue, bestSplitNode.value);
         if (this.getGiniImpurityForLeaf(data) === this.getTotalGiniImpurity(dataForTrueBranch, dataForFalseBranch)) {
-            this.root = this.createLeaf(level, data);
+            this.root = this.createLeaf(level, data, isTrueBranch);
             return this.root;
         }
 
-        let trueBranch = this.createTree(level, dataForTrueBranch);
-        let falseBranch = this.createTree(level, dataForFalseBranch);
+        let trueBranch = this.createTree(level, dataForTrueBranch, true);
+        let falseBranch = this.createTree(level, dataForFalseBranch, false);
         this.root = this.createDecisionNode(level, bestSplitNode, trueBranch, falseBranch);
 
         return this.root;

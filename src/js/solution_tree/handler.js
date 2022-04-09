@@ -107,7 +107,12 @@ function printTree(node, ulTree) {
         while (node.name.length !== 0) {
             let li = document.createElement("li");
             let span = document.createElement("span");
-            console.log(node.name)
+            if (node.fromTrueBranch) {
+                li.setAttribute("class", "trueBranch");
+            } else {
+                li.setAttribute("class", "falseBranch")
+            }
+
             span.innerHTML = `${node.name.pop()}`;
             li.appendChild(span);
             ulTree.appendChild(li);

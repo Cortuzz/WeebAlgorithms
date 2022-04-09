@@ -97,10 +97,7 @@
     padding: 5px 5px 5px 5px;
 }
 
-.tree,
-.tree ul,
-.tree li
-{
+.tree, .tree ul, .tree li {
     color: #e0e0e0;
     list-style: none;
     margin: 0;
@@ -108,33 +105,26 @@
     position: relative;
 }
 
-.tree
-{
-    margin: auto;
-    margin-top: 1em;
+.tree {
+    margin: 1em auto auto;
     text-align: center;
 }
 
-.tree,
-.tree ul
-{
+.tree, .tree ul {
     display: table;
 }
 
-.tree ul
-{
+.tree ul {
     width: 100%;
 }
 
-.tree li
-{
+.tree li {
     display: table-cell;
     padding: .5em 0;
     vertical-align: top;
 }
 
-.tree li:before
-{
+.tree li:before {
     border-bottom: solid 2px #e0e0e0;
     content: "";
     font-size: 1.25em;
@@ -145,27 +135,19 @@
     top: -1.1em;
 }
 
-.tree li:first-child:before
-{
-    content: 'yes';
+.tree li:first-child:before, .tree li.trueBranch:before {
+    content: 'true';
     text-align: start;
     left: 50%;
 }
 
-.tree li:last-child:before
-{
-    content: 'no';
+.tree li:last-child:before, .tree li.falseBranch:before {
+    content: 'false';
     text-align: end;
     right: 50%;
 }
 
-.tree>li:last-child:before
-{
-    content: '';
-}
-
-.tree span
-{
+.tree span {
     border: solid .1em #e0e0e0;
     background-color: #b27c7c;
     font-size: 1.3em;
@@ -177,36 +159,27 @@
     transition: all .4s ease;
 }
 
-
-.tree ul:before,
-.tree span:before
-{
+.tree ul:before, .tree span:before {
     outline: solid 1px #e0e0e0;
     content: "";
     left: 50%;
     position: absolute;
 }
 
-.tree ul:before
-{
+.tree ul:before {
     height: 1.9em;
     top: -1.9em;
 }
 
-.tree span:before
-{
+.tree span:before {
     height: .3em;
     top: -.4em;
 }
 
-.tree>li
-{
+.tree>li {
     margin-top: 0;
 }
 
-.tree>li:before,
-.tree>li:after,
-.tree>li>span:before
-{
+.tree>li:before, .tree>li:after, .tree>li>span:before {
     outline: none;
 }
