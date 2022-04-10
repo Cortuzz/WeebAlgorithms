@@ -1,6 +1,7 @@
 .main {
     height: 80%;
     margin-left: 5%;
+    margin-right: 5%;
     display: flex;
 }
 
@@ -8,18 +9,34 @@
     width: 30%;
 }
 
-.description, .csv {
+.description, .csv, .predict, .setDeep {
     background-color: aliceblue;
     border-radius: 20px;
     margin-top: 1%;
     padding: 20px 20px 20px 20px;
 }
 
+.params {
+    width: 40%;
+}
+
+.currentDeep, .fieldDeep {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+input.fieldDeep {
+    width: 100%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+
 .tree_block {
     width: 100%;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;
-    margin-right: 5%;
+    margin-right: 0.3%;
     margin-left: 0.3%;
     margin-top: 0.3%;
     background-color: aliceblue;
@@ -43,7 +60,7 @@
     background-color: #f9f9fd;
 }
 
-.description div, .csv div {
+.description div, .csv div, .predict div {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -57,6 +74,11 @@
 
 .csv textarea {
     height: 30%;
+    width: 100%;
+}
+
+.predict textarea {
+    height: 10%;
     width: 100%;
 }
 

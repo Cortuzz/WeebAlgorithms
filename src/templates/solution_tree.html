@@ -37,7 +37,7 @@
             <h3>Дерево решений<br></h3>
             <a>Данный алгоритм генерирует дерево решений на основе csv данных.</a>
             <div>
-                <button id="startButton">Начать выполнение</button>
+                <button id="startButton">Начать поиск</button>
             </div>
 
             <div>
@@ -49,6 +49,25 @@
             </div>
         </div>
 
+        <div class="setDeep">
+            <div class="currentDeep">
+                <h6>Максимальная глубина:&nbsp</h6>
+                <h6 id="fieldDeepView"></h6>
+            </div>
+
+            <div class="fieldDeep">
+                <h6>1</h6>
+                <input class="fieldDeep" id="fieldDeep" type="range" min="1" max="100">
+                <h6>100</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="tree_block">
+        <ul class="tree" id="tree"></ul>
+    </div>
+
+    <div class="params">
         <div class="csv">
             <h3>Ввод csv данных</h3>
             <h6 style="margin-top: 3px">Разделитель:&nbsp</h6>
@@ -64,10 +83,12 @@
 
             <textarea id="csv"></textarea>
         </div>
-    </div>
 
-    <div class="tree_block">
-        <ul class="tree" id="tree"></ul>
+        <div class="predict">
+            <h3>Ввод csv данных</h3>
+
+            <textarea id="predict"></textarea>
+        </div>
     </div>
 
 </div>

@@ -169,6 +169,30 @@ class Tree {
 
         return this.root;
     }
+
+    predict(predictData) {
+        let currentNode = this.root;
+
+        while (currentNode.type !== "leaf") {
+            //document.getElementById().setAttribute("style", "background-color: ");
+
+            if (typeof currentNode.value === "string") {
+                if (predictData[currentNode.columnOfValue] === currentNode.value) {
+                    currentNode = currentNode.trueBranch;
+                } else {
+                    currentNode = currentNode.falseBranch;
+                }
+            } else {
+                if (predictData[currentNode.columnOfValue] < currentNode.value) {
+                    currentNode = currentNode.trueBranch;
+                } else {
+                    currentNode = currentNode.falseBranch;
+                }
+            }
+        }
+
+        //document.getElementById().setAttribute("style", "background-color: ");
+    }
 }
 
 // Green,3,500,Apple

@@ -1,15 +1,25 @@
-//window.startButton.addEventListener("click");
 window.buildTree.addEventListener("click", generateTree);
+window.startButton.addEventListener("click", prediction);
+window.fieldDeep.addEventListener("input", changeDeep);
+
 let csvText = document.getElementById("csv");
+let predictText = document.getElementById("predict");
 let ulTree = document.getElementById("tree");
 
-let headline;
+let headline = [];
 let tree;
 
 let defaultLog = "Алгоритм не запущен";
 let defaultColor = "coral";
+let maxDeep;
 
-function csvNormalizer(text) {
+function changeDeep(event) {
+    maxDeep = event.target.value;
+    window.fieldDeepView.textContent = maxDeep;
+    maxDeep--;
+}
+
+function normalizer(text, type) {
     let data = [ ];
     let currentData = [ ];
     let textString = "";
@@ -40,25 +50,25 @@ function csvNormalizer(text) {
         data.splice(getIndexOfEmptyString(data), 1);
     }
 
-    if (data.length === 0) {
-        return data;
+    if (type === "csv") {
+        headline = data[0];
+        data.splice(0, 1);
     }
 
-    headline = data[0];
-    data.splice(0, 1);
-
-    if (isCorrect(data)) {
+    if (data.length === 0) {
+        return data;
+    } else if (isCorrect(data, type)) {
         return toFloat(data);
     } else {
-        return [];
+        return undefined;
     }
 }
 
-function isCorrect(data) {
+function isCorrect(data, type) {
     let columnsNumber = headline.length;
 
     for (let i = 0; i < data.length; i++) {
-        if (data[i].length !== columnsNumber) {
+        if (data[i].length !== ((type === "csv") ? columnsNumber:columnsNumber - 1)) {
             return false;
         }
     }
@@ -104,7 +114,9 @@ function printTree(node, ulTree) {
     let ul = document.createElement("ul");
 
     if (node.type === "leaf") {
-        while (node.name.length !== 0) {
+        let names = node.name.slice();
+
+        while (names.length !== 0) {
             let li = document.createElement("li");
             let span = document.createElement("span");
             if (node.fromTrueBranch) {
@@ -118,6 +130,7 @@ function printTree(node, ulTree) {
             ulTree.appendChild(li);
             node.domElement = span;
         }
+        return;
     } else {
         let li = document.createElement("li");
         let span = document.createElement("span");
@@ -126,10 +139,6 @@ function printTree(node, ulTree) {
         ulTree.appendChild(li);
         node.domElement = span;
         li.appendChild(ul);
-    }
-
-    if (node.type === "leaf") {
-        return;
     }
 
     //let ul = document.createElement("ul");
@@ -175,25 +184,64 @@ function clearTree(parent, node) {
 
     parent.removeChild(node);
     node.childNodes.forEach(childNode => {
-       clearTree(node, childNode);
+        clearTree(node, childNode);
     });
 }
 
 async function generateTree() {
-    let trainingData = csvNormalizer(csvText.value);
+    let trainingData = normalizer(csvText.value, "csv");
 
-    if (trainingData.length !== 0) {
-        clearTree(ulTree, ulTree.childNodes[0]);
-        let tree = new Tree(trainingData);
-        tree.createTree(0, trainingData);
-        printTree(tree.root, ulTree);
-    } else {
-        window.log.textContent = "Неверные данные";
+    if (trainingData === undefined) {
+        window.log.textContent = "Неверные csv данные";
         window.log_block.style.borderColor = "red";
         await sleep(1500);
 
         window.log.textContent = defaultLog;
         window.log_block.style.borderColor = defaultColor;
+        headline = [];
+    } else if (trainingData.length === 0) {
+        window.log.textContent = "Недостаточно csv данных";
+        window.log_block.style.borderColor = "red";
+        await sleep(1500);
+
+        window.log.textContent = defaultLog;
+        window.log_block.style.borderColor = defaultColor;
+        headline = [];
+    } else {
+        clearTree(ulTree, ulTree.childNodes[0]);
+        tree = new Tree(trainingData);
+        tree.createTree(0, trainingData);
+        printTree(tree.root, ulTree);
+    }
+}
+
+async function prediction() {
+    let predictData = normalizer(predictText.value, "predict");
+
+    if (tree === undefined) {
+        window.log.textContent = "Постройте дерево";
+        window.log_block.style.borderColor = "red";
+        await sleep(1500);
+
+        window.log.textContent = defaultLog;
+        window.log_block.style.borderColor = defaultColor;
+    } else if (predictData === undefined) {
+        window.log.textContent = "Неверные predict данные";
+        window.log_block.style.borderColor = "red";
+        await sleep(1500);
+
+        window.log.textContent = defaultLog;
+        window.log_block.style.borderColor = defaultColor;
+    } else if (predictData.length === 0) {
+        window.log.textContent = "Недостаточно predict данных";
+        window.log_block.style.borderColor = "red";
+        await sleep(1500);
+
+        window.log.textContent = defaultLog;
+        window.log_block.style.borderColor = defaultColor;
+    } else {
+        //!!!!!!!!!!
+        tree.predict(predictData[0]);
     }
 }
 
