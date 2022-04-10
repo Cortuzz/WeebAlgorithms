@@ -59,7 +59,7 @@ debug.addEventListener('click', () => {
     for (let i = 0; i < 10; i++) {
         displayConv(secondLayerCtxs[i], convMatrix1, 12, i);
     }
-    displayAverage(avgConvCtx2, avgConvMatrix2, 25);
+    displayAverage(avgConvCtx2, avgConvMatrix2, 12);
 });
 
 buttonClear.addEventListener('click', () => {
