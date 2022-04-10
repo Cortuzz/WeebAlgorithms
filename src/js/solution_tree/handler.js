@@ -125,7 +125,7 @@ function printTree(node, ulTree) {
                 li.setAttribute("class", "falseBranch")
             }
 
-            span.innerHTML = `${node.name.pop()}`;
+            span.innerHTML = `${names.pop()}`;
             li.appendChild(span);
             ulTree.appendChild(li);
             node.domElement = span;
@@ -134,6 +134,15 @@ function printTree(node, ulTree) {
     } else {
         let li = document.createElement("li");
         let span = document.createElement("span");
+
+        if (tree.root !== node) {
+            if (node.fromTrueBranch) {
+                li.setAttribute("class", "trueBranch");
+            } else {
+                li.setAttribute("class", "falseBranch")
+            }
+        }
+
         span.innerHTML = `${node.name}`;
         li.appendChild(span);
         ulTree.appendChild(li);
@@ -240,7 +249,9 @@ async function prediction() {
         window.log.textContent = defaultLog;
         window.log_block.style.borderColor = defaultColor;
     } else {
-        //!!!!!!!!!!
+        clearTree(ulTree, ulTree.childNodes[0]);
+        printTree(tree.root, ulTree);
+
         tree.predict(predictData[0]);
     }
 }

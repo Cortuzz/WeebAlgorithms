@@ -139,11 +139,12 @@ class Tree {
         return new Node("leaf", level, uniqueParams, lastColumn, names, undefined, isTrueBranch);
     }
 
-    createDecisionNode(level, node, trueBranch, falseBranch) {
+    createDecisionNode(level, node, trueBranch, falseBranch, fromTrueBranch) {
         node.type = "decision";
         node.level = level;
         node.trueBranch = trueBranch;
         node.falseBranch = falseBranch;
+        node.fromTrueBranch = fromTrueBranch;
 
         return node;
     }
@@ -152,7 +153,7 @@ class Tree {
         level++;
         let bestSplitNode = this.getBestSplit(data);
 
-        if (bestSplitNode.impurirty === Infinity || level > 2) {
+        if (bestSplitNode.impurirty === Infinity || level > maxDeep) {
             this.root = this.createLeaf(level, data, isTrueBranch);
             return this.root;
         }
@@ -165,7 +166,7 @@ class Tree {
 
         let trueBranch = this.createTree(level, dataForTrueBranch, true);
         let falseBranch = this.createTree(level, dataForFalseBranch, false);
-        this.root = this.createDecisionNode(level, bestSplitNode, trueBranch, falseBranch);
+        this.root = this.createDecisionNode(level, bestSplitNode, trueBranch, falseBranch, isTrueBranch);
 
         return this.root;
     }
@@ -174,7 +175,7 @@ class Tree {
         let currentNode = this.root;
 
         while (currentNode.type !== "leaf") {
-            //document.getElementById().setAttribute("style", "background-color: ");
+            currentNode.domElement.style.color = "#000000";
 
             if (typeof currentNode.value === "string") {
                 if (predictData[currentNode.columnOfValue] === currentNode.value) {
@@ -191,7 +192,7 @@ class Tree {
             }
         }
 
-        //document.getElementById().setAttribute("style", "background-color: ");
+        currentNode.domElement.style.color = "#000000";
     }
 }
 

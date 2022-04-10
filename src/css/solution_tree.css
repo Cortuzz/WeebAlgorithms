@@ -147,7 +147,6 @@ input.fieldDeep {
 }
 
 .tree li:before {
-    border-bottom: solid 2px #e0e0e0;
     content: "";
     font-size: 1.25em;
     color: #9e9e9e;
@@ -157,13 +156,15 @@ input.fieldDeep {
     top: -1.1em;
 }
 
-.tree li:first-child:before, .tree li.trueBranch:before {
+.tree li.trueBranch:before {
+    border-bottom: solid 2px #e0e0e0;
     content: 'true';
     text-align: start;
     left: 50%;
 }
 
-.tree li:last-child:before, .tree li.falseBranch:before {
+.tree li.falseBranch:before {
+    border-bottom: solid 2px #e0e0e0;
     content: 'false';
     text-align: end;
     right: 50%;
