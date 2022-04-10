@@ -11,7 +11,9 @@ let tree;
 
 let defaultLog = "Алгоритм не запущен";
 let defaultColor = "coral";
-let maxDeep;
+let maxDeep = 10;
+window.fieldDeepView.textContent = maxDeep;
+window.fieldDeep.value = maxDeep;
 
 function changeDeep(event) {
     maxDeep = event.target.value;
@@ -119,6 +121,8 @@ function printTree(node, ulTree) {
         while (names.length !== 0) {
             let li = document.createElement("li");
             let span = document.createElement("span");
+            span.setAttribute("class", "leaf");
+
             if (node.fromTrueBranch) {
                 li.setAttribute("class", "trueBranch");
             } else {
@@ -128,7 +132,7 @@ function printTree(node, ulTree) {
             span.innerHTML = `${names.pop()}`;
             li.appendChild(span);
             ulTree.appendChild(li);
-            node.domElement = span;
+            node.domElement.push(span);
         }
         return;
     } else {
@@ -202,7 +206,7 @@ async function generateTree() {
 
     if (trainingData === undefined) {
         window.log.textContent = "Неверные csv данные";
-        window.log_block.style.borderColor = "red";
+        window.log_block.style.borderColor = "darkred";
         await sleep(1500);
 
         window.log.textContent = defaultLog;
@@ -210,7 +214,7 @@ async function generateTree() {
         headline = [];
     } else if (trainingData.length === 0) {
         window.log.textContent = "Недостаточно csv данных";
-        window.log_block.style.borderColor = "red";
+        window.log_block.style.borderColor = "darkred";
         await sleep(1500);
 
         window.log.textContent = defaultLog;
@@ -228,22 +232,22 @@ async function prediction() {
     let predictData = normalizer(predictText.value, "predict");
 
     if (tree === undefined) {
-        window.log.textContent = "Постройте дерево";
-        window.log_block.style.borderColor = "red";
+        window.log.textContent = "Сначала постройте дерево";
+        window.log_block.style.borderColor = "darkred";
         await sleep(1500);
 
         window.log.textContent = defaultLog;
         window.log_block.style.borderColor = defaultColor;
     } else if (predictData === undefined) {
-        window.log.textContent = "Неверные predict данные";
-        window.log_block.style.borderColor = "red";
+        window.log.textContent = "Неверный запрос";
+        window.log_block.style.borderColor = "darkred";
         await sleep(1500);
 
         window.log.textContent = defaultLog;
         window.log_block.style.borderColor = defaultColor;
     } else if (predictData.length === 0) {
-        window.log.textContent = "Недостаточно predict данных";
-        window.log_block.style.borderColor = "red";
+        window.log.textContent = "Пустой запрос";
+        window.log_block.style.borderColor = "darkred";
         await sleep(1500);
 
         window.log.textContent = defaultLog;
@@ -252,7 +256,7 @@ async function prediction() {
         clearTree(ulTree, ulTree.childNodes[0]);
         printTree(tree.root, ulTree);
 
-        tree.predict(predictData[0]);
+        await tree.predict(predictData[0]);
     }
 }
 

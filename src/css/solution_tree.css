@@ -158,6 +158,7 @@ input.fieldDeep {
 
 .tree li.trueBranch:before {
     border-bottom: solid 2px #e0e0e0;
+    color: #1aa81a;
     content: 'true';
     text-align: start;
     left: 50%;
@@ -165,6 +166,7 @@ input.fieldDeep {
 
 .tree li.falseBranch:before {
     border-bottom: solid 2px #e0e0e0;
+    color: #be1260;
     content: 'false';
     text-align: end;
     right: 50%;
@@ -172,7 +174,7 @@ input.fieldDeep {
 
 .tree span {
     border: solid .1em #e0e0e0;
-    background-color: #b27c7c;
+    background-color: #9f5d5d;
     font-size: 1.3em;
     border-radius: 10px;
     display: inline-block;
@@ -180,6 +182,10 @@ input.fieldDeep {
     padding: .2em .5em;
     position: relative;
     transition: all .4s ease;
+}
+
+.tree span.leaf {
+    background-color: #862222;
 }
 
 .tree ul:before, .tree span:before {

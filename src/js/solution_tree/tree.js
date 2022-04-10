@@ -1,3 +1,5 @@
+let maxTreeLevel = 0;
+
 class Node {
     constructor(type, level, value, columnOfValue, name, impurity, fromTrueBranch) {
         this.type = type;
@@ -7,6 +9,8 @@ class Node {
         this.name = name;
         this.impurirty = impurity;
         this.fromTrueBranch = !!fromTrueBranch;
+
+        this.domElement = [ ];
 
         this.trueBranch = null;
         this.falseBranch = null;
@@ -59,10 +63,9 @@ class Tree {
         if (typeof value !== "string") {
             name += ` < ${value}`;
         } else {
-            name += ` = ${value}`;
+            name += ` is ${value}`;
         }
 
-        name += " ?";
         return name;
     }
 
@@ -151,6 +154,8 @@ class Tree {
 
     createTree(level, data, isTrueBranch) {
         level++;
+        maxTreeLevel = Math.max(level, maxTreeLevel);
+
         let bestSplitNode = this.getBestSplit(data);
 
         if (bestSplitNode.impurirty === Infinity || level > maxDeep) {
@@ -171,11 +176,11 @@ class Tree {
         return this.root;
     }
 
-    predict(predictData) {
+    async predict(predictData) {
         let currentNode = this.root;
 
         while (currentNode.type !== "leaf") {
-            currentNode.domElement.style.color = "#000000";
+            currentNode.domElement.style.background = "#7037b6";
 
             if (typeof currentNode.value === "string") {
                 if (predictData[currentNode.columnOfValue] === currentNode.value) {
@@ -190,9 +195,13 @@ class Tree {
                     currentNode = currentNode.falseBranch;
                 }
             }
+
+            await sleep(1000 / maxTreeLevel);
         }
 
-        currentNode.domElement.style.color = "#000000";
+        currentNode.domElement.forEach(element => {
+            element.style.background = "forestgreen";
+        });
     }
 }
 
