@@ -1,5 +1,9 @@
 const populationCanvas = document.getElementById('populationCanvas');
 const populationCtx = populationCanvas.getContext('2d');
+
+const markupCanvas = document.getElementById('markupCanvas');
+const markupCtx = markupCanvas.getContext('2d');
+
 const populationView = document.getElementById('populationView');
 let maxYValue;
 let maxColonySizeValue;
@@ -23,17 +27,21 @@ function initPopulationCanvas() {
 
     maxColonySizeValue = canvasHeight - maxYValue * maxColonySize / (50 * (maxY - 1) * Math.ceil(maxColonySize / 500)) - 20;
     drawRect(populationCtx, 0, 0, canvasWidth, canvasHeight, "aliceblue");
-    drawLine(populationCtx, 25, canvasWidth, maxColonySizeValue, maxColonySizeValue, "darkred");
+    drawRect(markupCtx, 0, 0, markupCanvas.width, markupCanvas.height, "aliceblue");
+
+    drawLine(populationCtx, 0, canvasWidth, maxColonySizeValue, maxColonySizeValue, "darkred");
     populationCtx.stroke();
     populationCtx.fillStyle = "black";
+    markupCtx.fillStyle = "black";
 
     for (let i = 0; i < maxY; i++) {
         let y = canvasHeight - i * 22 - 20;
-        populationCtx.fillText(50 * i * Math.ceil(maxColonySize / 500) + "", 0, y);
-        drawLine(populationCtx, 20, 25, y, y);
+        markupCtx.fillText(50 * i * Math.ceil(maxColonySize / 500) + "", 0, y);
+        drawLine(markupCtx, 20, 25, y, y);
         if (!i) {
-            populationCtx.lineTo(populationCanvas.width, y);
+            drawLine(populationCtx, 0, populationCanvas.width, y, y);
         }
+        markupCtx.stroke();
         populationCtx.stroke();
     }
 
@@ -41,15 +49,16 @@ function initPopulationCanvas() {
         let x = 20 + i * 21;
 
         if (!(i % 10)) {
-            drawLine(populationCtx, x + 4, x + 4, 245, 230);
+            drawLine(populationCtx, x - 21, x - 21, 245, 230);
         } else if (!(i % 5)) {
-            drawLine(populationCtx, x + 4, x + 4, 240, 230);
+            drawLine(populationCtx, x - 21, x - 21, 240, 230);
         } else {
-            drawLine(populationCtx, x + 4, x + 4, 235, 230);
+            drawLine(populationCtx, x - 21, x - 21, 235, 230);
         }
 
         if (!i) {
-            populationCtx.lineTo(x + 4, 0);
+            drawLine(markupCtx, x + 4, x + 4, 230, 0);
+            markupCtx.stroke();
         }
         populationCtx.stroke();
     }
@@ -61,7 +70,7 @@ function changePopulationCanvas(epoch, population) {
     let populationValue = ratio * (populationCanvas.height - maxColonySizeValue - 20);
 
     let yVal = populationCanvas.height - populationValue - 20;
-    let xVal = epoch + 24;
+    let xVal = epoch;
 
     drawLine(populationCtx, xVal, xVal, yVal, 230, color);
     populationCtx.stroke();
