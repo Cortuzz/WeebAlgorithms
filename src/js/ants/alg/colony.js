@@ -45,7 +45,7 @@ class Colony {
     }
 
     addAnt(AntType) {
-        if (this.ants.length > this.maxSize || this.increasingPopulation) {
+        if (this.ants.length >= this.maxSize || this.increasingPopulation) {
             return;
         }
         let ant;
