@@ -36,6 +36,9 @@ class AntsSimulation {
     updateField(points) {
         points.forEach(point => {
             this.field[point.y][point.x].value = point.value;
+            this.antsField[point.y][point.x].forEach(ant => {
+                ant.hp = 0;
+            });
         });
     }
 

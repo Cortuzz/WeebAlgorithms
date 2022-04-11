@@ -121,7 +121,7 @@ function drawCircle(x, y, radius, arcColor, fillColor) {
     }
 }
 
-function drawRect(x, y, w, h, color) {
+function drawRect(ctx, x, y, w, h, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, w, h);
 }
@@ -149,5 +149,5 @@ function drawPoint(x, y, color, w, simulation) {
         }
     }
 
-    drawRect(x, y, w, w, color);
+    drawRect(ctx, x, y, w, w, color);
 }

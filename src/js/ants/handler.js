@@ -19,6 +19,7 @@ function init() {
     ctx.rect(0, 0, WIDTH, HEIGHT);
     ctx.fill();
     window.currentActionView.innerText = viewStates[currentState];
+    initPopulationCanvas();
     fieldBuilder();
 }
 
@@ -165,6 +166,7 @@ async function startAnts() {
     let epochs = 1000000;
 
     for (let epoch = 0; epoch < epochs; epoch++) {
+        changePopulationCanvas(epoch, colonies[0].ants.length);
         let ants = [ ];
         if (updatedPoints) {
             simulation.updateField(updatedPoints);

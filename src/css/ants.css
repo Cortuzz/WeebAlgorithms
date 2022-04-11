@@ -9,8 +9,16 @@ input {
 }
 
 .main_block {
+    margin-left: 5%;
     margin-top: 0.3%;
     width: 40%;
+}
+
+.additional_block {
+    margin-top: 0.3%;
+    margin-left: 0.5%;
+    margin-right: 5%;
+    width: 25%;
 }
 
 .fieldSize {
@@ -18,21 +26,11 @@ input {
     justify-content: start !important;
 }
 
-.description, .action, .size, .danger_block {
+.description, .action, .size, .population_block, .danger_block {
+    margin-bottom: 7px;
     background-color: aliceblue;
     border-radius: 20px;
-    margin-left: 19.5%;
-    margin-top: 1%;
     padding: 20px 20px 20px 20px;
-}
-
-.description {
-    margin-top: 0 !important;
-}
-
-.danger_block {
-    margin-left: 1% !important;
-    margin-right: 19.5% !important;
 }
 
 .description div, .action div {

@@ -23,7 +23,7 @@ window.changeSize.addEventListener("input", e =>
 { colonySize = +e.target.value; window.sizeView.textContent = colonySize; });
 
 window.changeMaxSize.addEventListener("input", e =>
-{ maxColonySize = +e.target.value; window.maxSizeView.textContent = maxColonySize; });
+{ maxColonySize = +e.target.value; window.maxSizeView.textContent = maxColonySize; initPopulationCanvas(); });
 
 window.changeAntSpeed.addEventListener("input", e =>
 { speed = +e.target.value; window.speedView.textContent = speed; });
@@ -139,7 +139,7 @@ function changeLock() {
 function clearMarkers() {
     for (let i = 0; i < HEIGHT; i++) {
         for (let j = 0; j < WIDTH; j++) {
-            drawRect(i, j, 1, 1, "aliceblue");
+            drawRect(ctx, i, j, 1, 1, "aliceblue");
         }
     }
 }
