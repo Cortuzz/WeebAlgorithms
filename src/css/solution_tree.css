@@ -178,7 +178,7 @@ input.fieldDeep {
     font-size: 1.3em;
     border-radius: 10px;
     display: inline-block;
-    margin: 0 1em 1.5em;
+    margin: 1.5em 1em 1.5em;
     padding: .2em .5em;
     position: relative;
     transition: all .4s ease;
@@ -196,13 +196,13 @@ input.fieldDeep {
 }
 
 .tree ul:before {
-    height: 1.9em;
-    top: -1.9em;
+    height: 2.5em;
+    top: -2em;
 }
 
 .tree span:before {
-    height: .3em;
-    top: -.4em;
+    height: 1.4em;
+    top: -1.5em;
 }
 
 .tree>li {
