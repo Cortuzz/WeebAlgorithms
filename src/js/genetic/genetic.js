@@ -1,7 +1,7 @@
 let totalPopulation;
-let numGeneration;
-let numBest;
-let population ;
+let numOfGeneration;
+let numOfBestGene;
+let population;
 let bestGene;
 
 function swap(arr, i, j) {
@@ -56,9 +56,8 @@ function createFirstGeneration() {
 
 async function geneticAlg() {
     totalPopulation = cities.length;
-    numGeneration = 1;
-    numBest = 1;
-
+    numOfGeneration = 1;
+    numOfBestGene = 1;
     population = [];
 
     bestGene = {
@@ -71,44 +70,51 @@ async function geneticAlg() {
     drawLines(bestGene.individ);
     drawPoints();
 
-    while (numGeneration - numBest < 1000) {
+    while (numOfGeneration - numOfBestGene < 500) {
         await sleep(1);
         createNextGeneration();
-        numGeneration++;
+        numOfGeneration++;
 
         if (population[0].fitness < bestGene.fitness) {
             bestGene = population[0];
-            numBest = numGeneration;
-            renewCanvas();
-            drawLines(bestGene.individ, 2);
-            drawPoints();
-            await delay(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+            numOfBestGene = numOfGeneration;
+
+            if (bestView) {
+                renewCanvas();
+                drawLines(bestGene.individ, 2, LINE_COLOR);
+                drawPoints();
+                await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+            }
         }
-        else if (!bestView) {
+
+        if (!bestView) {
             renewCanvas();
-            drawLines(bestGene.individ, 3);
-            drawLines(population[0].individ, 1);
+            for (let i = 1; i < totalPopulation; i++) {
+                drawLines(population[i].individ, 1, "#dacb95");
+            }
+            drawLines(bestGene.individ, 3, LINE_COLOR);
             drawPoints();
-            await delay(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+            await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
         }
+
+        console.log(numOfGeneration - numOfBestGene)
+        window.log.textContent = `Номер итерации: ${numOfGeneration}`;
     }
 
     if (!bestView) {
         renewCanvas();
         drawLines(bestGene.individ, 2);
         drawPoints();
-        await delay(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+        await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
     }
 
     running = false;
     window.log.textContent = `Минимальная длина пути равна ${bestGene.fitness.toFixed(2)}`;
     window.log_block.style.borderColor = "forestgreen";
     await sleep(3000);
+
     window.log.textContent = DEFAULT_LOG_TEXT;
     window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
 }
 
-function delay(timeout) {
-    return new Promise(resolve => setTimeout(resolve, timeout))
-}
 

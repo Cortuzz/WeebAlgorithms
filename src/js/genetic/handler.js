@@ -83,8 +83,7 @@ function drawCircle(x, y, radius, color) {
 function changePoint(e) {
     if (currentState === "add") {
         createPoint(e);
-    }
-    else if (currentState === "remove") {
+    } else if (currentState === "remove") {
         removePoint(e);
     }
 }
@@ -151,35 +150,34 @@ function removePoint(e) {
     }
 }
 
-function drawLine(x1, y1, x2, y2, width) {
+function drawLine(x1, y1, x2, y2, width, color) {
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.lineWidth = width;
-    ctx.strokeStyle = LINE_COLOR;
+    ctx.strokeStyle = color
     ctx.stroke();
 }
 
-function drawLines(order, width) {
+function drawLines(order, width, color) {
     for (let i = 0; i < cities.length - 1; i++) {
-        drawLine(cities[order[i]].x, cities[order[i]].y, cities[order[i + 1]].x, cities[order[i + 1]].y, width);
+        drawLine(cities[order[i]].x, cities[order[i]].y, cities[order[i + 1]].x, cities[order[i + 1]].y, width, color);
     }
 
-    drawLine(cities[order[order.length - 1]].x, cities[order[order.length - 1]].y, cities[order[0]].x, cities[order[0]].y, width);
+    drawLine(cities[order[order.length - 1]].x, cities[order[order.length - 1]].y, cities[order[0]].x, cities[order[0]].y, width, color);
 }
 
 async function startAlg() {
     if (cities.length <= 1) {
         window.log.textContent = "Установлено мало городов";
-        window.log_block.style.borderColor = "red";
+        window.log_block.style.borderColor = "darkred";
         await sleep(1000);
         window.log.textContent = DEFAULT_LOG_TEXT;
         window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
-    }
-    else if (!running) {
+    } else if (!running) {
         running = true;
         currentState = "";
-        window.log.textContent = "Алгоритм запущен";
+        window.log.textContent = "Номер итерации: 1";
         window.log_block.style.borderColor = "lightgreen";
         geneticAlg();
     }

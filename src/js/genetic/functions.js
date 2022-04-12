@@ -28,29 +28,9 @@ function createNextGeneration() {
     }
 
     population = population.concat(newPopulation);
-
     population.sort(function (a, b) { return (a.fitness > b.fitness) ? 1:-1 });
-
     population.splice(totalPopulation);
-    //return population.slice();
 }
-
-// if (newPopulation.length < totalPopulation) {
-//     newPopulation.push(createStructure(child.slice(), getCurrentDistance(child)));
-// }
-// else if (getCurrentDistance(child) < newPopulation[totalPopulation - 1].fitness) {
-//     newPopulation[totalPopulation - 1] = createStructure(child.slice(), getCurrentDistance(child));
-//     newPopulation.sort(function (a, b) {
-//         if (a.fitness < b.fitness) {
-//             return -1;
-//         } else if (a.fitness > b.fitness) {
-//             return 1;
-//         }
-//         else {
-//             return 0;
-//         }
-//     });
-// }
 
 function crossOver(parent1, parent2) {
     let child = [];
@@ -70,18 +50,11 @@ function crossOver(parent1, parent2) {
 function mutate(arr) {
     let index1 = Math.floor(Math.random() * (arr.length - 1));
     let index2 = Math.floor(Math.random() * (arr.length - (index1 + 1)) + (index1 + 1));
-    let n = Math.floor((Math.abs(index1 - index2) + 1) / 2);
+    let mid = Math.floor((Math.abs(index1 - index2) + 1) / 2);
 
-    for (let i = 0; i < n; i++) {
-        arr = swap(arr, index1 + i, index2 - i);
+    for (let i = 0; i < mid; i++) {
+        arr = swap(arr, index1 + i, index2 - i)
     }
 
     return arr;
 }
-
-// let n = Math.floor((Math.abs(index1 - index2) + 1) / 2);
-// for (let i = 0; i < n; i++) {
-//     let t = arr[index1 + i];
-//     arr[index1 + i] = arr[index2 - i];
-//     arr[index2 - i] = t;
-// }
