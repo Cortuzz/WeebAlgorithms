@@ -30,7 +30,11 @@ class Worker extends Ant {
             return;
         }
 
-        this.pheromoneValue = Math.sqrt(this.simulation.getFoodValue(Math.floor(this.x), Math.floor(this.y)) / 50);
+        let x = Math.floor(this.x);
+        let y = Math.floor(this.y);
+
+        this.pheromoneValue = Math.sqrt(this.simulation.getFoodValue(x, y) / 50);
+        this.simulation.decayFood(x, y);
 
         this.foodFinding = false;
         this.decayedPheromones = 0;

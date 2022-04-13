@@ -46,6 +46,14 @@ class AntsSimulation {
         return this.antsField[y][x];
     }
 
+    decayFood(x, y) {
+        let value = this.field[y][x].value;
+        if (value <= 0) {
+            throw Error;
+        }
+        this.field[y][x].value = Math.max(-1, value - 5);
+    }
+
     checkEnemy(x, y, index) {
         let flag = false;
 
