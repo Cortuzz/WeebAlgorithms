@@ -49,6 +49,7 @@ async function changeMode(event) {
 
     if (action == null || action === 'clear') {
         action && clearField();
+        await Prim();
         return;
     }
 
