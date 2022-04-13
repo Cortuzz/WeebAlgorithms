@@ -12,7 +12,7 @@ const ctx = canvas.getContext('2d');
 const scale = 1;
 const pointWidth = 1;
 
-colonyColors = { 0: "black", 1: "darkred", 2: "yellow", 3: "darkblue" };
+colonyColors = { 0: "darkgreen", 1: "darkred", 2: "yellow", 3: "darkblue" };
 const maxColonyCounts = 4;
 colors = { 'colony': 'darkred', 'food': 'forestgreen', 'border': 'gray', 'clearBorder': 'aliceblue' };
 links = { 'colony': COLONY, 'border': BORDER, 'empty': EMPTY };

@@ -100,6 +100,9 @@ class AntsSimulation {
     }
 
     addAnt(index) {
+        if (this.colonies.length > 1 && Math.random() > 0.1) {
+            this.colonies[index].addAnt(Fighter);
+        }
         this.colonies[index].addAnt(Worker);
     }
 

@@ -5,6 +5,12 @@ const markupCanvas = document.getElementById('markupCanvas');
 const markupCtx = markupCanvas.getContext('2d');
 
 const populationView = document.getElementById('populationView');
+const populationView2 = document.getElementById('populationView2');
+const populationView3 = document.getElementById('populationView3');
+const populationView4 = document.getElementById('populationView4');
+
+
+let populationViews = [ populationView, populationView2, populationView3, populationView4 ]
 let maxYValue;
 let maxColonySizeValue;
 
@@ -64,19 +70,34 @@ function initPopulationCanvas() {
     }
 }
 
-function changePopulationCanvas(epoch, population) {
-    let color = getPopulationColor(population);
+function getValue(population) {
     let ratio = population / maxColonySize;
     let populationValue = ratio * (populationCanvas.height - maxColonySizeValue - 20);
 
-    let yVal = populationCanvas.height - populationValue - 20;
+    return populationCanvas.height - populationValue - 20;
+}
+
+function changePopulationCanvas(epoch, population, colonies) {
+    let color = getPopulationColor(population);
+    let yVal = getValue(population);
     let xVal = epoch;
 
-    drawLine(populationCtx, xVal, xVal, yVal, 230, color);
-    populationCtx.stroke();
+    if (colonies == null) {
+        drawLine(populationCtx, xVal, xVal, yVal, 230, color);
+        populationCtx.stroke();
 
-    populationView.textContent = population;
-    populationView.style.color = color;
+        populationView.textContent = population;
+        populationView.style.color = color;
+    } else {
+        for (let i = 0; i < colonies.length; i++) {
+            let populationSize = colonies[i].ants.length;
+            drawLine(populationCtx, xVal, xVal, getValue(populationSize), 230, colonyColors[i]);
+            populationCtx.stroke();
+
+            populationViews[i].textContent = populationSize;
+            populationViews[i].style.color = colonyColors[i];
+        }
+    }
 
     if (epoch > 650) {
         window.populationScroll.scrollBy(1, 0);
