@@ -49,7 +49,7 @@ window.changeInitialPheromones.addEventListener("input", e =>
 window.changeDecayingPheromones.addEventListener("input", e =>
 { decayingPheromones = +e.target.value; window.decayingPheromonesView.textContent = decayingPheromones; });
 
-const WIDTH = 900, HEIGHT = 600;
+const WIDTH = 720, HEIGHT = 400;
 let defaultLog = "Алгоритм не запущен";
 let defaultColor = "coral";
 
@@ -58,7 +58,7 @@ let drawingAnts = true, drawingRedPheromones = false, drawingGreenPheromones = f
 let colonySize = 500, maxColonySize = 1000;
 
 let speed = 5, moveCooldown = 5, liberty = 0.005;
-let visionDistance = 30, visionAngle = Math.PI, visionAngleStep = 0.05;
+let visionDistance = 15, visionAngle = Math.PI, visionAngleStep = 0.05;
 let redDecay = 0.999, greenDecay = 0.999, densityDecay = 0.999;
 let decayingPheromones = 0.1, initialPheromones = 8000;
 

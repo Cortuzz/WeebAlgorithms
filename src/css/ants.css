@@ -26,7 +26,7 @@ input {
     justify-content: start !important;
 }
 
-.description, .action, .size, .population_block, .danger_block {
+.description, .action, .size, .danger_block {
     margin-bottom: 7px;
     background-color: aliceblue;
     border-radius: 20px;
@@ -148,11 +148,16 @@ input {
     padding: 5px 5px 5px 5px;
 }
 
-.canvas_block {
-    width: 64.6%;
+.canvas_block, .population_block {
+    width: 99%;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;
     margin-left: 10px;
-    margin-top: 0.3%;
+    margin-top: 0.8%;
     background-color: aliceblue;
+}
+
+.canvas_block canvas {
+    border: black 1px solid;
+    border-radius: 10px;
 }

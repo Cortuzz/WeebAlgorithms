@@ -78,7 +78,7 @@ function changePopulationCanvas(epoch, population) {
     populationView.textContent = population;
     populationView.style.color = color;
 
-    if (epoch > 400) {
+    if (epoch > 650) {
         window.populationScroll.scrollBy(1, 0);
     }
 }

@@ -94,11 +94,7 @@
         </div>
     </div>
 
-    <div class="canvas_block">
-        <canvas id="canvas" width="900px" height="600px"></canvas>
-    </div>
-
-    <div class="additional_block">
+    <div class="canvas_holder" style="width: 40%">
         <div class="population_block">
             <div class="valueView">
                 <h3>Размер популяции:&nbsp</h3>
@@ -107,15 +103,21 @@
 
             <div style="display: flex">
                 <div style="overflow: auto">
-                    <canvas id="markupCanvas" width="86" height="250"></canvas>
+                    <canvas id="markupCanvas" width="108" height="250"></canvas>
                 </div>
 
                 <div id="populationScroll" style="overflow: auto">
-                    <canvas id="populationCanvas" width="2000" height="250"></canvas>
+                    <canvas id="populationCanvas" width="3000" height="250"></canvas>
                 </div>
             </div>
         </div>
+        <div class="canvas_block">
+            <canvas id="canvas" width="720px" height="400px"></canvas>
+        </div>
 
+    </div>
+
+    <div class="additional_block">
         <div class="danger_block">
             <h3>Danger zone:</h3>
             <p style="font-size: 13px">Внимание! Изменения следующих параметров могут привести к нестабильной
