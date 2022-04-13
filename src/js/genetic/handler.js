@@ -42,6 +42,8 @@ canvas.height = HEIGHT;
 const ctx = canvas.getContext('2d');
 
 let cities = [];
+let tempAdd = [];
+let tempRemove = [];
 
 let currentState = "";
 let renderTotalCities = 10;
@@ -67,7 +69,6 @@ function init() {
     ctx.fillStyle = BACKGROUND_COLOR;
     ctx.rect(0, 0, WIDTH, HEIGHT);
     ctx.fill();
-    //window.currentActionView.innerText = viewStates[currentState];
 }
 
 function checkSizing(e) {
@@ -85,6 +86,10 @@ function checkSizing(e) {
 }
 
 function setupRandomPoints() {
+    if (running) {
+        return;
+    }
+
     cities.splice(0);
     renewCanvas();
 
@@ -159,11 +164,8 @@ function createPoint(e) {
     drawCircle(x, y, 10, CIRCLE_COLOR);
 
     if (running) {
-        let temp = cities.slice();
+        tempAdd.push(point);
         running = false;
-        temp.push(point);
-        cities = temp;
-        startAlg();
     } else {
         cities.push(point);
     }
@@ -188,7 +190,16 @@ function removePoint(e) {
     let point = { x: x, y: y };
     let index = getIndexOfPoint(point, cities);
 
-    if (!running && index != -1) {
+    if (index === -1) {
+        return;
+    }
+
+    point.index = index;
+
+    if (running) {
+        tempRemove.push(point);
+        running = false;
+    } else {
         cities.splice(index, 1);
         renewCanvas();
         drawPoints();
@@ -221,8 +232,6 @@ async function startAlg() {
         window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
     } else if (!running) {
         running = true;
-        //currentState = "";
-        window.current_action_view.textContent = "";
         window.log.textContent = "Алгоритм запущен";
         window.num_iteratin.textContent = "1";
         window.log_block.style.borderColor = "lightgreen";
@@ -231,12 +240,18 @@ async function startAlg() {
 }
 
 function clearScreen() {
-    running = false;
-    window.log.textContent = DEFAULT_LOG_TEXT;
-    window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
-    window.num_iteratin.textContent = "";
-    window.best_path.textContent = "";
-    window.cities_number.textContent = cities.length;
-    window.best_number.textContent = "";
-    running = false;
+    if (running) {
+        running = false;
+        return;
+    }
+    else {
+        cities.splice(0);
+        renewCanvas();
+        window.log.textContent = DEFAULT_LOG_TEXT;
+        window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
+        window.num_iteratin.textContent = "";
+        window.best_path.textContent = "";
+        window.cities_number.textContent = cities.length;
+        window.best_number.textContent = "";
+    }
 }

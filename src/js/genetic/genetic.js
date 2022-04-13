@@ -106,9 +106,24 @@ async function geneticAlg() {
     }
 
     if (!running) {
-        cities.splice(0);
-        renewCanvas();
-        return;
+        if (tempAdd.length !== 0) {
+            cities = cities.concat(tempAdd);
+            tempAdd.splice(0);
+            startAlg();
+            return;
+        } else if (tempRemove.length !== 0) {
+            for (let point of tempRemove) {
+                cities.splice(point.index, 1);
+                tempRemove.splice(0);
+                renewCanvas();
+                startAlg();
+                return;
+            }
+
+        } else {
+            cities.splice(0);
+            renewCanvas();
+        }
     }
 
     if (!bestView) {
@@ -120,7 +135,7 @@ async function geneticAlg() {
 
     running = false;
 
-    if(cities.length !== 0) {
+    if (cities.length !== 0) {
         window.log.textContent = `Минимальная длина пути равна ${bestGene.fitness.toFixed(2)}`;
         window.log_block.style.borderColor = "forestgreen";
         await sleep(5000);
