@@ -7,7 +7,7 @@ let drawing = false;
 let colonyPoints = [ ];
 let updatedPoints = [ ];
 
-const canvas = document.getElementById('canvas')
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const scale = 1;
 const pointWidth = 1;
