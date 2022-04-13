@@ -1,17 +1,16 @@
 .main {
     display: flex;
-    width: 100%;
 }
 
 .main_block {
     margin-top: 0.3%;
-    margin-left: 5%;
+    width: 40%;
 }
 
-.description, .action {
+.description, .action, .info, .danger_block {
     background-color: aliceblue;
     border-radius: 20px;
-    width: 100%;
+    margin-left: 19.5%;
     margin-top: 1%;
     padding: 20px 20px 20px 20px;
 }
@@ -21,13 +20,18 @@
 }
 
 .canvas_block {
-    width: 100%;
+    width: 64.6%;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;
-    margin-right: 5%;
-    margin-left: 0.3%;
+    margin-left: 10px;
     margin-top: 0.3%;
     background-color: aliceblue;
+}
+
+.danger_block, .info {
+    margin-left: 1% !important;
+    margin-right: 19% !important;
+    margin-top: 0.3%;
 }
 
 .description div, .action div {
@@ -58,7 +62,7 @@ input {
     margin-top: 2% !important;
 }
 
-.currentAction {
+.currentAction, .currentIteration, .currentPathLength, .currentCities, .currentBest {
     display: flex;
     flex-direction: row !important;
     justify-content: start !important;

@@ -1,6 +1,7 @@
 let totalPopulation;
 let numOfGeneration;
 let numOfBestGene;
+let currBest;
 let population;
 let bestGene;
 
@@ -55,9 +56,10 @@ function createFirstGeneration() {
 }
 
 async function geneticAlg() {
-    totalPopulation = cities.length;
+    totalPopulation = (autoSize) ? cities.length * renderСoefficientPopulation:renderPopulation;
     numOfGeneration = 1;
     numOfBestGene = 1;
+    currBest = 0;
     population = [];
 
     bestGene = {
@@ -67,10 +69,10 @@ async function geneticAlg() {
 
     population = createFirstGeneration();
     renewCanvas();
-    drawLines(bestGene.individ);
+    drawLines(bestGene.individ, 2, LINE_COLOR);
     drawPoints();
 
-    while (numOfGeneration - numOfBestGene < 500) {
+    while (numOfGeneration - numOfBestGene < 1000 && running && numOfGeneration < renderGeneration) {
         await sleep(1);
         createNextGeneration();
         numOfGeneration++;
@@ -78,6 +80,8 @@ async function geneticAlg() {
         if (population[0].fitness < bestGene.fitness) {
             bestGene = population[0];
             numOfBestGene = numOfGeneration;
+            currBest++;
+            window.best_number.textContent = `${currBest}`;
 
             if (bestView) {
                 renewCanvas();
@@ -97,8 +101,14 @@ async function geneticAlg() {
             await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
         }
 
-        console.log(numOfGeneration - numOfBestGene)
-        window.log.textContent = `Номер итерации: ${numOfGeneration}`;
+        window.num_iteratin.textContent = `${numOfGeneration}`;
+        window.best_path.textContent = `${bestGene.fitness.toFixed(2)}`;
+    }
+
+    if (!running) {
+        cities.splice(0);
+        renewCanvas();
+        return;
     }
 
     if (!bestView) {
@@ -109,12 +119,18 @@ async function geneticAlg() {
     }
 
     running = false;
-    window.log.textContent = `Минимальная длина пути равна ${bestGene.fitness.toFixed(2)}`;
-    window.log_block.style.borderColor = "forestgreen";
-    await sleep(3000);
+
+    if(cities.length !== 0) {
+        window.log.textContent = `Минимальная длина пути равна ${bestGene.fitness.toFixed(2)}`;
+        window.log_block.style.borderColor = "forestgreen";
+        await sleep(5000);
+    }
 
     window.log.textContent = DEFAULT_LOG_TEXT;
     window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
+    window.num_iteratin.textContent = "";
+    window.best_path.textContent = "";
+    window.best_number.textContent = "";
 }
 
 

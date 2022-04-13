@@ -22,7 +22,9 @@ function createNextGeneration() {
             let parent1 = population[i].individ;
             let parent2 = population[j].individ;
             let child = crossOver(parent1, parent2);
-            child = mutate(child);
+            if (Math.random() <= renderMutation) {
+                child = mutate(child);
+            }
             newPopulation.push(createStructure(child.slice(), getCurrentDistance(child)));
         }
     }
