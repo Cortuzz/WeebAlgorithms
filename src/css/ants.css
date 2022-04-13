@@ -26,14 +26,14 @@ input {
     justify-content: start !important;
 }
 
-.description, .action, .size, .danger_block {
+.description, .action, .size, .danger_block, .boost_block {
     margin-bottom: 7px;
     background-color: aliceblue;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;
 }
 
-.description div, .action div {
+.description div, .action div, .boost_block div {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -51,7 +51,7 @@ input {
     margin-left: 2.5% !important;
 }
 
-.description button, .action button {
+.description button, .action button, .boost_block div button {
     width: 60%;
     transition: all .4s ease;
     margin: 0 auto 10px;
@@ -79,25 +79,25 @@ input {
     transform: scale(0.95);
 }
 
-#startButton, .action #foodButton {
+#startButton, .action #foodButton, #boost1 {
     border-radius: 10px;
     background-color: lightgreen;
     border: 2px solid forestgreen;
 }
 
-#startButton:hover, .action #foodButton:hover {
+#startButton:hover, .action #foodButton:hover, #boost1:hover {
     background-color: forestgreen;
     border: 2px solid lightgreen;
     transform: scale(0.95);
 }
 
-.action #colonyButton {
+.action #colonyButton, #boost2 {
     border-radius: 10px;
     background-color: palevioletred;
     border: 2px solid darkred;
 }
 
-.action #colonyButton:hover {
+.action #colonyButton:hover, #boost2:hover {
     background-color: darkred;
     border: 2px solid palevioletred;
     transform: scale(0.95);
@@ -136,6 +136,18 @@ input {
 .action #clearButton:hover {
     background-color: gray;
     border: 2px solid darkgray;
+    transform: scale(0.95);
+}
+
+#boost3 {
+    border-radius: 10px;
+    background-color: lightblue;
+    border: 2px solid darkblue;
+}
+
+#boost3:hover {
+    background-color: darkblue;
+    border: 2px solid lightblue;
     transform: scale(0.95);
 }
 

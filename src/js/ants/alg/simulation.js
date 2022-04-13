@@ -100,10 +100,28 @@ class AntsSimulation {
     }
 
     addAnt(index) {
-        if (this.colonies.length > 1 && Math.random() > 0.1) {
-            this.colonies[index].addAnt(Fighter);
+        let colony = this.colonies[index];
+        let ratio = colony.ants.length / colony.maxSize;
+        let antsCount = 1;
+
+        if (Math.random() < ratio - 0.2) {
+            return;
         }
-        this.colonies[index].addAnt(Worker);
+
+        if (colony.boosted) {
+            if (colony.boostTimer.check()) {
+                colony.boosted = false;
+            }
+            antsCount = 5;
+        }
+
+        for (let i = 0; i < antsCount; i++) {
+            if (this.colonies.length > 1 && Math.random() < 0.1) {
+                colony.addAnt(Fighter);
+                return;
+            }
+            colony.addAnt(Worker);
+        }
     }
 
     getColony(index) {

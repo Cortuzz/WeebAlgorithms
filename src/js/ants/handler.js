@@ -5,11 +5,16 @@ window.addEventListener("load", () => {
     window.locker.addEventListener("click", changeLock);
 });
 
+window.boost1.addEventListener("click", addBoost);
+window.boost2.addEventListener("click", addBoost);
+window.boost3.addEventListener("click", addBoost);
+
 let unlock = false;
 
 const EMPTY = -1, BORDER = -2, COLONY = -3;
 let colony;
 let viewStates;
+let boostIndex;
 
 function init() {
     viewStates = { 'colony': "Установка колонии", 'food': "Установка еды",
@@ -21,6 +26,10 @@ function init() {
     window.currentActionView.innerText = viewStates[currentState];
     initPopulationCanvas();
     fieldBuilder();
+}
+
+function addBoost(event) {
+    boostIndex = event.target.dataset.mode - 1;
 }
 
 function fieldBuilder() {
@@ -166,6 +175,11 @@ async function startAnts() {
     let epochs = 1000000;
 
     for (let epoch = 0; epoch < epochs; epoch++) {
+        if (boostIndex != null) {
+            colonies[boostIndex].boosted = true;
+            boostIndex = undefined;
+        }
+
         if (colonies.length > 1) {
             changePopulationCanvas(epoch, colonies[0].ants.length, colonies);
         } else {
@@ -179,6 +193,7 @@ async function startAnts() {
         }
 
         for (let i = 0; i < colonies.length; i++) {
+            colonies[i].boostTimer.tick();
             colonies[i] = simulation.updateColony(i);
             ants.push(...colonies[i].ants);
 
