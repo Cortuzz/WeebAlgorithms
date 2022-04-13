@@ -117,10 +117,7 @@ class AntsSimulation {
         }
 
         if (colony.boosted) {
-            if (colony.boostTimer.check()) {
-                colony.boosted = false;
-            }
-            antsCount = 5;
+            antsCount = 10;
         }
 
         for (let i = 0; i < antsCount; i++) {

@@ -29,7 +29,10 @@ function init() {
 }
 
 function addBoost(event) {
-    boostIndex = event.target.dataset.mode - 1;
+    let index = event.target.dataset.mode - 1
+    if (colonyPoints.length > index) {
+        boostIndex = index;
+    }
 }
 
 function fieldBuilder() {
@@ -193,7 +196,13 @@ async function startAnts() {
         }
 
         for (let i = 0; i < colonies.length; i++) {
-            colonies[i].boostTimer.tick();
+            if (colonies[i].boosted) {
+                updateBoost(i, 1 - colonies[i].boostTimer.getRatio());
+                if (colonies[i].boostTimer.tickAndCheck()) {
+                    colonies[i].boosted = false;
+                }
+            }
+
             colonies[i] = simulation.updateColony(i);
             ants.push(...colonies[i].ants);
 

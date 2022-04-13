@@ -24,7 +24,7 @@ class Colony {
         this.initialPheromones = initialPheromones;
         this.pheromonesDecaying = pheromonesDecaying;
 
-        this.boostTimer = new Cooldown(500);
+        this.boostTimer = new Cooldown(100);
         this.boosted = false;
 
         this.ants = [ ];

@@ -20,4 +20,8 @@ class Cooldown {
         this.tick();
         return this.check();
     }
+
+    getRatio() {
+        return this.value / this.threshold;
+    }
 }
