@@ -1,7 +1,6 @@
 let totalPopulation;
 let numOfGeneration;
-let numOfBestGene;
-let currBest;
+let countBest;
 let population;
 let bestGene;
 
@@ -28,8 +27,7 @@ function createFirstGeneration() {
 async function geneticAlg() {
     totalPopulation = (autoSize) ? cities.length * renderCoefficientPopulation:renderPopulation;
     numOfGeneration = 1;
-    numOfBestGene = 1;
-    currBest = 0;
+    countBest = 0;
 
     bestGene = { individ: [], fitness: Infinity };
 
@@ -38,16 +36,15 @@ async function geneticAlg() {
     drawLines(bestGene.individ, 2, LINE_COLOR);
     drawPoints();
 
-    while (numOfGeneration - numOfBestGene < 1000 && running && numOfGeneration < renderGeneration) {
+    while (running && numOfGeneration < renderGeneration) {
         await sleep(1);
         createNextGeneration();
         numOfGeneration++;
 
         if (population[0].fitness < bestGene.fitness) {
             bestGene = population[0];
-            numOfBestGene = numOfGeneration;
-            currBest++;
-            window.best_number.textContent = `${currBest}`;
+            countBest++;
+            window.best_number.textContent = `${countBest}`;
 
             if (bestView) {
                 renewCanvas();
