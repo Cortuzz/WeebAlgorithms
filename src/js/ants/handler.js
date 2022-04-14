@@ -1,6 +1,7 @@
 window.addEventListener("load", () => {
     init();
     window.startButton.addEventListener("click", startAnts);
+    window.caveButton.addEventListener("click", generateCave);
     window.fieldButtons.addEventListener("click", changeMode);
     window.locker.addEventListener("click", changeLock);
 });
@@ -49,7 +50,6 @@ async function changeMode(event) {
 
     if (action == null || action === 'clear') {
         action && clearField();
-        await Prim();
         return;
     }
 

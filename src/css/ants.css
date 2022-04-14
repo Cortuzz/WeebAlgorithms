@@ -26,7 +26,7 @@ input {
     justify-content: start !important;
 }
 
-.description, .action, .size, .danger_block, .boost_block {
+.description, .action, .size, .danger_block, .boost_block, .cave_block {
     margin-bottom: 7px;
     background-color: aliceblue;
     border-radius: 20px;
@@ -91,13 +91,13 @@ input {
     transform: scale(0.95);
 }
 
-.action #colonyButton, #boost2 {
+.action #colonyButton, #boost2, #caveButton {
     border-radius: 10px;
     background-color: palevioletred;
     border: 2px solid darkred;
 }
 
-.action #colonyButton:hover, #boost2:hover {
+.action #colonyButton:hover, #boost2:hover, #caveButton:hover {
     background-color: darkred;
     border: 2px solid palevioletred;
     transform: scale(0.95);

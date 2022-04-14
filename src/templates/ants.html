@@ -37,6 +37,7 @@
                 едой.</a>
             <div>
                 <button id="startButton">Начать выполнение</button>
+                <button id="caveButton">Сгенерировать мир</button>
                 <button id="switchButton" onclick="location.href='ants_basic.html'">Базовый вариант</button>
             </div>
 
@@ -121,6 +122,7 @@
 
     <div class="additional_block">
         <div class="boost_block">
+            <h3>Усиления:</h3>
             <div>
                 <button id="boost1" data-mode="1">Усилить 1 колонию</button>
                 <button id="boost2" data-mode="2">Усилить 2 колонию</button>
@@ -128,7 +130,7 @@
             </div>
 
             <div>
-                <h3>Индикаторы усилений</h3>
+                <h3>Индикаторы усилений:</h3>
                 <div class="fieldSize" style="margin-bottom: 5px">
                     <h6 style="margin-right: 5px">1</h6>
                     <canvas id="1boost" width="430" height="10"></canvas>
@@ -141,6 +143,13 @@
                     <h6 style="margin-right: 5px">3</h6>
                     <canvas id="3boost" width="430" height="10"></canvas>
                 </div>
+            </div>
+        </div>
+
+        <div class="cave_block">
+            <h3>Генерация мира:</h3>
+            <div style="display: flex; justify-content: center;">
+                <canvas id="cave" width="180" height="100"></canvas>
             </div>
         </div>
 
@@ -336,9 +345,9 @@
 <script src="../js/ants/alg/cooldown.js"></script>
 <script src="../js/ants/alg/worker.js"></script>
 <script src="../js/ants/alg/fighter.js"></script>
-<script src="../js/ants/alg/cave_generation.js"></script>
 <script src="../js/ants/params.js"></script>
 <script src="../js/ants/canvas_setup.js"></script>
+<script src="../js/ants/alg/cave_generation.js"></script>
 <script src="../js/ants/population_canvas.js"></script>
 <script src="../js/ants/boosts.js"></script>
 <script src="../js/main.js"></script>
