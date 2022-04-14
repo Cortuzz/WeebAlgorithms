@@ -1,6 +1,7 @@
 let totalPopulation;
-let numGeneration;
-let numBest;
+let numOfGeneration;
+let numOfBestGene;
+let currBest;
 let population;
 let bestGene;
 
@@ -25,36 +26,69 @@ function createFirstGeneration() {
 }
 
 async function geneticAlg() {
-    totalPopulation = cities.length;
-    numGeneration = 1;
-    numBest = 1;
+    totalPopulation = (autoSize) ? cities.length * renderСoefficientPopulation:renderPopulation;
+    numOfGeneration = 1;
+    numOfBestGene = 1;
+    currBest = 0;
 
     bestGene = { individ: [], fitness: Infinity };
 
     population = createFirstGeneration();
     renewCanvas();
-    drawLines(bestGene.individ);
+    drawLines(bestGene.individ, 2, LINE_COLOR);
     drawPoints();
 
-    while (numGeneration - numBest < 1000) {
+    while (numOfGeneration - numOfBestGene < 1000 && running && numOfGeneration < renderGeneration) {
         await sleep(1);
         createNextGeneration();
-        numGeneration++;
+        numOfGeneration++;
 
         if (population[0].fitness < bestGene.fitness) {
             bestGene = population[0];
-            numBest = numGeneration;
+            numOfBestGene = numOfGeneration;
+            currBest++;
+            window.best_number.textContent = `${currBest}`;
+
+            if (bestView) {
+                renewCanvas();
+                drawLines(bestGene.individ, 2, LINE_COLOR);
+                drawPoints();
+                await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+            }
+        }
+
+        if (!bestView) {
             renewCanvas();
-            drawLines(bestGene.individ, 2);
+            for (let i = 1; i < totalPopulation; i++) {
+                drawLines(population[i].individ, 1, "#dacb95");
+            }
+            drawLines(bestGene.individ, 3, LINE_COLOR);
             drawPoints();
             await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
         }
-        else if (!bestView) {
+
+        window.num_iteratin.textContent = `${numOfGeneration}`;
+        window.best_path.textContent = `${bestGene.fitness.toFixed(2)}`;
+    }
+
+    if (!running) {
+        if (tempAdd.length !== 0) {
+            cities = cities.concat(tempAdd);
+            tempAdd.splice(0);
+            startAlg();
+            return;
+        } else if (tempRemove.length !== 0) {
+            for (let point of tempRemove) {
+                cities.splice(point.index, 1);
+                tempRemove.splice(0);
+                renewCanvas();
+                startAlg();
+                return;
+            }
+
+        } else {
+            cities.splice(0);
             renewCanvas();
-            drawLines(bestGene.individ, 3);
-            drawLines(population[0].individ, 1);
-            drawPoints();
-            await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
         }
     }
 
@@ -64,11 +98,17 @@ async function geneticAlg() {
         drawPoints();
         await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
     }
-
     running = false;
-    window.log.textContent = `Минимальная длина пути равна ${bestGene.fitness.toFixed(2)}`;
-    window.log_block.style.borderColor = "forestgreen";
-    await sleep(3000);
+
+    if (cities.length !== 0) {
+        window.log.textContent = `Минимальная длина пути равна ${bestGene.fitness.toFixed(2)}`;
+        window.log_block.style.borderColor = "forestgreen";
+        await sleep(5000);
+    }
+
     window.log.textContent = DEFAULT_LOG_TEXT;
     window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
+    window.num_iteratin.textContent = "";
+    window.best_path.textContent = "";
+    window.best_number.textContent = "";
 }

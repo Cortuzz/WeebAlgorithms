@@ -3,11 +3,11 @@ window.addEventListener("load", () => {
     window.startButton.addEventListener("click", startAlg);
     window.addPointButton.addEventListener("click", function () {
         currentState = "add";
-        window.currentActionView.textContent = "Добавление точек";
+        window.current_action_view.textContent = `${window.addPointButton.textContent}`;
     });
     window.removePointButton.addEventListener("click", function () {
         currentState = "remove";
-        window.currentActionView.textContent = "Удаление точек";
+        window.current_action_view.textContent = `${window.removePointButton.textContent}`;
     });
     window.randomizeButton.addEventListener("click", setupRandomPoints);
     window.clearButton.addEventListener("click", clearScreen);
@@ -16,6 +16,15 @@ window.addEventListener("load", () => {
     window.changeSpeedInput.addEventListener("input", e =>
     { renderSpeed = +e.target.value; window.speedView.textContent = renderSpeed; });
     window.bestViewChecker.addEventListener("click", e => { bestView = window.bestViewChecker.checked; });
+    window.autoSizingChecker.addEventListener("click", checkSizing);
+    window.changePopulationSizeInput.addEventListener("input", e =>
+    { renderPopulation = +e.target.value; window.populationSizeView.textContent = renderPopulation; });
+    window.changeAutoPopulationSizeInput.addEventListener("input", e =>
+    { renderСoefficientPopulation = +e.target.value; window.autoPopulationSizeView.textContent = renderСoefficientPopulation; });
+    window.changeMutationInput.addEventListener("input", e =>
+    { renderMutation = +e.target.value; window.mutationView.textContent = renderMutation; });
+    window.changeGenerationSizeInput.addEventListener("input", e =>
+    { renderGeneration = +e.target.value; window.generationSizeView.textContent = renderGeneration; });
 });
 
 const WIDTH = document.getElementById("canv").offsetWidth;
@@ -33,25 +42,55 @@ canvas.height = HEIGHT;
 const ctx = canvas.getContext('2d');
 
 let cities = [];
+let tempAdd = [];
+let tempRemove = [];
 
 let currentState = "";
 let renderTotalCities = 10;
 let renderSpeed = 1;
+let renderPopulation = 100;
+let renderСoefficientPopulation = 1;
+let renderMutation = 100;
+let renderGeneration = 5000;
 let bestView = true;
+let autoSize = true;
 let running = false;
 
 canvas.addEventListener("click", changePoint);
 
 function init() {
     window.changeSpeedInput.value = renderSpeed;
+    window.changeTotalCitiesInput.value = renderTotalCities;
+    window.changePopulationSizeInput.value = renderPopulation;
+    window.changeAutoPopulationSizeInput.value = renderСoefficientPopulation;
+    window.changeMutationInput.value = renderMutation;
+    window.changeGenerationSizeInput.value = renderGeneration;
     ctx.beginPath();
     ctx.fillStyle = BACKGROUND_COLOR;
     ctx.rect(0, 0, WIDTH, HEIGHT);
     ctx.fill();
 }
 
+function checkSizing(e) {
+    autoSize = window.autoSizingChecker.checked;
+    window.changePopulationSizeInput.disabled = autoSize;
+    window.changeAutoPopulationSizeInput.disabled = !autoSize;
+
+    if (!autoSize) {
+        window.populationSizeView.textContent = `${renderPopulation}`;
+        window.autoPopulationSizeView.textContent = "Ручной режим";
+    } else {
+        window.populationSizeView.textContent = "Автоматически";
+        window.autoPopulationSizeView.textContent = `${renderСoefficientPopulation}`;
+    }
+}
+
 function setupRandomPoints() {
-    cities.splice(0, cities.length - 1);
+    if (running) {
+        return;
+    }
+
+    cities.splice(0);
     renewCanvas();
 
     for (let i = 0; i < renderTotalCities; i++) {
@@ -70,6 +109,7 @@ function setupRandomPoints() {
         cities.push(point);
     }
 
+    window.cities_number.textContent = `${cities.length}`;
     drawPoints();
 }
 
@@ -87,6 +127,8 @@ function changePoint(e) {
     } else if (currentState === "remove") {
         removePoint(e);
     }
+
+    window.cities_number.textContent = `${cities.length}`;
 }
 
 function checkPoint(checkingPoint, set) {
@@ -119,8 +161,12 @@ function createPoint(e) {
         return;
     }
 
-    if (!running) {
-        drawCircle(x, y, 10, CIRCLE_COLOR);
+    drawCircle(x, y, 10, CIRCLE_COLOR);
+
+    if (running) {
+        tempAdd.push(point);
+        running = false;
+    } else {
         cities.push(point);
     }
 }
@@ -144,28 +190,37 @@ function removePoint(e) {
     let point = { x: x, y: y };
     let index = getIndexOfPoint(point, cities);
 
-    if (!running && index !== -1) {
+    if (index === -1) {
+        return;
+    }
+
+    point.index = index;
+
+    if (running) {
+        tempRemove.push(point);
+        running = false;
+    } else {
         cities.splice(index, 1);
         renewCanvas();
         drawPoints();
     }
 }
 
-function drawLine(x1, y1, x2, y2, width) {
+function drawLine(x1, y1, x2, y2, width, color) {
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.lineWidth = width;
-    ctx.strokeStyle = LINE_COLOR;
+    ctx.strokeStyle = color;
     ctx.stroke();
 }
 
-function drawLines(order, width) {
+function drawLines(order, width, color) {
     for (let i = 0; i < cities.length - 1; i++) {
-        drawLine(cities[order[i]].x, cities[order[i]].y, cities[order[i + 1]].x, cities[order[i + 1]].y, width);
+        drawLine(cities[order[i]].x, cities[order[i]].y, cities[order[i + 1]].x, cities[order[i + 1]].y, width, color);
     }
 
-    drawLine(cities[order[order.length - 1]].x, cities[order[order.length - 1]].y, cities[order[0]].x, cities[order[0]].y, width);
+    drawLine(cities[order[order.length - 1]].x, cities[order[order.length - 1]].y, cities[order[0]].x, cities[order[0]].y, width, color);
 }
 
 async function startAlg() {
@@ -175,21 +230,26 @@ async function startAlg() {
         await sleep(1000);
         window.log.textContent = DEFAULT_LOG_TEXT;
         window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
-    }
-    else if (!running) {
+    } else if (!running) {
         running = true;
-        currentState = "";
         window.log.textContent = "Алгоритм запущен";
+        window.num_iteratin.textContent = "1";
         window.log_block.style.borderColor = "lightgreen";
         await geneticAlg();
     }
 }
 
 function clearScreen() {
+    if (running) {
+        running = false;
+        return;
+    }
+    cities.splice(0);
+    renewCanvas();
     window.log.textContent = DEFAULT_LOG_TEXT;
     window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
-    renewCanvas();
-    cities.splice(0, cities.length);
-    currentState = "";
-    running = false;
+    window.num_iteratin.textContent = "";
+    window.best_path.textContent = "";
+    window.cities_number.textContent = cities.length;
+    window.best_number.textContent = "";
 }

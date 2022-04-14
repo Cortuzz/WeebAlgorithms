@@ -20,6 +20,9 @@ function sigmoid(x) {
 }
 
 function componentToHex(c) {
+    c = c < 0 ? 0 : c;
+    c = c > 255 ? 255 : c;
+
     let hex = c.toString(16);
     return hex.length === 1 ? "0" + hex : hex;
 }
@@ -30,6 +33,14 @@ function rgbToHex(r, g, b) {
 
 function print(value) {
     console.log(JSON.parse(JSON.stringify(value)))
+}
+
+async function fetch_data() {
+    return fetch('../addons/weights.json')
+        .then(response => response.json())
+        .then(json => {
+            return json;
+        })
 }
 
 function swap(arr, i, j) {

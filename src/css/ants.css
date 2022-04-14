@@ -1,3 +1,9 @@
+input {
+    width: 100%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+
 .main {
     display: flex;
 }
@@ -7,7 +13,12 @@
     width: 40%;
 }
 
-.description, .action, .info, .danger_block {
+.fieldSize {
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+.description, .action, .size, .danger_block {
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 19.5%;
@@ -19,19 +30,9 @@
     margin-top: 0 !important;
 }
 
-.canvas_block {
-    width: 64.6%;
-    border-radius: 20px;
-    padding: 20px 20px 20px 20px;
-    margin-left: 10px;
-    margin-top: 0.3%;
-    background-color: aliceblue;
-}
-
-.danger_block, .info {
+.danger_block {
     margin-left: 1% !important;
-    margin-right: 19% !important;
-    margin-top: 0.3%;
+    margin-right: 19.5% !important;
 }
 
 .description div, .action div {
@@ -62,45 +63,69 @@ input {
     margin-top: 2% !important;
 }
 
-.currentAction, .currentIteration, .currentPathLength, .currentCities, .currentBest {
+.currentAction {
     display: flex;
     flex-direction: row !important;
     justify-content: start !important;
 }
 
-#startButton, .action #addPointButton {
+#switchButton {
+    border-radius: 10px;
+    background-color: pink;
+    border: 2px solid lightpink;
+}
+
+#switchButton:hover {
+    background-color: lightpink;
+    border: 2px solid pink;
+    transform: scale(0.95);
+}
+
+#startButton, .action #foodButton {
     border-radius: 10px;
     background-color: lightgreen;
     border: 2px solid forestgreen;
 }
 
-#startButton:hover, .action #addPointButton:hover {
+#startButton:hover, .action #foodButton:hover {
     background-color: forestgreen;
     border: 2px solid lightgreen;
     transform: scale(0.95);
 }
 
-.action #randomizeButton {
+.action #colonyButton {
     border-radius: 10px;
     background-color: palevioletred;
     border: 2px solid darkred;
 }
 
-.action #randomizeButton:hover {
+.action #colonyButton:hover {
     background-color: darkred;
     border: 2px solid palevioletred;
     transform: scale(0.95);
 }
 
-.action #removePointButton {
+.action #borderButton {
     border-radius: 10px;
     background-color: lightcoral;
     border: 2px solid coral;
 }
 
-.action #removePointButton:hover {
+.action #borderButton:hover {
     background-color: coral;
     border: 2px solid lightcoral;
+    transform: scale(0.95);
+}
+
+.action #clearBorderButton {
+    border-radius: 10px;
+    background-color: coral;
+    border: 2px solid lightcoral;
+}
+
+.action #clearBorderButton:hover {
+    background-color: lightcoral;
+    border: 2px solid coral;
     transform: scale(0.95);
 }
 
@@ -125,9 +150,11 @@ input {
     padding: 5px 5px 5px 5px;
 }
 
-.fieldSize {
-    display: flex;
-    flex-direction: row !important;
-    justify-content: start !important;
+.canvas_block {
+    width: 64.6%;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+    margin-left: 10px;
+    margin-top: 0.3%;
+    background-color: aliceblue;
 }
-

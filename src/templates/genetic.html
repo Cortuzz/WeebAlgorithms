@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="../css/animation.css">
     <title>Генетичский алгоритм</title>
-    <link rel="shortcut icon" href="favicon2.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
 </head>
 <body>
 <div class="nav">
@@ -49,7 +49,7 @@
             <h3>Действия с полем:</h3>
             <div class="currentAction">
                 <h6>Текущее действие:&nbsp</h6>
-                <h6 id="currentActionView"></h6>
+                <h6 id="current_action_view"></h6>
             </div>
 
             <div id="fieldButtons">
@@ -91,6 +91,86 @@
 
     <div class="canvas_block" id="canv">
         <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="main_block">
+        <div class="info">
+            <h3>Текущие состояния:</h3>
+
+            <div class="currentCities">
+                <h6>Количество городов:&nbsp</h6>
+                <h6 id="cities_number">0</h6>
+            </div>
+
+            <div class="currentBest">
+                <h6>Число улучшений:&nbsp</h6>
+                <h6 id="best_number"></h6>
+            </div>
+
+            <div class="currentIteration">
+                <h6>Номер итерации:&nbsp</h6>
+                <h6 id="num_iteratin"></h6>
+            </div>
+
+            <div class="currentPathLength">
+                <h6>Лучшая длина маршрута:&nbsp</h6>
+                <h6 id="best_path"></h6>
+            </div>
+        </div>
+
+        <div class="danger_block" style="margin-top: 1%;">
+            <h3>Изменяющиеся параметры:</h3>
+
+            <div class="fieldSize">
+                <h6 style="margin-top: 3px">Задать размер автоматически:&nbsp</h6>
+                <input type="checkbox" id="autoSizingChecker" class="toggle dangerParam" checked = 1>
+                <label for="autoSizingChecker"></label>
+            </div>
+
+            <div class="valueView">
+                <h6>Размер популяции:&nbsp</h6>
+                <h6 id="populationSizeView" class="dangerParamView">Автоматически</h6>
+            </div>
+
+            <div class="valueView">
+                <h6>1</h6>
+                <input disabled class="dangerParam" id="changePopulationSizeInput" type="range" min="1" max="500" step="1">
+                <h6>500</h6>
+            </div>
+
+            <div class="valueView">
+                <h6>Популяция на город:&nbsp</h6>
+                <h6 id="autoPopulationSizeView">1</h6>
+            </div>
+
+            <div class="valueView">
+                <h6>1</h6>
+                <input id="changeAutoPopulationSizeInput" type="range" min="1" max="10" step="1">
+                <h6>10</h6>
+            </div>
+
+            <div class="valueView">
+                <h6>Вероятность мутаций:&nbsp</h6>
+                <h6 id="mutationView">1</h6>
+            </div>
+
+            <div class="valueView">
+                <h6>0</h6>
+                <input id="changeMutationInput" type="range" min="0" max="1" step="0.01">
+                <h6>1</h6>
+            </div>
+
+            <div class="valueView">
+                <h6>Максимальное число поколений:&nbsp</h6>
+                <h6 id="generationSizeView" class="dangerParamView">5000</h6>
+            </div>
+
+            <div class="valueView">
+                <h6>100</h6>
+                <input id="changeGenerationSizeInput" type="range" min="100" max="10000" step="1">
+                <h6>10000</h6>
+            </div>
+        </div>
     </div>
 </div>
 <div class="picture">

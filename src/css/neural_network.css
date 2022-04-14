@@ -6,12 +6,18 @@
     width: 30%;
 }
 
-.description, .instruction, .control {
+.description, .instruction, .control, .probability_block {
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 100px;
     margin-top: 1%;
     padding: 20px 20px 20px 20px;
+}
+
+.probability_block {
+    margin-top: 2.5%;
+    margin-left: 3% !important;
+    width: 100%;
 }
 
 .control div {
@@ -52,27 +58,23 @@
     transform: scale(0.95);
 }
 
-.control button#stop {
+.control button#clear {
     border-radius: 10px;
     background-color: palevioletred;
     border: 2px solid darkred;
 }
 
-.control button#stop:hover {
+.control button#clear:hover {
     background-color: darkred;
     border: 2px solid palevioletred;
     transform: scale(0.95);
 }
 
 .canvas_block {
+    margin-top: 0.3%;
     width: 40%;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;
     margin-left: 10px;
     background-color: aliceblue;
-}
-
-canvas {
-    height: 100%;
-    width: 100%;
 }

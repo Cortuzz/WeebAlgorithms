@@ -22,15 +22,15 @@ function createNextGeneration() {
             let parent1 = population[i].individ;
             let parent2 = population[j].individ;
             let child = crossOver(parent1, parent2);
-            child = mutate(child);
+            if (Math.random() <= renderMutation) {
+                child = mutate(child);
+            }
             newPopulation.push( { individ: child.slice(), fitness: getCurrentDistance(child) } );
         }
     }
 
     population = population.concat(newPopulation);
-
     population.sort(function (a, b) { return (a.fitness > b.fitness) ? 1:-1 });
-
     population.splice(totalPopulation);
 }
 
@@ -45,16 +45,15 @@ function crossOver(parent1, parent2) {
             child.push(num);
         }
     }
-
     return child;
 }
 
 function mutate(arr) {
     let index1 = Math.floor(Math.random() * (arr.length - 1));
     let index2 = Math.floor(Math.random() * (arr.length - (index1 + 1)) + (index1 + 1));
-    let n = Math.floor((Math.abs(index1 - index2) + 1) / 2);
+    let mid = Math.floor((Math.abs(index1 - index2) + 1) / 2);
 
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < mid; i++) {
         arr = swap(arr, index1 + i, index2 - i);
     }
     return arr;
