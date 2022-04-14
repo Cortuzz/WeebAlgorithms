@@ -1,5 +1,6 @@
 function getDistanceBetweenCities(city1, city2) {
-    return Math.sqrt(Math.pow(parseInt(city1.x) - parseInt(city2.x), 2) + Math.pow(parseInt(city1.y) - parseInt(city2.y), 2));
+    return Math.sqrt(Math.pow(parseInt(city1.x) - parseInt(city2.x), 2) +
+        Math.pow(parseInt(city1.y) - parseInt(city2.y), 2));
 }
 
 function getCurrentDistance(order) {
@@ -8,7 +9,6 @@ function getCurrentDistance(order) {
     for (let i = 0; i < order.length - 1; i++) {
         sum += getDistanceBetweenCities(cities[order[i]], cities[order[i + 1]]);
     }
-
     sum += getDistanceBetweenCities(cities[order[order.length - 1]], cities[order[0]]);
 
     return sum;
@@ -23,7 +23,7 @@ function createNextGeneration() {
             let parent2 = population[j].individ;
             let child = crossOver(parent1, parent2);
             child = mutate(child);
-            newPopulation.push(createStructure(child.slice(), getCurrentDistance(child)));
+            newPopulation.push( { individ: child.slice(), fitness: getCurrentDistance(child) } );
         }
     }
 
@@ -32,28 +32,10 @@ function createNextGeneration() {
     population.sort(function (a, b) { return (a.fitness > b.fitness) ? 1:-1 });
 
     population.splice(totalPopulation);
-    //return population.slice();
 }
 
-// if (newPopulation.length < totalPopulation) {
-//     newPopulation.push(createStructure(child.slice(), getCurrentDistance(child)));
-// }
-// else if (getCurrentDistance(child) < newPopulation[totalPopulation - 1].fitness) {
-//     newPopulation[totalPopulation - 1] = createStructure(child.slice(), getCurrentDistance(child));
-//     newPopulation.sort(function (a, b) {
-//         if (a.fitness < b.fitness) {
-//             return -1;
-//         } else if (a.fitness > b.fitness) {
-//             return 1;
-//         }
-//         else {
-//             return 0;
-//         }
-//     });
-// }
-
 function crossOver(parent1, parent2) {
-    let child = [];
+    let child;
     let index1 = Math.floor(Math.random() * (parent1.length - 1));
     let index2 = Math.floor(Math.random() * (parent1.length - (index1 - 1)) + (index1 + 1));
     child = parent1.slice(index1, index2 + 1);
@@ -75,13 +57,5 @@ function mutate(arr) {
     for (let i = 0; i < n; i++) {
         arr = swap(arr, index1 + i, index2 - i);
     }
-
     return arr;
 }
-
-// let n = Math.floor((Math.abs(index1 - index2) + 1) / 2);
-// for (let i = 0; i < n; i++) {
-//     let t = arr[index1 + i];
-//     arr[index1 + i] = arr[index2 - i];
-//     arr[index2 - i] = t;
-// }

@@ -3,9 +3,11 @@ window.addEventListener("load", () => {
     window.startButton.addEventListener("click", startAlg);
     window.addPointButton.addEventListener("click", function () {
         currentState = "add";
+        window.currentActionView.textContent = "Добавление точек";
     });
     window.removePointButton.addEventListener("click", function () {
         currentState = "remove";
+        window.currentActionView.textContent = "Удаление точек";
     });
     window.randomizeButton.addEventListener("click", setupRandomPoints);
     window.clearButton.addEventListener("click", clearScreen);
@@ -21,9 +23,9 @@ const HEIGHT = document.getElementById("canv").offsetHeight;
 
 const BACKGROUND_COLOR = "aliceblue";
 const CIRCLE_COLOR = "gray";
-const LINE_COLOR = "#d5a527"
-const DEFAULT_LOG_COLOR = "coral"
-const DEFAULT_LOG_TEXT = "Алгоритм не запущен"
+const LINE_COLOR = "#d5a527";
+const DEFAULT_LOG_COLOR = "coral";
+const DEFAULT_LOG_TEXT = "Алгоритм не запущен";
 
 const canvas = document.getElementById('canvas');
 canvas.width = WIDTH;
@@ -46,7 +48,6 @@ function init() {
     ctx.fillStyle = BACKGROUND_COLOR;
     ctx.rect(0, 0, WIDTH, HEIGHT);
     ctx.fill();
-    //window.currentActionView.innerText = viewStates[currentState];
 }
 
 function setupRandomPoints() {
@@ -83,8 +84,7 @@ function drawCircle(x, y, radius, color) {
 function changePoint(e) {
     if (currentState === "add") {
         createPoint(e);
-    }
-    else if (currentState === "remove") {
+    } else if (currentState === "remove") {
         removePoint(e);
     }
 }
@@ -144,7 +144,7 @@ function removePoint(e) {
     let point = { x: x, y: y };
     let index = getIndexOfPoint(point, cities);
 
-    if (!running && index != -1) {
+    if (!running && index !== -1) {
         cities.splice(index, 1);
         renewCanvas();
         drawPoints();
@@ -170,8 +170,8 @@ function drawLines(order, width) {
 
 async function startAlg() {
     if (cities.length <= 1) {
-        window.log.textContent = "Установлено мало городов";
-        window.log_block.style.borderColor = "red";
+        window.log.textContent = "Должно быть не меньше 2 точек";
+        window.log_block.style.borderColor = "darkred";
         await sleep(1000);
         window.log.textContent = DEFAULT_LOG_TEXT;
         window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
@@ -181,7 +181,7 @@ async function startAlg() {
         currentState = "";
         window.log.textContent = "Алгоритм запущен";
         window.log_block.style.borderColor = "lightgreen";
-        geneticAlg();
+        await geneticAlg();
     }
 }
 

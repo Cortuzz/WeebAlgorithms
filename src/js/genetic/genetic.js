@@ -1,42 +1,12 @@
 let totalPopulation;
 let numGeneration;
 let numBest;
-let population ;
+let population;
 let bestGene;
-
-function swap(arr, i, j) {
-    let temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-
-    return arr.slice();
-}
-
-function shuffle(arr) {
-    for (let i = 0; i < 10000; i++) {
-        let index1 = Math.floor(Math.random() * arr.length);
-        let index2 = index1;
-
-        while (index2 == index1) {
-            index2 = Math.floor(Math.random() * arr.length);
-        }
-
-        arr = swap(arr, index1, index2);
-    }
-
-    return arr.slice();
-}
-
-function createStructure(individ, fitness) {
-    return {
-        individ: individ,
-        fitness: fitness,
-    };
-}
 
 function createFirstGeneration() {
     let newPopulation = [];
-    let order = []
+    let order = [];
 
     for (let i = 0; i < cities.length; i++) {
         order.push(i);
@@ -45,7 +15,7 @@ function createFirstGeneration() {
     for (let i = 0; i < totalPopulation; i++) {
         let copyOfOrder = order.slice();
         copyOfOrder = shuffle(copyOfOrder);
-        newPopulation[i] = createStructure(copyOfOrder, getCurrentDistance(copyOfOrder));
+        newPopulation[i] = { individ: copyOfOrder, fitness: getCurrentDistance(copyOfOrder) };
 
         if (newPopulation[i].fitness < bestGene.fitness) {
             bestGene = newPopulation[i];
@@ -59,12 +29,7 @@ async function geneticAlg() {
     numGeneration = 1;
     numBest = 1;
 
-    population = [];
-
-    bestGene = {
-        individ: [],
-        fitness: Infinity
-    };
+    bestGene = { individ: [], fitness: Infinity };
 
     population = createFirstGeneration();
     renewCanvas();
@@ -82,14 +47,14 @@ async function geneticAlg() {
             renewCanvas();
             drawLines(bestGene.individ, 2);
             drawPoints();
-            await delay(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+            await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
         }
         else if (!bestView) {
             renewCanvas();
             drawLines(bestGene.individ, 3);
             drawLines(population[0].individ, 1);
             drawPoints();
-            await delay(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+            await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
         }
     }
 
@@ -97,7 +62,7 @@ async function geneticAlg() {
         renewCanvas();
         drawLines(bestGene.individ, 2);
         drawPoints();
-        await delay(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
+        await sleep(renderSpeed < 1 ? 1000 - 100 * (renderSpeed * 10 - 1) : 100 - 10 * (renderSpeed - 1));
     }
 
     running = false;
@@ -107,8 +72,3 @@ async function geneticAlg() {
     window.log.textContent = DEFAULT_LOG_TEXT;
     window.log_block.style.borderColor = DEFAULT_LOG_COLOR;
 }
-
-function delay(timeout) {
-    return new Promise(resolve => setTimeout(resolve, timeout))
-}
-

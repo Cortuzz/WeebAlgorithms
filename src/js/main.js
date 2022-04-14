@@ -31,3 +31,11 @@ function rgbToHex(r, g, b) {
 function print(value) {
     console.log(JSON.parse(JSON.stringify(value)))
 }
+
+function swap(arr, i, j) {
+    let temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+
+    return arr.slice();
+}
