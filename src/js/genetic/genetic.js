@@ -26,7 +26,7 @@ function createFirstGeneration() {
 }
 
 async function geneticAlg() {
-    totalPopulation = (autoSize) ? cities.length * renderСoefficientPopulation:renderPopulation;
+    totalPopulation = (autoSize) ? cities.length * renderCoefficientPopulation:renderPopulation;
     numOfGeneration = 1;
     numOfBestGene = 1;
     currBest = 0;
@@ -75,17 +75,13 @@ async function geneticAlg() {
         if (tempAdd.length !== 0) {
             cities = cities.concat(tempAdd);
             tempAdd.splice(0);
-            startAlg();
+            await startAlg();
             return;
         } else if (tempRemove.length !== 0) {
-            for (let point of tempRemove) {
-                cities.splice(point.index, 1);
-                tempRemove.splice(0);
-                renewCanvas();
-                startAlg();
-                return;
-            }
-
+            cities.splice(tempRemove[0].index, 1);
+            tempRemove.splice(0, 1);
+            renewCanvas();
+            await startAlg();
         } else {
             cities.splice(0);
             renewCanvas();

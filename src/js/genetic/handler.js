@@ -20,7 +20,7 @@ window.addEventListener("load", () => {
     window.changePopulationSizeInput.addEventListener("input", e =>
     { renderPopulation = +e.target.value; window.populationSizeView.textContent = renderPopulation; });
     window.changeAutoPopulationSizeInput.addEventListener("input", e =>
-    { renderСoefficientPopulation = +e.target.value; window.autoPopulationSizeView.textContent = renderСoefficientPopulation; });
+    { renderCoefficientPopulation = +e.target.value; window.autoPopulationSizeView.textContent = renderCoefficientPopulation; });
     window.changeMutationInput.addEventListener("input", e =>
     { renderMutation = +e.target.value; window.mutationView.textContent = renderMutation; });
     window.changeGenerationSizeInput.addEventListener("input", e =>
@@ -46,10 +46,10 @@ let tempAdd = [];
 let tempRemove = [];
 
 let currentState = "";
-let renderTotalCities = 10;
+let renderTotalCities = 20;
 let renderSpeed = 1;
 let renderPopulation = 100;
-let renderСoefficientPopulation = 1;
+let renderCoefficientPopulation = 1;
 let renderMutation = 100;
 let renderGeneration = 5000;
 let bestView = true;
@@ -62,7 +62,7 @@ function init() {
     window.changeSpeedInput.value = renderSpeed;
     window.changeTotalCitiesInput.value = renderTotalCities;
     window.changePopulationSizeInput.value = renderPopulation;
-    window.changeAutoPopulationSizeInput.value = renderСoefficientPopulation;
+    window.changeAutoPopulationSizeInput.value = renderCoefficientPopulation;
     window.changeMutationInput.value = renderMutation;
     window.changeGenerationSizeInput.value = renderGeneration;
     ctx.beginPath();
@@ -81,7 +81,7 @@ function checkSizing(e) {
         window.autoPopulationSizeView.textContent = "Ручной режим";
     } else {
         window.populationSizeView.textContent = "Автоматически";
-        window.autoPopulationSizeView.textContent = `${renderСoefficientPopulation}`;
+        window.autoPopulationSizeView.textContent = `${renderCoefficientPopulation}`;
     }
 }
 
