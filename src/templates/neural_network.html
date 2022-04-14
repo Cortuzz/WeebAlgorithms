@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/neural_network.css">
@@ -10,6 +11,7 @@
     <title>Нейронная сеть</title>
     <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
 </head>
+
 <body>
 <div class="nav">
     <aside>
@@ -32,25 +34,35 @@
 <div class="main">
     <div class="main_block">
         <div class="description">
-            <h1>Нейронная сеть<br></h1>
+            <h3>Нейронная сеть<br></h3>
             <a>Данный алгоритм позволяет определить число по рукописному вводу</a>
         </div>
 
-        <div class="instruction">
-            <h1>Инструкция:</h1>
-            <ul>
-                <li>Введите число</li>
-                <li>Запустите алгоритм</li>
-            </ul>
-        </div>
 
         <div class="control">
-            <h1>Управление:</h1>
+            <h3>Управление:</h3>
             <div>
-                <button id="start">Начать выполнение</button>
-                <button id="pause">Приостановить выполнение</button>
+                <button id="pause">Вычислить</button>
                 <button id="clear">Очистить</button>
             </div>
+        </div>
+
+        <div class="micro_canvas_block_left">
+            <canvas class="conv" id="micro_canvas" width="28" height="28"></canvas>
+            <canvas class="conv" id="conv_canvas0" width="25" height="25"></canvas>
+            <canvas class="conv" id="conv_canvas1" width="25" height="25"></canvas>
+            <canvas class="conv" id="conv_canvas2" width="25" height="25"></canvas>
+
+            <canvas class="conv" id="conv_canvas3" width="25" height="25"></canvas>
+            <canvas class="conv" id="conv_canvas4" width="25" height="25"></canvas>
+            <canvas class="conv" id="conv_canvas5" width="25" height="25"></canvas>
+            <canvas class="conv" id="conv_canvas6" width="25" height="25"></canvas>
+
+            <canvas class="conv" id="conv_canvas7" width="25" height="25"></canvas>
+            <canvas class="conv" id="conv_canvas8" width="25" height="25"></canvas>
+            <canvas class="conv" id="conv_canvas9" width="25" height="25"></canvas>
+            <canvas class="conv" id="avg_conv_canvas1" width="25" height="25"></canvas>
+
         </div>
     </div>
 
@@ -64,10 +76,25 @@
             <canvas id="probs" width="390" height="255">
             </canvas>
         </div>
+        <div class="micro_canvas_block_right">
+            <canvas class="conv" id="conv_canvas10" width="12" height="12"></canvas>
+            <canvas class="conv" id="conv_canvas11" width="12" height="12"></canvas>
+            <canvas class="conv" id="conv_canvas12" width="12" height="12"></canvas>
+            <canvas class="conv" id="conv_canvas13" width="12" height="12"></canvas>
+
+            <canvas class="conv" id="conv_canvas14" width="12" height="12"></canvas>
+            <canvas class="conv" id="conv_canvas15" width="12" height="12"></canvas>
+            <canvas class="conv" id="conv_canvas16" width="12" height="12"></canvas>
+            <canvas class="conv" id="conv_canvas17" width="12" height="12"></canvas>
+
+            <canvas class="conv" id="conv_canvas18" width="12" height="12"></canvas>
+            <canvas class="conv" id="conv_canvas19" width="12" height="12"></canvas>
+            <canvas class="conv" id="avg_conv_canvas2" width="12" height="12"></canvas>
+        </div>
     </div>
 </div>
 <div class="picture">
-    <img class="jibril" src="../img/flying.png" alt="">
+    <!--<img class="jibril" src="../img/flying.png" alt="">-->
 </div>
 </body>
 
@@ -75,6 +102,8 @@
 <script src="../js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
 <script src="../js/neural_network/canvas_setup.js"></script>
+<script src="../js/neural_network/image_processing.js"></script>
 <script src="../js/neural_network/network.js"></script>
 <script src="../js/neural_network/handler.js"></script>
+
 </html>

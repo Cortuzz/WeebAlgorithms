@@ -1,53 +1,114 @@
 let mouse = {x: 0, y: 0};
 let drawing = false;
+const debug = document.getElementById('pause');
+const buttonClear = document.getElementById('clear');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
-const debug = document.getElementById('pause')
-const buttonClear = document.getElementById('clear')
-const canvas = document.getElementById('canvas')
-const ctx = canvas.getContext('2d')
+const microCanvas = document.getElementById('micro_canvas');
+const convCtx0 = document.getElementById('conv_canvas0').getContext('2d');
+const convCtx1 = document.getElementById('conv_canvas1').getContext('2d');
+const convCtx2 = document.getElementById('conv_canvas2').getContext('2d');
+
+const convCtx3 = document.getElementById('conv_canvas3').getContext('2d');
+const convCtx4 = document.getElementById('conv_canvas4').getContext('2d');
+const convCtx5 = document.getElementById('conv_canvas5').getContext('2d');
+const convCtx6 = document.getElementById('conv_canvas6').getContext('2d');
+
+const convCtx7 = document.getElementById('conv_canvas7').getContext('2d');
+const convCtx8 = document.getElementById('conv_canvas8').getContext('2d');
+const convCtx9 = document.getElementById('conv_canvas9').getContext('2d');
+const avgConvCtx1 = document.getElementById('avg_conv_canvas1').getContext('2d');
+
+const convCtx10 = document.getElementById('conv_canvas10').getContext('2d');
+const convCtx11 = document.getElementById('conv_canvas11').getContext('2d');
+const convCtx12 = document.getElementById('conv_canvas12').getContext('2d');
+const convCtx13 = document.getElementById('conv_canvas13').getContext('2d');
+
+const convCtx14 = document.getElementById('conv_canvas14').getContext('2d');
+const convCtx15 = document.getElementById('conv_canvas15').getContext('2d');
+const convCtx16 = document.getElementById('conv_canvas16').getContext('2d');
+const convCtx17 = document.getElementById('conv_canvas17').getContext('2d');
+
+const convCtx18 = document.getElementById('conv_canvas18').getContext('2d');
+const convCtx19 = document.getElementById('conv_canvas19').getContext('2d');
+const avgConvCtx2 = document.getElementById('avg_conv_canvas2').getContext('2d');
+
+const microCtx = microCanvas.getContext('2d');
+
+const firstLayerCtxs = [ convCtx0, convCtx1, convCtx2, convCtx3,
+    convCtx4, convCtx5, convCtx6, convCtx7, convCtx8, convCtx9 ];
+
+const secondLayerCtxs = [ convCtx10, convCtx11, convCtx12, convCtx13,
+    convCtx14, convCtx15, convCtx16, convCtx17, convCtx18, convCtx19]
 
 function setMouseCoords(e) {
-    mouse.x = e.clientX - canvas.offsetLeft;
-    mouse.y = e.clientY - canvas.offsetTop;
+    mouse.x = e.offsetX;
+    mouse.y = e.offsetY;
 }
 
 debug.addEventListener('click', () => {
-    console.log(matrix);
-})
+    writeToMatrix(microCtx);
+    evaluate();
+
+    for (let i = 0; i < 10; i++) {
+        displayConv(firstLayerCtxs[i], convMatrix, 25, i);
+    }
+    displayAverage(avgConvCtx1, avgConvMatrix1, 25);
+
+    for (let i = 0; i < 10; i++) {
+        displayConv(secondLayerCtxs[i], convMatrix1, 12, i);
+    }
+    displayAverage(avgConvCtx2, avgConvMatrix2, 12);
+});
+
 buttonClear.addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    microCtx.clearRect(0, 0, 28, 28);
     probCtx.clearRect(30, 0, probCanvas.width, probCanvas.height)
     clearMatrix();
-})
+});
+
 canvas.addEventListener('mousedown', (e) => {
     drawing = true;
     setMouseCoords(e);
 });
+
+function stopDrawing() {
+    if (drawing) {
+        drawing = false;
+        ctx.stroke();
+        ctx.beginPath();
+        microCtx.stroke();
+        microCtx.beginPath();
+    }
+}
+
 canvas.addEventListener('mousemove', (e) => makeStroke(e));
-canvas.addEventListener('mouseup', () => {
-    drawing = false;
-    ctx.stroke();
-    ctx.beginPath();
-});
+canvas.addEventListener('mouseout', stopDrawing);
+canvas.addEventListener('mouseup', stopDrawing);
 
 
-async function makeStroke(e) {
+function makeStroke(e) {
     if (!drawing) {
         return;
     }
     let start = Object.assign({}, mouse);
     setMouseCoords(e);
     let end = Object.assign({}, mouse);
-    writeToMatrix(start, end);
-    draw(25)
-    await evaluate();
+    draw(ctx, start, end, 25)
+    let microStart = {x: 27 * start.x / canvas.width, y: 27 * start.y / canvas.height};
+    let microEnd = {x: 27 * end.x / canvas.width, y: 27 * end.y / canvas.height};
+    draw(microCtx, microStart, microEnd, 1)
+
 }
 
-function draw(radius) {
-    ctx.lineWidth = radius;
-    ctx.lineCap = 'round';
-    ctx.lineTo(mouse.x, mouse.y);
-    ctx.stroke();
+function draw(context, start, end, radius) {
+    context.lineWidth = radius;
+    context.lineCap = 'round';
+    context.moveTo(start.x, start.y);
+    context.lineTo(end.x, end.y);
+    context.stroke();
 }
 
 function drawCircle(context, x, y, radius, arcColor, fillColor) {
