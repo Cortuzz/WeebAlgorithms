@@ -37,7 +37,7 @@ function clear() {
 function redrawInitial() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < points.length; i++) {
-        drawCircle(points[i].x, points[i].y, 10, "gray")
+        drawCircle(points[i].x, points[i].y, 10, "gray");
     }
 }
 
@@ -52,10 +52,9 @@ async function colorClasses(colorMap, alpha, angle) {
     }
 }
 
-
 async function showError(text) {
     currentState.innerText = text;
-    currentFrame.borderColor = "rgb(236,22,22)";
+    currentFrame.borderColor = "darkred";
     await sleep(3000);
     currentState.innerText = defaultText;
     currentFrame.borderColor = defaultFrameColor;
@@ -92,7 +91,7 @@ async function startMSC() {
 
     if (points.length === 0) {
         running = false;
-        await showError("Точек меньше чем 1");
+        await showError("Отсутствуют точки");
         return;
     }
     let radius = document.getElementById("radius").value;
@@ -127,7 +126,7 @@ async function startBoth() {
     let result = await meanShiftClustering(points, radius);
     means = result.means;
     points = result.points;
-    let colorMapMSC = [];
+    let colorMapMSC = [ ];
     for (let i = 0; i < means.length; i++) {
         colorMapMSC.push(`hsl(${i * 360 / means.length},80%,40%)`);
     }
@@ -136,7 +135,7 @@ async function startBoth() {
     result = kMeans(classNum, points, 999);
     means = result.means;
     points = result.points;
-    let colorMapKMC = [];
+    let colorMapKMC = [ ];
     for (let i = 0; i < classNum; i++) {
         colorMapKMC.push(`hsl(${i * 360 / classNum},100%,60%)`);
     }

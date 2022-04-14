@@ -15,7 +15,7 @@ function getCurrentDistance(order) {
 }
 
 function createNextGeneration() {
-    let newPopulation = [];
+    let newPopulation = [ ];
 
     for (let i = 0; i < totalPopulation - 1; i++) {
         for (let j = i + 1; j < totalPopulation; j++) {

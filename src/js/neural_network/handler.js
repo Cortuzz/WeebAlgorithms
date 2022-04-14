@@ -9,7 +9,7 @@ let avgConvMatrix1 = math.zeros([25, 25]);
 let avgConvMatrix2 = math.zeros([12, 12]);
 
 async function initialize_network() {
-    weights = await fetch_data();
+    weights = await fetchData();
     l0 = weights['layer0']
     l1 = weights['layer1']
     l2 = weights['layer2']

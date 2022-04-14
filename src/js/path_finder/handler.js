@@ -32,9 +32,11 @@ let runningMaze = false;
 let currentState = 'start', handleStates, viewStates;
 
 function init() {
-    maze = [];
-    viewStates = {'border': "Выбор преград", 'start': "Выбор начальной точки", 'finish': "Выбор конечной точки"};
-    handleStates = {2: 'start', 3: 'finish', 1: 'border', 0: 'unchecked'};
+    maze = [ ];
+    viewStates = { 'border': "Установка преград",
+        'start': "Выбор начальной точки", 'finish': "Выбор конечной точки"
+    };
+    handleStates = { 2: 'start', 3: 'finish', 1: 'border', 0: 'unchecked' };
 
     window.currentActionView.innerText = viewStates[currentState];
 
@@ -68,7 +70,7 @@ async function checkPoints() {
     }
 
     if (start == null || finish == null) {
-        window.log_block.style.borderColor = "B72626";
+        window.log_block.style.borderColor = "darkred";
         await sleep(3000);
 
         window.log.textContent = defaultLog;
@@ -99,7 +101,7 @@ function changeRandomBorder(event) {
         randomBorder = +event.target.value / 100;
     }
 
-    window.randomView.textContent = (100 * randomBorder).toFixed(0) + "%"
+    window.randomView.textContent = (100 * randomBorder).toFixed(0) + "%";
 }
 
 function dropTable() {
@@ -150,7 +152,7 @@ async function generateMaze() {
 
     if (runningMaze) {
         window.log.textContent = "Лабиринт генерируется";
-        window.log_block.style.borderColor = "red";
+        window.log_block.style.borderColor = "darkred";
         await sleep(1500);
         window.log.textContent = defaultLog;
         window.log_block.style.borderColor = defaultColor;
@@ -160,7 +162,7 @@ async function generateMaze() {
 
     for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
-            maze[i][j] = 1
+            maze[i][j] = 1;
         }
     }
 
@@ -169,13 +171,13 @@ async function generateMaze() {
     runningMaze = true;
 
     if (value === 'dfs') {
-        await dfs({x:0, y: 0});
+        await dfs( {x:0, y: 0} );
     }
     else if (value === 'prim') {
-        await Prim({x:0, y: 0});
+        await prim ( {x:0, y: 0} );
     }
     else if (value === 'kruscal') {
-        await Kruskal();
+        await kruskal();
     }
 
     if (width % 2 === 0) {
@@ -240,7 +242,6 @@ function checkReplacePoints(x, y, point) {
     if (point != null && point.x === x && point.y === y) {
         return null;
     }
-
     return point;
 }
 
@@ -388,8 +389,8 @@ function clearSolution() {
     let solutionCells = document.querySelectorAll("td[data-mode='path']");
     let visitedCells = document.querySelectorAll("td[data-mode='checked']");
 
-    solutionCells.forEach(cell => {cell.dataset.mode = "unchecked"})
-    visitedCells.forEach(cell => {cell.dataset.mode = "unchecked"})
+    solutionCells.forEach(cell => {cell.dataset.mode = "unchecked"});
+    visitedCells.forEach(cell => {cell.dataset.mode = "unchecked"});
 }
 
 function dropPoints() {
@@ -430,7 +431,5 @@ async function startFinder() {
     try {
         await renderPathLength(await finder.findPath(start, finish));
     }
-    catch (e) {
-
-    }
+    catch (e) { }
 }

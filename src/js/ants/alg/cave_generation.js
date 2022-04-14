@@ -7,14 +7,14 @@ let caveCanvas =document.getElementById('cave');
 const caveCtx = caveCanvas.getContext('2d');
 
 async function generateCave() {
-    await Prim();
+    await prim();
     await removeDeadEnds(5);
     await vegetate(3);
     await removeDeadEnds(2);
     await scaleUp();
 }
 
-async function Prim() {
+async function prim() {
     for (let i = 0; i < hScaled; i++) {
         fieldScaled[i] = [ ];
         for (let j = 0; j < wScaled; j++) {

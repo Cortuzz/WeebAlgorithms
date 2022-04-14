@@ -35,7 +35,7 @@ function print(value) {
     console.log(JSON.parse(JSON.stringify(value)))
 }
 
-async function fetch_data() {
+async function fetchData() {
     return fetch('../addons/weights.json')
         .then(response => response.json())
         .then(json => {

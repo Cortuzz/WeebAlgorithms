@@ -5,8 +5,8 @@ let population;
 let bestGene;
 
 function createFirstGeneration() {
-    let newPopulation = [];
-    let order = [];
+    let newPopulation = [ ];
+    let order = [ ];
 
     for (let i = 0; i < cities.length; i++) {
         order.push(i);

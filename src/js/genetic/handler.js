@@ -1,60 +1,14 @@
 window.addEventListener("load", () => {
     init();
     window.startButton.addEventListener("click", startAlg);
-    window.addPointButton.addEventListener("click", function () {
-        currentState = "add";
-        window.current_action_view.textContent = `${window.addPointButton.textContent}`;
-    });
-    window.removePointButton.addEventListener("click", function () {
-        currentState = "remove";
-        window.current_action_view.textContent = `${window.removePointButton.textContent}`;
-    });
     window.randomizeButton.addEventListener("click", setupRandomPoints);
     window.clearButton.addEventListener("click", clearScreen);
-    window.changeTotalCitiesInput.addEventListener("input", e =>
-    { renderTotalCities = +e.target.value; window.totalCitiesView.textContent = renderTotalCities; });
-    window.changeSpeedInput.addEventListener("input", e =>
-    { renderSpeed = +e.target.value; window.speedView.textContent = renderSpeed; });
-    window.bestViewChecker.addEventListener("click", e => { bestView = window.bestViewChecker.checked; });
     window.autoSizingChecker.addEventListener("click", checkSizing);
-    window.changePopulationSizeInput.addEventListener("input", e =>
-    { renderPopulation = +e.target.value; window.populationSizeView.textContent = renderPopulation; });
-    window.changeAutoPopulationSizeInput.addEventListener("input", e =>
-    { renderCoefficientPopulation = +e.target.value; window.autoPopulationSizeView.textContent = renderCoefficientPopulation; });
-    window.changeMutationInput.addEventListener("input", e =>
-    { renderMutation = +e.target.value; window.mutationView.textContent = renderMutation; });
-    window.changeGenerationSizeInput.addEventListener("input", e =>
-    { renderGeneration = +e.target.value; window.generationSizeView.textContent = renderGeneration; });
 });
 
-const WIDTH = document.getElementById("canv").offsetWidth;
-const HEIGHT = document.getElementById("canv").offsetHeight;
-
-const BACKGROUND_COLOR = "aliceblue";
-const CIRCLE_COLOR = "gray";
-const LINE_COLOR = "#d5a527";
-const DEFAULT_LOG_COLOR = "coral";
-const DEFAULT_LOG_TEXT = "Алгоритм не запущен";
-
-const canvas = document.getElementById('canvas');
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
-const ctx = canvas.getContext('2d');
-
-let cities = [];
-let tempAdd = [];
-let tempRemove = [];
-
-let currentState = "";
-let renderTotalCities = 20;
-let renderSpeed = 1;
-let renderPopulation = 100;
-let renderCoefficientPopulation = 1;
-let renderMutation = 100;
-let renderGeneration = 5000;
-let bestView = true;
-let autoSize = true;
-let running = false;
+let cities = [ ];
+let tempAdd = [ ];
+let tempRemove = [ ];
 
 canvas.addEventListener("click", changePoint);
 
@@ -71,7 +25,7 @@ function init() {
     ctx.fill();
 }
 
-function checkSizing(e) {
+function checkSizing() {
     autoSize = window.autoSizingChecker.checked;
     window.changePopulationSizeInput.disabled = autoSize;
     window.changeAutoPopulationSizeInput.disabled = !autoSize;
@@ -172,9 +126,9 @@ function createPoint(e) {
 }
 
 function drawPoints() {
-    for (let city of cities) {
+    cities.forEach(city => {
         drawCircle(city.x, city.y, 10, CIRCLE_COLOR);
-    }
+    });
 }
 
 function renewCanvas() {
@@ -193,7 +147,6 @@ function removePoint(e) {
     if (index === -1) {
         return;
     }
-
     point.index = index;
 
     if (running) {
@@ -217,10 +170,11 @@ function drawLine(x1, y1, x2, y2, width, color) {
 
 function drawLines(order, width, color) {
     for (let i = 0; i < cities.length - 1; i++) {
-        drawLine(cities[order[i]].x, cities[order[i]].y, cities[order[i + 1]].x, cities[order[i + 1]].y, width, color);
+        drawLine(cities[order[i]].x, cities[order[i]].y,
+            cities[order[i + 1]].x, cities[order[i + 1]].y, width, color);
     }
-
-    drawLine(cities[order[order.length - 1]].x, cities[order[order.length - 1]].y, cities[order[0]].x, cities[order[0]].y, width, color);
+    drawLine(cities[order[order.length - 1]].x, cities[order[order.length - 1]].y,
+        cities[order[0]].x, cities[order[0]].y, width, color);
 }
 
 async function startAlg() {

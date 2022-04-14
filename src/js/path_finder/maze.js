@@ -6,10 +6,8 @@ async function dfs(eraser) {
     while (directions.length > 0) {
         let index = getRandomIndex(directions);
         let [dy, dx] = directions[index];
-        let newEraser =  {
-            x: eraser.x + dx,
-            y: eraser.y + dy
-        }
+        let newEraser = { x: eraser.x + dx, y: eraser.y + dy };
+
         if (maze[newEraser.y][newEraser.x] === 1) {
             maze[newEraser.y - dy / 2][newEraser.x - dx / 2] = 0;
 
@@ -23,17 +21,14 @@ async function dfs(eraser) {
     }
 }
 
-async function Prim(start) {
+async function prim(start) {
     let toCheck = [];
     maze[start.y][start.x] = 0;
     let directions = [];
     directions = createDirections(start, directions);
 
     for (let i = 0; i < directions.length; i++) {
-        toCheck.push({
-            x: start.x + directions[i][1],
-            y: start.y + directions[i][0]
-        });
+        toCheck.push( { x: start.x + directions[i][1], y: start.y + directions[i][0] } );
     }
 
     while (toCheck.length > 0) {
@@ -54,10 +49,8 @@ async function Prim(start) {
 
             while (edges.length > 0) {
                 let ind = getRandomIndex(edges);
-                let connectedCell = {
-                    x: choosenCell.x + edges[ind][1],
-                    y: choosenCell.y + edges[ind][0]
-                }
+                let connectedCell = { x: choosenCell.x + edges[ind][1],
+                    y: choosenCell.y + edges[ind][0] };
 
                 if (maze[connectedCell.y][connectedCell.x] === 0) {
                     maze[connectedCell.y - edges[ind][0] / 2][connectedCell.x - edges[ind][1] / 2] = 0;
@@ -74,9 +67,8 @@ async function Prim(start) {
             }
 
             for (let i = 0; i < directions.length; i++) {
-                let nextCell = {
-                    x: choosenCell.x + directions[i][1],
-                    y: choosenCell.y + directions[i][0],
+                let nextCell = { x: choosenCell.x + directions[i][1],
+                    y: choosenCell.y + directions[i][0]
                 };
 
                 if (maze[nextCell.y][nextCell.x] === 1) {
@@ -87,39 +79,20 @@ async function Prim(start) {
     }
 }
 
-async function Kruskal() {
+async function kruskal() {
     let edges = [];
 
-    for (let i = 0; i < height; i+=2) {
-        for (let j = 0; j < width; j+=2) {
-            let cell1 = {
-                x: j,
-                y: i
-            };
+    for (let i = 0; i < height; i += 2) {
+        for (let j = 0; j < width; j += 2) {
+            let cell1 = { x: j, y: i };
 
             if (j + 2 < width) {
-                let cell2 = {
-                    x: j + 2,
-                    y: i
-                };
-                edges.push({
-                    firstCell: cell1,
-                    secondCell: cell2,
-                    dx: 2,
-                    dy: 0
-                });
+                let cell2 = { x: j + 2, y: i };
+                edges.push( { firstCell: cell1, secondCell: cell2, dx: 2, dy: 0 } );
             }
             if (i + 2 < height) {
-                let cell3 = {
-                    x: j,
-                    y: i + 2
-                };
-                edges.push({
-                    firstCell: cell1,
-                    secondCell: cell3,
-                    dx: 0,
-                    dy: 2
-                });
+                let cell3 = { x: j, y: i + 2 };
+                edges.push( { firstCell: cell1, secondCell: cell3, dx: 0, dy: 2 } );
             }
         }
     }
@@ -129,10 +102,7 @@ async function Kruskal() {
     for (let i = 0; i < height; i++) {
         parents[i] = new Array(width);
         for (let j = 0; j < width; j++) {
-            parents[i][j] = {
-                x: j,
-                y: i
-            };
+            parents[i][j] = { x: j, y: i };
         }
     }
 
@@ -193,5 +163,5 @@ function getRandomIndex(array) {
 }
 
 function equals(cell1, cell2) {
-    return cell1.x === cell2.x && cell1.y === cell2.y
+    return cell1.x === cell2.x && cell1.y === cell2.y;
 }
