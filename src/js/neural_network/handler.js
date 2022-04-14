@@ -42,13 +42,6 @@ function displayConv(ctx, matrix, size, depth) {
             drawRect(ctx, x, y, 1, 1, rgbToHex(240 - color, 248 - color, 255 - color))
         }
     }
-
-    /*
-    ctx.font = `${size / 3}px serif`;
-    ctx.fillStyle = "red"
-    ctx.fillText(`Layer ${depth}`, 0, size);
-    ctx.fill();
-    */
 }
 
 function displayAverage(ctx, matrix, size) {

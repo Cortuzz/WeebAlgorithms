@@ -6,7 +6,7 @@ function denseRelu(x) {
     for (let i = 0; i < x.shape[0]; i++) {
         x.set(i, 1, x.get(i, 1) > 0 ? x.get(i, 1) : 0);
     }
-    return x
+    return x;
 }
 
 function convRelu(x) {
@@ -33,8 +33,6 @@ class LayerConv2d {
         this.padding = padding;
         if (activationFunction === "relu") {
             this.activaton = convRelu;
-        } else if (activationFunction === "sigmoid") {
-            this.activaton = sigmoid;
         } else {
             this.activaton = softmax;
         }
@@ -53,6 +51,7 @@ class LayerConv2d {
         this.output = this.activaton(this.linear_comb);
     }
 }
+
 
 class LayerDense {
     constructor(n_input, n_neurons, activationFunction, weights, biases) {
@@ -77,6 +76,7 @@ class LayerDense {
     }
 }
 
+
 class Model {
     constructor() {
         this.size = 0;
@@ -95,15 +95,14 @@ class Model {
             if (this.layers[i] instanceof LayerDense) {
                 let prev_input = this.layers[i - 1].output;
                 prev_input = prev_input.reshape(prev_input.size, 1);
-                this.layers[i].forward(prev_input)
+                this.layers[i].forward(prev_input);
             } else {
                 this.layers[i].forward(this.layers[i - 1].output);
-                convMatrix1 = this.layers[i].output.clone()
+                convMatrix1 = this.layers[i].output.clone();
             }
 
         }
 
         return this.layers[this.size - 1].output;
     }
-
 }
