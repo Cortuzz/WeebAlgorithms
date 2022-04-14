@@ -24,6 +24,9 @@ class Colony {
         this.initialPheromones = initialPheromones;
         this.pheromonesDecaying = pheromonesDecaying;
 
+        this.boostTimer = new Cooldown(100);
+        this.boosted = false;
+
         this.ants = [ ];
     }
 
@@ -45,7 +48,7 @@ class Colony {
     }
 
     addAnt(AntType) {
-        if (this.ants.length > this.maxSize || this.increasingPopulation) {
+        if (this.ants.length >= this.maxSize || this.increasingPopulation) {
             return;
         }
         let ant;

@@ -36,11 +36,22 @@ class AntsSimulation {
     updateField(points) {
         points.forEach(point => {
             this.field[point.y][point.x].value = point.value;
+            this.antsField[point.y][point.x].forEach(ant => {
+                ant.hp = 0;
+            });
         });
     }
 
     getAntsOnField(x, y) {
         return this.antsField[y][x];
+    }
+
+    decayFood(x, y) {
+        let value = this.field[y][x].value;
+        if (value <= 0) {
+            throw Error;
+        }
+        this.field[y][x].value = Math.max(-1, value - 5);
     }
 
     checkEnemy(x, y, index) {
@@ -97,7 +108,25 @@ class AntsSimulation {
     }
 
     addAnt(index) {
-        this.colonies[index].addAnt(Worker);
+        let colony = this.colonies[index];
+        let ratio = colony.ants.length / colony.maxSize;
+        let antsCount = 1;
+
+        if (Math.random() < ratio - 0.2) {
+            return;
+        }
+
+        if (colony.boosted) {
+            antsCount = 10;
+        }
+
+        for (let i = 0; i < antsCount; i++) {
+            if (this.colonies.length > 1 && Math.random() < 0.1) {
+                colony.addAnt(Fighter);
+                return;
+            }
+            colony.addAnt(Worker);
+        }
     }
 
     getColony(index) {

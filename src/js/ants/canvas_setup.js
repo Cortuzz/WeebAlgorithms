@@ -7,13 +7,13 @@ let drawing = false;
 let colonyPoints = [ ];
 let updatedPoints = [ ];
 
-const canvas = document.getElementById('canvas')
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const scale = 1;
 const pointWidth = 1;
 
-colonyColors = { 0: "black", 1: "darkred", 2: "yellow", 3: "darkblue" };
-const maxColonyCounts = 4;
+colonyColors = { 0: "darkgreen", 1: "darkred", 2: "darkblue" };
+const maxColonyCounts = 3;
 colors = { 'colony': 'darkred', 'food': 'forestgreen', 'border': 'gray', 'clearBorder': 'aliceblue' };
 links = { 'colony': COLONY, 'border': BORDER, 'empty': EMPTY };
 ctx.lineWidth = 20;
@@ -70,13 +70,16 @@ canvas.addEventListener('mouseup', function(e) {
     draw(e, 10, undefined, colors[currentState]);
 });
 
+function foodColor(value) {
+    return rgbToHex(0, 2 * value + 50, 0);
+}
+
 function getFoodColor() {
     if (currentState !== 'food') {
         ctx.strokeStyle = colors[currentState];
         return;
     }
-
-    return rgbToHex(0, 2 * foodValue + 50, 0);
+    return foodColor(foodValue);
 }
 
 async function drawColony(e) {
@@ -121,7 +124,7 @@ function drawCircle(x, y, radius, arcColor, fillColor) {
     }
 }
 
-function drawRect(x, y, w, h, color) {
+function drawRect(ctx, x, y, w, h, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, w, h);
 }
@@ -143,11 +146,18 @@ function setValue(x, y, radius, value_) {
 }
 
 function drawPoint(x, y, color, w, simulation) {
-    if (simulation != null) {
-        if (simulation.checkFood(x, y) || field[y][x].value <= COLONY) {
-            return;
+    try {
+        if (simulation != null) {
+            if (field[y][x].value <= COLONY) {
+                return;
+            }
+            if (simulation.checkFood(x, y)) {
+                color = foodColor(simulation.field[y][x].value);
+                drawRect(ctx, x, y, w, w, color);
+            }
         }
-    }
 
-    drawRect(x, y, w, w, color);
+        drawRect(ctx, x, y, w, w, color);
+    }
+    catch (e) { }
 }

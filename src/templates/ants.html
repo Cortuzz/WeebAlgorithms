@@ -37,6 +37,7 @@
                 едой.</a>
             <div>
                 <button id="startButton">Начать выполнение</button>
+                <button id="caveButton">Сгенерировать мир</button>
                 <button id="switchButton" onclick="location.href='ants_basic.html'">Базовый вариант</button>
             </div>
 
@@ -94,11 +95,64 @@
         </div>
     </div>
 
-    <div class="canvas_block">
-        <canvas id="canvas" width="900px" height="600px"></canvas>
+    <div class="canvas_holder" style="width: 40%">
+        <div class="population_block">
+            <div class="valueView">
+                <h3>Размер популяции:&nbsp</h3>
+                <h3 id="populationView">0</h3> <h3>&nbsp|&nbsp</h3>
+                <h3 id="populationView2">0</h3> <h3>&nbsp|&nbsp</h3>
+                <h3 id="populationView3">0</h3>
+            </div>
+
+            <div style="display: flex">
+                <div style="overflow: auto">
+                    <canvas id="markupCanvas" width="108" height="250"></canvas>
+                </div>
+
+                <div id="populationScroll" style="overflow: auto">
+                    <canvas id="populationCanvas" width="3000" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="canvas_block">
+            <canvas id="canvas" width="720px" height="400px"></canvas>
+        </div>
+
     </div>
 
-    <div class="main_block">
+    <div class="additional_block">
+        <div class="boost_block">
+            <h3>Усиления:</h3>
+            <div>
+                <button id="boost1" data-mode="1">Усилить 1 колонию</button>
+                <button id="boost2" data-mode="2">Усилить 2 колонию</button>
+                <button id="boost3" data-mode="3">Усилить 3 колонию</button>
+            </div>
+
+            <div>
+                <h3>Индикаторы усилений:</h3>
+                <div class="fieldSize" style="margin-bottom: 5px">
+                    <h6 style="margin-right: 5px">1</h6>
+                    <canvas id="1boost" width="430" height="10"></canvas>
+                </div>
+                <div class="fieldSize" style="margin-bottom: 5px">
+                    <h6 style="margin-right: 5px">2</h6>
+                    <canvas id="2boost" width="430" height="10"></canvas>
+                </div>
+                <div class="fieldSize">
+                    <h6 style="margin-right: 5px">3</h6>
+                    <canvas id="3boost" width="430" height="10"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="cave_block">
+            <h3>Генерация мира:</h3>
+            <div style="display: flex; justify-content: center;">
+                <canvas id="cave" width="180" height="100"></canvas>
+            </div>
+        </div>
+
         <div class="danger_block">
             <h3>Danger zone:</h3>
             <p style="font-size: 13px">Внимание! Изменения следующих параметров могут привести к нестабильной
@@ -291,8 +345,11 @@
 <script src="../js/ants/alg/cooldown.js"></script>
 <script src="../js/ants/alg/worker.js"></script>
 <script src="../js/ants/alg/fighter.js"></script>
-<script src="../js/ants/canvas_setup.js"></script>
 <script src="../js/ants/params.js"></script>
+<script src="../js/ants/canvas_setup.js"></script>
+<script src="../js/ants/alg/cave_generation.js"></script>
+<script src="../js/ants/population_canvas.js"></script>
+<script src="../js/ants/boosts.js"></script>
 <script src="../js/main.js"></script>
 </body>
 </html>

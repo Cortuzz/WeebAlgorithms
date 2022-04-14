@@ -1,15 +1,21 @@
 window.addEventListener("load", () => {
     init();
     window.startButton.addEventListener("click", startAnts);
+    window.caveButton.addEventListener("click", generateCave);
     window.fieldButtons.addEventListener("click", changeMode);
     window.locker.addEventListener("click", changeLock);
 });
+
+window.boost1.addEventListener("click", addBoost);
+window.boost2.addEventListener("click", addBoost);
+window.boost3.addEventListener("click", addBoost);
 
 let unlock = false;
 
 const EMPTY = -1, BORDER = -2, COLONY = -3;
 let colony;
 let viewStates;
+let boostIndex;
 
 function init() {
     viewStates = { 'colony': "Установка колонии", 'food': "Установка еды",
@@ -19,7 +25,15 @@ function init() {
     ctx.rect(0, 0, WIDTH, HEIGHT);
     ctx.fill();
     window.currentActionView.innerText = viewStates[currentState];
+    initPopulationCanvas();
     fieldBuilder();
+}
+
+function addBoost(event) {
+    let index = event.target.dataset.mode - 1
+    if (colonyPoints.length > index) {
+        boostIndex = index;
+    }
 }
 
 function fieldBuilder() {
@@ -165,6 +179,17 @@ async function startAnts() {
     let epochs = 1000000;
 
     for (let epoch = 0; epoch < epochs; epoch++) {
+        if (boostIndex != null) {
+            colonies[boostIndex].boosted = true;
+            boostIndex = undefined;
+        }
+
+        if (colonies.length > 1) {
+            changePopulationCanvas(epoch, colonies[0].ants.length, colonies);
+        } else {
+            changePopulationCanvas(epoch, colonies[0].ants.length);
+        }
+
         let ants = [ ];
         if (updatedPoints) {
             simulation.updateField(updatedPoints);
@@ -172,6 +197,13 @@ async function startAnts() {
         }
 
         for (let i = 0; i < colonies.length; i++) {
+            if (colonies[i].boosted) {
+                updateBoost(i, 1 - colonies[i].boostTimer.getRatio());
+                if (colonies[i].boostTimer.tickAndCheck()) {
+                    colonies[i].boosted = false;
+                }
+            }
+
             colonies[i] = simulation.updateColony(i);
             ants.push(...colonies[i].ants);
 
