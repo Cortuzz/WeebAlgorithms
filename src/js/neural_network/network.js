@@ -100,9 +100,9 @@ class Model {
                 this.layers[i].forward(this.layers[i - 1].output);
                 convMatrix1 = this.layers[i].output.clone();
             }
-
         }
 
         return this.layers[this.size - 1].output;
     }
 }
+

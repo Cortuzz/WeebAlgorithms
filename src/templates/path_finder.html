@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="../css/animation.css">
     <title>Поиск пути</title>
+    <link rel="shortcut icon" href="favicon2.ico" type="image/x-icon">
 </head>
 <body>
 <div class="nav">
@@ -131,8 +132,26 @@
                 <h6>100%</h6>
             </div>
 
+            <div class="maze">
+                <div class="firstColumn" style="width: 50%;">
+                    <h6>Способ генерации лабиринта:</h6>
+                    <select id="selectMaze">
+                        <option value="dfs" selected>Поиск в глубину</option>
+                        <option value="prim">Алгоритм Прима</option>
+                        <option value="kruscal">Алгоритм Краскала</option>
+                    </select>
+                </div>
+
+                <div class="secondColumn" style="width: 30%;">
+                    <h6>Показать построение:</h6>
+                    <input type="checkbox" id="generatingMazeChecker" class="toggle" checked>
+                    <label for="generatingMazeChecker"></label>
+                </div>
+
+            </div>
+
             <h6>Метрика эвристики:</h6>
-            <select id="selectHeuristic">
+            <select id="selectHeuristic" style="width: 50%">
                 <option value="Euclid" selected>Евклидова</option>
                 <option value="Manhattan">Манхэттенская</option>
             </select>
@@ -142,7 +161,8 @@
 <div class="picture">
     <img class="jibril" src="../img/flying.png" alt="">
 </div>
-<script src="../js/path_finder/handler.js" type="module"></script>
+<script src="../js/path_finder/handler.js"></script>
+<script src="../js/path_finder/maze.js"></script>
 <script src="../js/path_finder/finder.js"></script>
 <script src="../js/main.js"></script>
 <script type="text/x-mathjax-config"> MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
