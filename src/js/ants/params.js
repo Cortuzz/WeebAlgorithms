@@ -68,7 +68,7 @@ let colonySize = 500, maxColonySize = 1000;
 
 let speed = 5, moveCooldown = 5, liberty = 0.005;
 let visionDistance = 15, visionAngle = Math.PI, visionAngleStep = 0.05;
-let redDecay = 0.999, greenDecay = 0.999, densityDecay = 0.999;
+let redDecay = 0.98, greenDecay = 0.98, densityDecay = 0.98;
 let decayingPheromones = 0.1, initialPheromones = 8000;
 let vegetateCount = 4, deadEndsCount1 = 6, deadEndsCount2 = 2;
 let totalGenIterations;

@@ -171,11 +171,15 @@ async function startAnts() {
             boostIndex = undefined;
         }
 
-        if (colonies.length > 1) {
-            changePopulationCanvas(epoch, colonies[0].ants.length, colonies);
-        } else {
-            changePopulationCanvas(epoch, colonies[0].ants.length);
+        if (epoch % 2 === 0) {
+            let epochValue = Math.floor(epoch / 2);
+            if (colonies.length > 1) {
+                changePopulationCanvas(epochValue, colonies[0].ants.length, colonies);
+            } else {
+                changePopulationCanvas(epochValue, colonies[0].ants.length);
+            }
         }
+
 
         let ants = [ ];
         if (updatedPoints) {
@@ -193,9 +197,10 @@ async function startAnts() {
 
             colonies[i] = simulation.updateColony(i);
             ants.push(...colonies[i].ants);
-
-            simulation.update();
             await antsAlg(colonies[i]);
+        }
+        if (epoch % 10 === 0) {
+            simulation.update();
         }
 
         if (drawingAnts) {
