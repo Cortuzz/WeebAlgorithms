@@ -110,6 +110,18 @@ input.fieldDeep {
     transform: scale(0.95);
 }
 
+#clearButton {
+    border-radius: 10px;
+    background-color: darkgray;
+    border: 2px solid gray;
+}
+
+#clearButton:hover {
+    background-color: gray;
+    border: 2px solid darkgray;
+    transform: scale(0.95);
+}
+
 #log_block {
     display: flex;
     align-items: center;

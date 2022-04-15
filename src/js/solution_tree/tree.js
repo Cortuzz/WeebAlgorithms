@@ -223,7 +223,6 @@ class Tree {
             currentNode.domElement.style.background = "#7037b6";
 
             if (typeof currentNode.value !== "number") {
-                console.log(currentNode.value, predictData[currentNode.columnOfValue])
                 if (currentNode.value.includes(predictData[currentNode.columnOfValue])) {
                     currentNode = currentNode.trueBranch;
                 } else {

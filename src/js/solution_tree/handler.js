@@ -1,5 +1,6 @@
 window.buildTree.addEventListener("click", generateTree);
 window.startButton.addEventListener("click", prediction);
+window.clearButton.addEventListener("click", clearCanvas);
 window.fieldDeep.addEventListener("input", changeDeep);
 window.addEventListener('DOMContentLoaded', function () {
     const slider = new ChiefSlider('.slider', {loop: true })
@@ -215,6 +216,11 @@ function clearTree(parent, node) {
     node.childNodes.forEach(childNode => {
         clearTree(node, childNode);
     });
+}
+
+function clearCanvas() {
+    clearTree(ulTree, ulTree.childNodes[0]);
+    printTree(tree.root, ulTree);
 }
 
 async function generateTree() {
