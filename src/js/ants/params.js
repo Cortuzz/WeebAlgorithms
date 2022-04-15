@@ -49,6 +49,15 @@ window.changeInitialPheromones.addEventListener("input", e =>
 window.changeDecayingPheromones.addEventListener("input", e =>
 { decayingPheromones = +e.target.value; window.decayingPheromonesView.textContent = decayingPheromones; });
 
+window.changeDeadEnds1.addEventListener("input", e =>
+{ deadEndsCount1 = +e.target.value; window.deadEndsView1.textContent = deadEndsCount1; initTotalGen(); });
+
+window.changeDeadEnds2.addEventListener("input", e =>
+{ deadEndsCount2 = +e.target.value; window.deadEndsView2.textContent = deadEndsCount2; initTotalGen(); });
+
+window.changeVegetate.addEventListener("input", e =>
+{ vegetateCount = +e.target.value; window.vegetateView.textContent = vegetateCount; initTotalGen(); });
+
 const WIDTH = 720, HEIGHT = 400;
 let defaultLog = "Алгоритм не запущен";
 let defaultColor = "coral";
@@ -61,11 +70,15 @@ let speed = 5, moveCooldown = 5, liberty = 0.005;
 let visionDistance = 15, visionAngle = Math.PI, visionAngleStep = 0.05;
 let redDecay = 0.999, greenDecay = 0.999, densityDecay = 0.999;
 let decayingPheromones = 0.1, initialPheromones = 8000;
+let vegetateCount = 4, deadEndsCount1 = 6, deadEndsCount2 = 2;
+let totalGenIterations;
+initTotalGen();
 
 window.dropbtn1.addEventListener("click", changeMenuView);
 window.dropbtn2.addEventListener("click", changeMenuView);
 window.dropbtn3.addEventListener("click", changeMenuView);
 window.dropbtn4.addEventListener("click", changeMenuView);
+window.dropbtn5.addEventListener("click", changeMenuView);
 
 function changeLog(text, color) {
     window.log.textContent = text;
@@ -101,6 +114,7 @@ function changeLock() {
 
     unlock = this.checked;
     if (unlock) {
+        window.dropdowns.style.display = "block";
         window.lockerView.innerText = "Параметры разблокированы";
         dangerParams.forEach(param => {
             param.disabled = false;
@@ -124,6 +138,10 @@ function changeLock() {
         window.initialPheromonesView.textContent = initialPheromones;
         window.decayingPheromonesView.textContent = decayingPheromones;
 
+        window.deadEndsView1.textContent = deadEndsCount1;
+        window.deadEndsView2.textContent = deadEndsCount2;
+        window.vegetateView.textContent = vegetateCount;
+
     } else {
         window.lockerView.innerText = "Параметры заблокированы";
         dangerParams.forEach(param => {
@@ -136,12 +154,8 @@ function changeLock() {
     }
 }
 
-function clearMarkers() {
-    for (let i = 0; i < HEIGHT; i++) {
-        for (let j = 0; j < WIDTH; j++) {
-            drawRect(ctx, i, j, 1, 1, "aliceblue");
-        }
-    }
+function initTotalGen() {
+    totalGenIterations = vegetateCount + deadEndsCount1 + deadEndsCount2 + 4;
 }
 
 window.changeRedDecay.value = redDecay;
@@ -161,3 +175,7 @@ window.changeVisionAngleStep.value = visionAngleStep;
 
 window.changeInitialPheromones.value = initialPheromones;
 window.changeDecayingPheromones.value = decayingPheromones;
+
+window.changeDeadEnds1.value = deadEndsCount1;
+window.changeDeadEnds2.value = deadEndsCount2;
+window.changeVegetate.value = vegetateCount;

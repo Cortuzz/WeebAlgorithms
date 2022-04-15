@@ -171,183 +171,228 @@
                 <label for="locker" id="lockerView">Параметры заблокированы</label>
             </div>
 
-            <div class="dropdown">
-                <div class="dropbtn" id="dropbtn1">Настройки симуляции</div>
+            <div id="dropdowns" style="display: none">
+                <div class="dropdown">
+                    <div class="dropbtn" id="dropbtn1">Настройки симуляции</div>
 
-                <div class="dropdown-content">
-                    <div class="valueView">
-                        <h6>Испарение кр. феромонов:&nbsp</h6>
-                        <h6 id="redDecayView" class="dangerParamView">Заблокировано</h6>
+                    <div class="dropdown-content">
+                        <div class="valueView">
+                            <h6>Испарение кр. феромонов:&nbsp</h6>
+                            <h6 id="redDecayView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>0</h6>
+                            <input disabled class="dangerParam" id="changeRedDecay" type="range" min="0" max="1"
+                                   step="0.01">
+                            <h6>1</h6>
+                        </div>
                     </div>
 
-                    <div class="valueView">
-                        <h6>0</h6>
-                        <input disabled class="dangerParam" id="changeRedDecay" type="range" min="0" max="1"
-                               step="0.01">
-                        <h6>1</h6>
+                    <div class="dropdown-content">
+                        <div class="valueView">
+                            <h6>Испарение зел. феромонов:&nbsp</h6>
+                            <h6 id="greenDecayView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>0</h6>
+                            <input disabled class="dangerParam" id="changeGreenDecay" type="range" min="0" max="1"
+                                   step="0.01">
+                            <h6>1</h6>
+                        </div>
+                    </div>
+
+                    <div class="dropdown-content">
+                        <div class="valueView">
+                            <h6>Испарение плотности потока:&nbsp</h6>
+                            <h6 id="densityDecayView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+
+                        <div class="valueView">
+                            <h6>0</h6>
+                            <input disabled class="dangerParam" id="changeDensityDecay" type="range" min="0" max="1"
+                                   step="0.01">
+                            <h6>1</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="dropbtn" id="dropbtn5">Настройки генерации</div>
+
+                    <div class="dropdown-content">
+                        <div class="valueView">
+                            <h6>Первичное удаление тупиковых зон:&nbsp</h6>
+                            <h6 id="deadEndsView1" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>0</h6>
+                            <input disabled class="dangerParam" id="changeDeadEnds1" type="range" min="0" max="10">
+                            <h6>10</h6>
+                        </div>
+                    </div>
+
+                    <div class="dropdown-content">
+                        <div class="valueView">
+                            <h6>Вторичное удаление тупиковых зон:&nbsp</h6>
+                            <h6 id="deadEndsView2" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>0</h6>
+                            <input disabled class="dangerParam" id="changeDeadEnds2" type="range" min="0" max="10">
+                            <h6>10</h6>
+                        </div>
+                    </div>
+
+                    <div class="dropdown-content">
+                        <div class="valueView">
+                            <h6>Расширение пустых зон:&nbsp</h6>
+                            <h6 id="vegetateView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>0</h6>
+                            <input disabled class="dangerParam" id="changeVegetate" type="range" min="0" max="10">
+                            <h6>10</h6>
+                        </div>
                     </div>
                 </div>
 
-                <div class="dropdown-content">
-                    <div class="valueView">
-                        <h6>Испарение зел. феромонов:&nbsp</h6>
-                        <h6 id="greenDecayView" class="dangerParamView">Заблокировано</h6>
-                    </div>
+                <div class="dropdown">
+                    <div class="dropbtn" id="dropbtn2">Настройки колонии</div>
 
-                    <div class="valueView">
-                        <h6>0</h6>
-                        <input disabled class="dangerParam" id="changeGreenDecay" type="range" min="0" max="1"
-                               step="0.01">
-                        <h6>1</h6>
+                    <div class="dropdown-content">
+                        <div class="valueView">
+                            <h6>Размер популяции:&nbsp</h6>
+                            <h6 id="sizeView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="inputValue">
+                            <h6>1</h6>
+                            <input disabled class="dangerParam" id="changeSize" type="range" min="1" max="1000">
+                            <h6>1000</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>Максимальный размер:&nbsp</h6>
+                            <h6 id="maxSizeView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="inputValue">
+                            <h6>1</h6>
+                            <input disabled class="dangerParam" id="changeMaxSize" type="range" min="1" max="2000">
+                            <h6>2000</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="dropbtn" id="dropbtn3">Настройки муравьев</div>
+
+                    <div class="dropdown-content">
+                        <div class="valueView">
+                            <h6>Скорость:&nbsp</h6>
+                            <h6 id="speedView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="inputValue">
+                            <h6>0.1</h6>
+                            <input disabled class="dangerParam" id="changeAntSpeed" type="range" min="0.1" max="10"
+                                   step="0.1">
+                            <h6>10</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>Задержка поиска:&nbsp</h6>
+                            <h6 id="moveCooldownView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="inputValue">
+                            <h6>1</h6>
+                            <input disabled class="dangerParam" id="changeMoveCooldown" type="range" min="1" max="50">
+                            <h6>50</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>Шанс отклонения:&nbsp</h6>
+                            <h6 id="libertyView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="inputValue">
+                            <h6>0</h6>
+                            <input disabled class="dangerParam" id="changeLiberty" type="range" min="0" max="0.5"
+                                   step="0.001">
+                            <h6>0.5</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>Дальность зрения:&nbsp</h6>
+                            <h6 id="visionDistanceView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="inputValue">
+                            <h6>1</h6>
+                            <input disabled class="dangerParam" id="changeVisionDistance" type="range" min="1" max="50">
+                            <h6>50</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>Поле зрения:&nbsp</h6>
+                            <h6 id="visionAngleView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="inputValue">
+                            <h6>0</h6>
+                            <input disabled class="dangerParam" id="changeVisionAngle" type="range" min="0" max="6.3"
+                                   step="0.1">
+                            <h6>2π</h6>
+                        </div>
+
+                        <div class="valueView">
+                            <h6>Шаг зрения:&nbsp</h6>
+                            <h6 id="visionAngleStepView" class="dangerParamView">Заблокировано</h6>
+                        </div>
+
+                        <div class="inputValue">
+                            <h6>0</h6>
+                            <input disabled class="dangerParam" id="changeVisionAngleStep" type="range" min="0" max="1"
+                                   step="0.01">
+                            <h6>1</h6>
+                        </div>
                     </div>
                 </div>
 
-                <div class="dropdown-content">
-                    <div class="valueView">
-                        <h6>Испарение плотности потока:&nbsp</h6>
-                        <h6 id="densityDecayView" class="dangerParamView">Заблокировано</h6>
-                    </div>
+                <div class="dropdown">
+                    <div class="dropbtn" id="dropbtn4">Настройки феромонов</div>
 
+                    <div class="dropdown-content">
+                        <div class="valueView">
+                            <h6>Количество феромонов:&nbsp</h6>
+                            <h6 id="initialPheromonesView" class="dangerParamView">Заблокировано</h6>
+                        </div>
 
-                    <div class="valueView">
-                        <h6>0</h6>
-                        <input disabled class="dangerParam" id="changeDensityDecay" type="range" min="0" max="1"
-                               step="0.01">
-                        <h6>1</h6>
-                    </div>
-                </div>
-            </div>
+                        <div class="inputValue">
+                            <h6>1000</h6>
+                            <input disabled class="dangerParam" id="changeInitialPheromones" type="range" min="1000"
+                                   max="10000">
+                            <h6>10000</h6>
+                        </div>
 
-            <div class="dropdown">
-                <div class="dropbtn" id="dropbtn2">Настройки колонии</div>
+                        <div class="valueView">
+                            <h6>Потеря феромонов:&nbsp</h6>
+                            <h6 id="decayingPheromonesView" class="dangerParamView">Заблокировано</h6>
+                        </div>
 
-                <div class="dropdown-content">
-                    <div class="valueView">
-                        <h6>Размер популяции:&nbsp</h6>
-                        <h6 id="sizeView" class="dangerParamView">Заблокировано</h6>
-                    </div>
-
-                    <div class="inputValue">
-                        <h6>1</h6>
-                        <input disabled class="dangerParam" id="changeSize" type="range" min="1" max="1000">
-                        <h6>1000</h6>
-                    </div>
-
-                    <div class="valueView">
-                        <h6>Максимальный размер:&nbsp</h6>
-                        <h6 id="maxSizeView" class="dangerParamView">Заблокировано</h6>
-                    </div>
-
-                    <div class="inputValue">
-                        <h6>1</h6>
-                        <input disabled class="dangerParam" id="changeMaxSize" type="range" min="1" max="2000">
-                        <h6>2000</h6>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <div class="dropbtn" id="dropbtn3">Настройки муравьев</div>
-
-                <div class="dropdown-content">
-                    <div class="valueView">
-                        <h6>Скорость:&nbsp</h6>
-                        <h6 id="speedView" class="dangerParamView">Заблокировано</h6>
-                    </div>
-
-                    <div class="inputValue">
-                        <h6>0.1</h6>
-                        <input disabled class="dangerParam" id="changeAntSpeed" type="range" min="0.1" max="10"
-                               step="0.1">
-                        <h6>10</h6>
-                    </div>
-
-                    <div class="valueView">
-                        <h6>Задержка поиска:&nbsp</h6>
-                        <h6 id="moveCooldownView" class="dangerParamView">Заблокировано</h6>
-                    </div>
-
-                    <div class="inputValue">
-                        <h6>1</h6>
-                        <input disabled class="dangerParam" id="changeMoveCooldown" type="range" min="1" max="50">
-                        <h6>50</h6>
-                    </div>
-
-                    <div class="valueView">
-                        <h6>Шанс отклонения:&nbsp</h6>
-                        <h6 id="libertyView" class="dangerParamView">Заблокировано</h6>
-                    </div>
-
-                    <div class="inputValue">
-                        <h6>0</h6>
-                        <input disabled class="dangerParam" id="changeLiberty" type="range" min="0" max="0.5"
-                               step="0.001">
-                        <h6>0.5</h6>
-                    </div>
-
-                    <div class="valueView">
-                        <h6>Дальность зрения:&nbsp</h6>
-                        <h6 id="visionDistanceView" class="dangerParamView">Заблокировано</h6>
-                    </div>
-
-                    <div class="inputValue">
-                        <h6>1</h6>
-                        <input disabled class="dangerParam" id="changeVisionDistance" type="range" min="1" max="50">
-                        <h6>50</h6>
-                    </div>
-
-                    <div class="valueView">
-                        <h6>Поле зрения:&nbsp</h6>
-                        <h6 id="visionAngleView" class="dangerParamView">Заблокировано</h6>
-                    </div>
-
-                    <div class="inputValue">
-                        <h6>0</h6>
-                        <input disabled class="dangerParam" id="changeVisionAngle" type="range" min="0" max="6.3"
-                               step="0.1">
-                        <h6>2π</h6>
-                    </div>
-
-                    <div class="valueView">
-                        <h6>Шаг зрения:&nbsp</h6>
-                        <h6 id="visionAngleStepView" class="dangerParamView">Заблокировано</h6>
-                    </div>
-
-                    <div class="inputValue">
-                        <h6>0</h6>
-                        <input disabled class="dangerParam" id="changeVisionAngleStep" type="range" min="0" max="1"
-                               step="0.01">
-                        <h6>1</h6>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <div class="dropbtn" id="dropbtn4">Настройки феромонов</div>
-
-                <div class="dropdown-content">
-                    <div class="valueView">
-                        <h6>Количество феромонов:&nbsp</h6>
-                        <h6 id="initialPheromonesView" class="dangerParamView">Заблокировано</h6>
-                    </div>
-
-                    <div class="inputValue">
-                        <h6>1000</h6>
-                        <input disabled class="dangerParam" id="changeInitialPheromones" type="range" min="1000"
-                               max="10000">
-                        <h6>10000</h6>
-                    </div>
-
-                    <div class="valueView">
-                        <h6>Потеря феромонов:&nbsp</h6>
-                        <h6 id="decayingPheromonesView" class="dangerParamView">Заблокировано</h6>
-                    </div>
-
-                    <div class="inputValue">
-                        <h6>1</h6>
-                        <input disabled class="dangerParam" id="changeDecayingPheromones" type="range" min="0.01"
-                               max="1" step="0.01">
-                        <h6>2000</h6>
+                        <div class="inputValue">
+                            <h6>1</h6>
+                            <input disabled class="dangerParam" id="changeDecayingPheromones" type="range" min="0.01"
+                                   max="1" step="0.01">
+                            <h6>2000</h6>
+                        </div>
                     </div>
                 </div>
             </div>

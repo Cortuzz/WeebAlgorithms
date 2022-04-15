@@ -1,6 +1,5 @@
 let currentCaveAction = window.currentAction;
 
-const totalGenIterations = 14;
 let genIterations;
 
 let hScaled = HEIGHT / 4;
@@ -16,13 +15,13 @@ async function generateCave() {
 
     await prim();
 
-    await removeDeadEnds(5);
-    await vegetate(3);
-    await removeDeadEnds(2);
+    await removeDeadEnds(deadEndsCount1);
+    await vegetate(vegetateCount);
+    await removeDeadEnds(deadEndsCount2);
     await removeLonelyPoints();
 
     await scaleUp();
-    currentCaveAction.textContent = "Мир сгенерирован";
+    currentCaveAction.textContent = "Карта сгенерирована";
 }
 
 async function prim() {
