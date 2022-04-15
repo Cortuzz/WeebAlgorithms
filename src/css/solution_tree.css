@@ -62,7 +62,7 @@ input.fieldDeep {
 
 .description div, .csv div, .predict div {
     display: flex;
-    flex-direction: column;
+
     justify-content: center;
 }
 
@@ -212,3 +212,24 @@ input.fieldDeep {
 .tree>li:before, .tree>li:after, .tree>li>span:before {
     outline: none;
 }
+
+.slider {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 50%;
+}
+
+.slider__wrapper {
+    overflow: hidden;
+}
+
+.slider__item {
+    flex: 0 0 50%;
+    max-width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+}
+

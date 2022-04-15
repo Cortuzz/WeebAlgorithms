@@ -1,6 +1,9 @@
 window.buildTree.addEventListener("click", generateTree);
 window.startButton.addEventListener("click", prediction);
 window.fieldDeep.addEventListener("input", changeDeep);
+window.addEventListener('DOMContentLoaded', function () {
+    const slider = new ChiefSlider('.slider', {loop: true })
+});
 
 let csvText = document.getElementById("csv");
 let predictText = document.getElementById("predict");
@@ -21,35 +24,40 @@ function changeDeep(event) {
     maxDeep--;
 }
 
-function normalizer(text, type) {
-    let data = [ ];
-    let currentData = [ ];
-    let textString = "";
+function getCombinations(valuesArray) {
+    let combinations = [];
+    let temp = [];
+    let slent = Math.pow(2, valuesArray.length);
 
-    for (let symbol of text) {
-        if (symbol === "\n") {
-            if (textString) {
-                currentData.push(textString.trim());
+    for (let i = 0; i < slent; i++) {
+        temp = [];
+        for (let j = 0; j < valuesArray.length; j++) {
+            if ((i & Math.pow(2, j))) {
+                temp.push(valuesArray[j]);
             }
-            data.push(currentData);
-            textString = "";
-            currentData = [ ];
-        } else if (symbol === ",") {
-            currentData.push(textString.trim());
-            textString = "";
-        } else {
-            textString += symbol;
         }
-    }
-    if (currentData) {
-        if (textString) {
-            currentData.push(textString);
+        if (temp.length > 0) {
+            combinations.push(temp);
         }
-        data.push(currentData);
     }
 
-    while (getIndexOfEmptyString(data) !== -1) {
-        data.splice(getIndexOfEmptyString(data), 1);
+    combinations.sort((a, b) => a.length - b.length);
+    return combinations;
+}
+
+
+function normalizer(text, type) {
+    let data = [];
+    data = text.split("\n")
+    data = clearEmptyStrings(data);
+
+    for (let i = 0; i < data.length; i++) {
+        data[i] = data[i].split(",");
+
+        for (let j = 0; j < data[i].length; j++) {
+            data[i][j] = data[i][j].trim();
+            data[i][j] = data[i][j].charAt(0).toUpperCase() + data[i][j].slice(1);
+        }
     }
 
     if (type === "csv") {
@@ -78,9 +86,17 @@ function isCorrect(data, type) {
     return true;
 }
 
+function clearEmptyStrings(data) {
+    while (getIndexOfEmptyString(data) !== -1) {
+        data.splice(getIndexOfEmptyString(data), 1);
+    }
+
+    return data;
+}
+
 function getIndexOfEmptyString(data) {
     for (let i = 0; i < data.length; i++) {
-        if (data[i].length == 0) {
+        if (data[i] === "") {
             return i;
         }
     }

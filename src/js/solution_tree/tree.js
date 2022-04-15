@@ -34,7 +34,7 @@ class Tree {
         return count;
     }
 
-    getGiniImpurityForLeaf(data) {
+    getGiniIndex(data) {
         let impurity = 0;
         let uniqueParams = [];
         let lastColumn = headline.length - 1;
@@ -50,20 +50,26 @@ class Tree {
         return 1 - impurity;
     }
 
-    getTotalGiniImpurity(dataForTrueBranch, dataForFalseBranch) {
+    getTotalGiniSplit(dataForTrueBranch, dataForFalseBranch) {
         let probabilityTrue = dataForTrueBranch.length / (dataForTrueBranch.length + dataForFalseBranch.length);
         let probabilityFalse = dataForFalseBranch.length / (dataForTrueBranch.length + dataForFalseBranch.length);
 
-        return probabilityTrue * this.getGiniImpurityForLeaf(dataForTrueBranch) + probabilityFalse * this.getGiniImpurityForLeaf(dataForFalseBranch);
+        return probabilityTrue * this.getGiniIndex(dataForTrueBranch) + probabilityFalse * this.getGiniIndex(dataForFalseBranch);
     }
 
     createNameForNode(columnName, value) {
         let name = columnName;
 
-        if (typeof value !== "string") {
+        if (typeof value === "number") {
             name += ` < ${value}`;
         } else {
-            name += ` is ${value}`;
+            name += ` is `
+
+            for (let i = 0; i < value.length - 1; i++) {
+                name += `${value[i]} or `;
+            }
+
+            name += `${value[value.length - 1]}`;
         }
 
         return name;
@@ -73,9 +79,9 @@ class Tree {
         let dataForTrueBranch = [];
         let dataForFalseBranch = [];
 
-        if (typeof value === "string") {
+        if (typeof value !== "number") {
             for (let i = 0; i < data.length; i++) {
-                if (data[i][column] === value) {
+                if (value.includes(data[i][column])) {
                     dataForTrueBranch.push(data[i]);
                 } else {
                     dataForFalseBranch.push(data[i]);
@@ -96,28 +102,62 @@ class Tree {
     }
 
     getBestSplit(data) {
-        let uniqueParams = [];
         let bestSplitNode = new Node("split", -1, "", -1, "", Infinity);
         let sameImpurity = [bestSplitNode];
 
         for (let i = 0; i < headline.length - 1; i++) {
-            for (let j = 0; j < data.length - 1; j++) {
-                if (!uniqueParams.includes(data[j][i])) {
-                    let nameForNode = this.createNameForNode(headline[i], data[j][i]);
-                    let [dataForTrueBranch, dataForFalseBranch] = this.divideBranches(data, i, data[j][i]);
+            let uniqueParams = [];
 
-                    if (dataForTrueBranch.length !== 0 && dataForFalseBranch.length !== 0) {
+            if (typeof data[0][i] === "number") {
+                data.sort(function(a, b) {
+                    if (a[i] > b[i]) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
 
-                        let currentImpurity = this.getTotalGiniImpurity(dataForTrueBranch, dataForFalseBranch);
+                for (let j = 0; j < data.length - 1; j++) {
+                    let value = (data[j][i] + data[j + 1][i]) / 2;
 
-                        if (currentImpurity < bestSplitNode.impurirty) {
-                            bestSplitNode = new Node("split", -1, data[j][i], i, nameForNode, currentImpurity);
-                            sameImpurity = [bestSplitNode];
-                        } else if (currentImpurity == bestSplitNode.impurirty) {
-                            sameImpurity.push(new Node("split", -1, data[j][i], i, nameForNode, currentImpurity));
-                        }
+                    if (!uniqueParams.includes(value)) {
+                        uniqueParams.push((data[j][i] + data[j + 1][i]) / 2);
+                    }
 
+                    if (!uniqueParams.includes(data[j][i])) {
                         uniqueParams.push(data[j][i]);
+                    }
+                }
+
+                if (!uniqueParams.includes(data[data.length - 1][i])) {
+                    uniqueParams.push(data[data.length - 1][i]);
+                }
+            } else {
+                let column = [];
+
+                for (let j = 0; j < data.length; j++) {
+                    if (!column.includes(data[j][i])) {
+                        column.push(data[j][i]);
+                    }
+                }
+
+                uniqueParams = getCombinations(column);
+                uniqueParams.splice(uniqueParams.length - 1, 1);
+            }
+
+            for (let j = 0; j < uniqueParams.length; j++) {
+                let nameForNode = this.createNameForNode(headline[i], uniqueParams[j]);
+                let [dataForTrueBranch, dataForFalseBranch] = this.divideBranches(data, i, uniqueParams[j]);
+
+                if (dataForTrueBranch.length !== 0 && dataForFalseBranch.length !== 0) {
+
+                    let currentImpurity = this.getTotalGiniSplit(dataForTrueBranch, dataForFalseBranch);
+
+                    if (currentImpurity < bestSplitNode.impurirty) {
+                        bestSplitNode = new Node("split", -1, uniqueParams[j], i, nameForNode, currentImpurity);
+                        sameImpurity = [bestSplitNode];
+                    } else if (currentImpurity === bestSplitNode.impurirty) {
+                        sameImpurity.push(new Node("split", -1, uniqueParams[j], i, nameForNode, currentImpurity));
                     }
                 }
             }
@@ -164,7 +204,7 @@ class Tree {
         }
 
         let [dataForTrueBranch, dataForFalseBranch] = this.divideBranches(data, bestSplitNode.columnOfValue, bestSplitNode.value);
-        if (this.getGiniImpurityForLeaf(data) === this.getTotalGiniImpurity(dataForTrueBranch, dataForFalseBranch)) {
+        if (this.getGiniIndex(data) === this.getTotalGiniSplit(dataForTrueBranch, dataForFalseBranch)) {
             this.root = this.createLeaf(level, data, isTrueBranch);
             return this.root;
         }
@@ -182,8 +222,9 @@ class Tree {
         while (currentNode.type !== "leaf") {
             currentNode.domElement.style.background = "#7037b6";
 
-            if (typeof currentNode.value === "string") {
-                if (predictData[currentNode.columnOfValue] === currentNode.value) {
+            if (typeof currentNode.value !== "number") {
+                console.log(currentNode.value, predictData[currentNode.columnOfValue])
+                if (currentNode.value.includes(predictData[currentNode.columnOfValue])) {
                     currentNode = currentNode.trueBranch;
                 } else {
                     currentNode = currentNode.falseBranch;
@@ -204,15 +245,3 @@ class Tree {
         });
     }
 }
-
-// Green,3,500,Apple
-// Yellow,3,100,Apple
-//
-//
-// Green,3,500,Apple
-// Yellow,3,100,Apple
-// Yellow,3,60,Lemon
-// Green,3,500,Apple
-// Blue,6,150,Apple
-// Green,4,20,Grape
-// White,7,20,Lemon
