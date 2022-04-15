@@ -32,8 +32,9 @@ input {
 }
 
 .danger_block {
-    margin-left: 1% !important;
-    margin-right: 19.5% !important;
+    margin-top: 0.3%;
+    margin-left: 1%;
+    margin-right: 19.5%;
 }
 
 .description div, .action div {
