@@ -92,19 +92,6 @@ function drawDensity(ants, field, simulation) {
     });
 }
 
-function drawFullDensity(field, simulation) {
-    for (let i = 0; i < HEIGHT; i++) {
-        for (let j = 0; j < WIDTH; j++) {
-            let density = field[i][j].density;
-            if (density === 0) {
-                continue;
-            }
-
-            drawPoint(j, i, getDensityColor(density), 1, simulation);
-        }
-    }
-}
-
 function getGreenPheromoneColor(value) {
     let colorValue = value.toFixed(0);
     return rgbToHex( Math.floor(240 - colorValue / 40), 248,  Math.floor(255 - colorValue / 40));

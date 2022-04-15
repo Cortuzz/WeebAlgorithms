@@ -1,34 +1,50 @@
-let renderCave = true;
+let currentCaveAction = window.currentAction;
+
+const totalGenIterations = 14;
+let genIterations;
+
 let hScaled = HEIGHT / 4;
 let wScaled = WIDTH / 4;
 let fieldScaled = [ ];
 
-let caveCanvas =document.getElementById('cave');
-const caveCtx = caveCanvas.getContext('2d');
+let caveCanvas = document.getElementById('cave');
+let caveCtx = caveCanvas.getContext('2d');
 
 async function generateCave() {
+    window.cave.parentElement.style.display = "flex";
+    genIterations = 0;
+
     await prim();
+
     await removeDeadEnds(5);
     await vegetate(3);
     await removeDeadEnds(2);
+    await removeLonelyPoints();
+
     await scaleUp();
+    currentCaveAction.textContent = "Мир сгенерирован";
 }
 
 async function prim() {
+    currentCaveAction.textContent = "Очистка карты";
     for (let i = 0; i < hScaled; i++) {
         fieldScaled[i] = [ ];
         for (let j = 0; j < wScaled; j++) {
-            fieldScaled[i][j] = { value: -2 };
+            fieldScaled[i][j] = -2;
             drawRect(caveCtx, j, i, 1, 1, "gray");
         }
+        await sleep(0.01);
     }
+    currentCaveAction.textContent = "Генерация высотных зон";
+    await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
+        (genIterations - 1) / totalGenIterations);
 
     let start = { x:0, y: 0 };
     drawRect(caveCtx, 0, 0, 1, 1, "aliceblue");
 
-    let toCheck = [];
-    fieldScaled[start.y][start.x].value = -1;
-    let directions = [];
+    let toCheck = [ ];
+    fieldScaled[start.y][start.x] = -1;
+    let directions = [ ];
     directions = createDirections(start, directions);
 
     for (let i = 0; i < directions.length; i++) {
@@ -42,11 +58,11 @@ async function prim() {
         let index = getRandomIndex(toCheck);
         let choosenCell = toCheck[index];
         toCheck.splice(index, 1);
-        if (fieldScaled[choosenCell.y][choosenCell.x].value === -2) {
-            fieldScaled[choosenCell.y][choosenCell.x].value = -1;
+        if (fieldScaled[choosenCell.y][choosenCell.x] === -2) {
+            fieldScaled[choosenCell.y][choosenCell.x] = -1;
 
             drawRect(caveCtx, choosenCell.x, choosenCell.y, 1, 1, "aliceblue");
-            if (renderCave && Math.random() < 0.01) {
+            if (Math.random() < 0.1) {
                 await sleep(0.01);
             }
 
@@ -61,12 +77,12 @@ async function prim() {
                     y: choosenCell.y + edges[ind][0]
                 }
 
-                if (fieldScaled[connectedCell.y][connectedCell.x].value === -1) {
+                if (fieldScaled[connectedCell.y][connectedCell.x] === -1) {
                     let valX = connectedCell.x - edges[ind][1] / 2;
                     let valY = connectedCell.y - edges[ind][0] / 2;
                     drawRect(caveCtx, valX, valY, 1, 1, "aliceblue");
 
-                    fieldScaled[valY][valX].value = -1;
+                    fieldScaled[valY][valX] = -1;
                     edges.splice(0, directions.length);
                     break;
                 }
@@ -80,32 +96,35 @@ async function prim() {
                     y: choosenCell.y + directions[i][0],
                 };
 
-                if (fieldScaled[nextCell.y][nextCell.x].value === -2) {
+                if (fieldScaled[nextCell.y][nextCell.x] === -2) {
                     toCheck.push(nextCell);
                 }
             }
         }
     }
+    await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
+        (genIterations - 1) / totalGenIterations);
 }
 
 async function removeDeadEnds(iterations) {
     for (let iter = 0; iter < iterations; iter++) {
+        currentCaveAction.textContent = "Удаление тупиковых зон (" + (iter + 1) + "/" + iterations + ")";
         let deadEnds = [ ];
         for (let i = 0; i < hScaled; i++) {
             for (let j = 0; j < wScaled; j++) {
-                if (fieldScaled[i][j].value === -1) {
+                if (fieldScaled[i][j] === -1) {
                     let neighbors = 0;
 
-                    if (i - 1 >= 0 && fieldScaled[i - 1][j].value === -1) {
+                    if (i - 1 >= 0 && fieldScaled[i - 1][j] === -1) {
                         neighbors++;
                     }
-                    if (i + 1 < hScaled && fieldScaled[i + 1][j].value === -1) {
+                    if (i + 1 < hScaled && fieldScaled[i + 1][j] === -1) {
                         neighbors++;
                     }
-                    if (j - 1 >= 0 && fieldScaled[i][j - 1].value === -1) {
+                    if (j - 1 >= 0 && fieldScaled[i][j - 1] === -1) {
                         neighbors++;
                     }
-                    if (j + 1 < wScaled && fieldScaled[i][j + 1].value === -1) {
+                    if (j + 1 < wScaled && fieldScaled[i][j + 1] === -1) {
                         neighbors++;
                     }
                     if (neighbors <= 1) {
@@ -115,25 +134,23 @@ async function removeDeadEnds(iterations) {
             }
 
             for (let deadEnd of deadEnds) {
-                fieldScaled[deadEnd.y][deadEnd.x].value = -2;
+                fieldScaled[deadEnd.y][deadEnd.x] = -2;
                 drawRect(caveCtx, deadEnd.x, deadEnd.y, 1, 1, "gray");
             }
-
-            if (renderCave) {
-                await sleep(0.01);
-            }
+            await sleep(0.01);
         }
-
-        await sleep(0.01);
+        await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
+            (genIterations - 1) / totalGenIterations);
     }
 }
 
 async function vegetate(iterations) {
     for (let iter = 0; iter < iterations; iter++) {
+        currentCaveAction.textContent = "Расширение пустых зон (" + (iter + 1) + "/" + iterations + ")";
         let points = [ ];
         for (let i = 0; i < hScaled; i++) {
             for (let j = 0; j < wScaled; j++) {
-                if (fieldScaled[i][j].value === -2) {
+                if (fieldScaled[i][j] === -2) {
                     let neighbors = 0;
                     for (let a = 0; a < 3; a++) {
                         for (let b = 0; b < 3; b++) {
@@ -141,7 +158,7 @@ async function vegetate(iterations) {
                             let neighbor_y = i - b;
 
                             if (neighbor_x >= 0 && neighbor_x < wScaled && neighbor_y >= 0 && neighbor_y < hScaled) {
-                                if (fieldScaled[neighbor_y][neighbor_x].value === -1) {
+                                if (fieldScaled[neighbor_y][neighbor_x] === -1) {
                                     neighbors++;
                                 }
                             }
@@ -155,22 +172,22 @@ async function vegetate(iterations) {
         }
 
         for (let point of points) {
-            fieldScaled[point.y][point.x].value = -1;
+            fieldScaled[point.y][point.x] = -1;
             drawRect(caveCtx, point.x, point.y, 1, 1, "aliceblue");
-
-            if (renderCave && Math.random() < 0.01) {
+            if (Math.random() < 0.05) {
                 await sleep(0.01);
             }
         }
-
-        await sleep(0.01);
+        await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
+            (genIterations - 1) / totalGenIterations);
     }
 }
 
 async function scaleUp() {
+    currentCaveAction.textContent = "Масштабирование карты";
     for (let i = 0; i < HEIGHT; i++) {
         for (let j = 0; j < WIDTH; j++) {
-            let value = fieldScaled[Math.floor(i / 4)][Math.floor(j / 4)].value;
+            let value = fieldScaled[Math.floor(i / 4)][Math.floor(j / 4)];
 
             field[i][j].value = value;
             if (value === -1) {
@@ -179,11 +196,32 @@ async function scaleUp() {
                 drawPoint(j, i, "gray", 1);
             }
         }
+        await sleep(1);
+    }
+    await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
+        (genIterations - 1) / totalGenIterations);
+}
 
-        if (renderCave) {
-            await sleep(0.01);
+async function removeLonelyPoints() {
+    currentCaveAction.textContent = "Удаление одиночных точек";
+    for (let i = 0; i < hScaled; i++) {
+        for (let j = 0; j < wScaled; j++) {
+            if (fieldScaled[i][j] === -2) {
+                if (i - 1 >= 0 && fieldScaled[i - 1][j] === -2 ||
+                    i + 1 < hScaled && fieldScaled[i + 1][j] === -2 ||
+                    j - 1 >= 0 && fieldScaled[i][j - 1] === -2 ||
+                    j + 1 < wScaled && fieldScaled[i][j + 1] === -2) {
+                    continue;
+                }
+
+                fieldScaled[i][j] = -1;
+                drawRect(caveCtx, j, i, 1, 1, "aliceblue");
+                await sleep(0.01);
+            }
         }
     }
+    await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
+        (genIterations - 1) / totalGenIterations);
 }
 
 function createDirections(cell, arr) {
@@ -212,4 +250,30 @@ function getRandomIndex(array) {
 
 function equals(cell1, cell2) {
     return cell1.x === cell2.x && cell1.y === cell2.y;
+}
+
+const totalProgressCaveCanvas = document.getElementById('totalProgressCave');
+const totalProgressCaveCtx = totalProgressCaveCanvas.getContext('2d');
+
+let progressCaveGradient = ctx.createLinearGradient(0, 0, totalProgressCaveCanvas.width, 0);
+
+progressCaveGradient.addColorStop(0, 'darkred');
+progressCaveGradient.addColorStop(.5, 'darkorange');
+progressCaveGradient.addColorStop(.8, 'forestgreen');
+progressCaveGradient.addColorStop(1, 'green');
+
+async function updateProgress(ctx, value, lastValue) {
+    ctx.fillStyle = progressCaveGradient;
+
+    for (let i = 250 * lastValue; i <= 250 * value; i++) {
+        ctx.fillRect(i, 0, 1, 30);
+        await sleep(0.01);
+    }
+    ctx.fillRect(0, 0, 250 * value, 30);
+    await sleep(0.01);
+}
+
+function clearProgress(ctx) {
+    ctx.fillStyle = "aliceblue";
+    ctx.fillRect(0, 0, 250, 30);
 }

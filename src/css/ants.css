@@ -173,3 +173,14 @@ input {
     border: black 1px solid;
     border-radius: 10px;
 }
+
+.progress_bar_holder {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.progress_bar_holder h6, .progress_bar_holder canvas {
+    margin-left: auto;
+    margin-right: auto;
+}

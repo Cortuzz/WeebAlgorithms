@@ -151,8 +151,13 @@
 
         <div class="cave_block">
             <h3>Генерация мира:</h3>
-            <div style="display: flex; justify-content: center;">
-                <canvas id="cave" width="180" height="100"></canvas>
+            <div style="display: none">
+                <canvas id="cave" width="180" height="100" style="margin-right: 5px"></canvas>
+                <div class="progress_bar_holder">
+                    <h6 id="currentAction"></h6>
+                    <canvas id="progressCave" width="250" height="30" style="margin-bottom: 5px"></canvas>
+                    <canvas id="totalProgressCave" width="250" height="30"></canvas>
+                </div>
             </div>
         </div>
 
