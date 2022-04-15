@@ -62,7 +62,6 @@ input.fieldDeep {
 
 .description div, .csv div, .predict div {
     display: flex;
-
     justify-content: center;
 }
 
@@ -226,13 +225,13 @@ input.fieldDeep {
 }
 
 .slider {
-    margin-top: 5%;
-    margin-bottom: 5%;
-    width: 50%;
+    width: 40%;
+
 }
 
 .slider__wrapper {
     overflow: hidden;
+    margin-right: auto;
 }
 
 .slider__item {
@@ -243,5 +242,29 @@ input.fieldDeep {
     justify-content: center;
     align-items: center;
     background-color: aliceblue;
+}
+
+.splitter {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+.switch {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+    margin-bottom: 2%;
+}
+
+#fileInput {
+    justify-content: normal;
+    display: none;
+}
+
+#upload {
+    height: 5% !important;
+    padding-top: 4px;
+    padding-left: 4px;
 }
 

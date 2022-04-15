@@ -5,10 +5,12 @@ window.fieldDeep.addEventListener("input", changeDeep);
 window.addEventListener('DOMContentLoaded', function () {
     const slider = new ChiefSlider('.slider', {loop: true })
 });
+window.typeInputChecker.addEventListener("change", changeInputType);
 
 let csvText = document.getElementById("csv");
 let predictText = document.getElementById("predict");
 let ulTree = document.getElementById("tree");
+let inputByHand = window.typeInputChecker.checked;
 
 let headline = [];
 let tree;
@@ -16,14 +18,47 @@ let tree;
 let defaultLog = "Алгоритм не запущен";
 let defaultColor = "coral";
 let maxDeep = 10;
+
 window.fieldDeepView.textContent = maxDeep;
 window.fieldDeep.value = maxDeep;
-let c = 0;
 
 function changeDeep(event) {
     maxDeep = event.target.value;
     window.fieldDeepView.textContent = maxDeep;
     maxDeep--;
+}
+
+function changeInputType() {
+    inputByHand = window.typeInputChecker.checked;
+
+    if (inputByHand) {
+        window.textCsv.style.display = "block";
+        window.fileInput.style.display = "none";
+    } else {
+        window.textCsv.style.display = "none";
+        window.fileInput.style.display = "block";
+    }
+}
+
+function inputFileEvent() {
+    let input = document.getElementById("fileEntry");
+    let inputButton = document.getElementById("chooseFileButton");
+    inputButton.addEventListener("mousedown", function () {
+        if (isBuilt) {
+            alert("If you want to rebuild the tree, please press \"Clear All\" button.");
+        }
+    });
+    if (!isBuilt) {
+        input.onchange = function () {
+            document.getElementById("fileName").textContent = this.files.item(0).name;
+            if (this.files.item(0).name === "gachiData.csv") {
+                isGachi = true;
+            }
+            isFileChosen = true;
+            disableInput(true);
+        }
+    }
+
 }
 
 function getCombinations(valuesArray) {
