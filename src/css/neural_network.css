@@ -2,13 +2,6 @@
     display: flex;
 }
 
-.picture {
-    position: fixed;
-    top: 30% !important;
-    left: 2% !important;
-    transform: scale(0.4) scaleX(-1) translateX(40%) !important;
-}
-
 .main_block {
     width: 30%;
 }
