@@ -6,18 +6,25 @@ window.addEventListener('DOMContentLoaded', function () {
     const slider = new ChiefSlider('.slider', {loop: true })
 });
 window.typeInputChecker.addEventListener("change", changeInputType);
+window.nextSlider.addEventListener("click", countNextSlider);
+window.prevSlider.addEventListener("click", countPrevSlider);
+window.upload.addEventListener("change", parseFile);
 
-let csvText = document.getElementById("csv");
+let csvText = document.getElementById("textCsv");
 let predictText = document.getElementById("predict");
 let ulTree = document.getElementById("tree");
 let inputByHand = window.typeInputChecker.checked;
+let dataFile = document.getElementById("dataFile");
 
 let headline = [];
 let tree;
+let file;
+let fileToText;
 
 let defaultLog = "Алгоритм не запущен";
 let defaultColor = "coral";
 let maxDeep = 10;
+let numOfSplitter = 0;
 
 window.fieldDeepView.textContent = maxDeep;
 window.fieldDeep.value = maxDeep;
@@ -28,6 +35,15 @@ function changeDeep(event) {
     maxDeep--;
 }
 
+function countNextSlider() {
+    numOfSplitter++;
+}
+
+function countPrevSlider() {
+    numOfSplitter--;
+    console.log(numOfSplitter);
+}
+
 function changeInputType() {
     inputByHand = window.typeInputChecker.checked;
 
@@ -36,26 +52,30 @@ function changeInputType() {
         window.fileInput.style.display = "none";
     } else {
         window.textCsv.style.display = "none";
-        window.fileInput.style.display = "block";
+        window.fileInput.style.display = "flex";
     }
+
+    fileToText = undefined;
 }
 
-function inputFileEvent() {
-    let input = document.getElementById("fileEntry");
-    let inputButton = document.getElementById("chooseFileButton");
-    inputButton.addEventListener("mousedown", function () {
-        if (isBuilt) {
-            alert("If you want to rebuild the tree, please press \"Clear All\" button.");
-        }
-    });
-    if (!isBuilt) {
-        input.onchange = function () {
-            document.getElementById("fileName").textContent = this.files.item(0).name;
-            if (this.files.item(0).name === "gachiData.csv") {
-                isGachi = true;
+function parseFile() {
+    if (document.getElementById("upload").files.length === 0) {
+        dataFile.textContent = "Файл не выбран";
+        fileToText = undefined;
+    } else  {
+        file = document.getElementById("upload").files[0];
+        let type = file.name.slice(file.name.indexOf(".") + 1);
+
+        if (!(type === "csv" || type === "txt")) {
+            dataFile.textContent = "Неверный тип файла";
+            fileToText = undefined;
+        } else {
+            dataFile.textContent = file.name;
+            let reader = new FileReader;
+            reader.readAsText(file);
+            reader.onload = function(){
+                fileToText = (reader.result).toString();
             }
-            isFileChosen = true;
-            disableInput(true);
         }
     }
 
@@ -85,11 +105,18 @@ function getCombinations(valuesArray) {
 
 function normalizer(text, type) {
     let data = [];
+    text = text.replace("\r", " ");
     data = text.split("\n")
     data = clearEmptyStrings(data);
 
     for (let i = 0; i < data.length; i++) {
-        data[i] = data[i].split(",");
+        if (numOfSplitter % 3 === 0) {
+            data[i] = data[i].split(",");
+        } else if (numOfSplitter % 3 === 1) {
+            data[i] = data[i].split(";");
+        } else {
+            data[i] = data[i].split(" ");
+        }
 
         for (let j = 0; j < data[i].length; j++) {
             data[i][j] = data[i][j].trim();
@@ -214,35 +241,6 @@ function printTree(node, ulTree) {
     printTree(node.falseBranch, ul);
 }
 
-// if (node.type === "leaf") {
-//     while (node.name.length !== 0) {
-//         let li = document.createElement("li");
-//         let span = document.createElement("span");
-//         console.log(node.name)
-//         span.innerHTML = `${node.name.pop()}`;
-//         li.appendChild(span);
-//         ulTree.appendChild(li);
-//         node.domElement = span;
-//     }
-// } else {
-//     let li = document.createElement("li");
-//     let span = document.createElement("span");
-//     span.innerHTML = `${node.name}`;
-//     li.appendChild(span);
-//     ulTree.appendChild(li);
-//     node.domElement = span;
-// }
-//
-// if (node.type === "leaf") {
-//     return;
-// }
-//
-// let ul = document.createElement("ul");
-// li.appendChild(ul);
-//
-// printTree(node.trueBranch, ul);
-// printTree(node.falseBranch, ul);
-
 function clearTree(parent, node) {
     if (node == null || !node.childElementCount) {
         return;
@@ -260,7 +258,22 @@ function clearCanvas() {
 }
 
 async function generateTree() {
-    let trainingData = normalizer(csvText.value, "csv");
+    let trainingData;
+
+    if (inputByHand) {
+        trainingData = normalizer(csvText.value, "csv");
+    } else {
+        if (fileToText === undefined) {
+            window.log.textContent = "Неверные csv данные";
+            window.log_block.style.borderColor = "darkred";
+            await sleep(1500);
+
+            window.log.textContent = defaultLog;
+            window.log_block.style.borderColor = defaultColor;
+        } else {
+            trainingData = normalizer(fileToText, "csv");
+        }
+    }
 
     if (trainingData === undefined) {
         window.log.textContent = "Неверные csv данные";
@@ -313,8 +326,8 @@ async function prediction() {
     } else {
         clearTree(ulTree, ulTree.childNodes[0]);
         printTree(tree.root, ulTree);
-
-        await tree.predict(predictData[0]);
+        console.log(predictData);
+        await tree.predict(predictData[predictData.length - 1]);
     }
 }
 
