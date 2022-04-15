@@ -180,7 +180,13 @@ input {
     flex-direction: column;
 }
 
-.progress_bar_holder h6, .progress_bar_holder canvas {
+.progress_bar_holder h6, .progress_bar_holder canvas, #cave {
     margin-left: auto;
     margin-right: auto;
+    border: black 1px solid;
+    border-radius: 10px;
+}
+
+.progress_bar_holder h6 {
+    padding: 4px 4px 4px 4px;
 }

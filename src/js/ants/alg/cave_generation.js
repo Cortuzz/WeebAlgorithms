@@ -30,13 +30,14 @@ async function prim() {
     clearProgress(progressCaveCtx);
     for (let i = 0; i < hScaled; i++) {
         fieldScaled[i] = [ ];
-        await updateProgress(progressCaveCtx, (i + 1) / hScaled, i / hScaled, true);
         for (let j = 0; j < wScaled; j++) {
             fieldScaled[i][j] = -2;
             drawRect(caveCtx, j, i, 1, 1, "gray");
         }
-        await sleep(0.01);
+        await updateProgress(progressCaveCtx, (i + 1) / hScaled, undefined, true);
+        await sleep(8);
     }
+    await sleep(50);
 
     clearProgress(progressCaveCtx);
     currentCaveAction.textContent = "Генерация высотных зон";
@@ -60,7 +61,7 @@ async function prim() {
 
     let total = 0;
     while (toCheck.length > 0) {
-        if (total % 20 === 0) {
+        if (++total % 50 === 0) {
             await updateProgress(progressCaveCtx, 2 * total / wScaled / hScaled, 0, true);
         }
 
@@ -107,11 +108,12 @@ async function prim() {
 
                 if (fieldScaled[nextCell.y][nextCell.x] === -2) {
                     toCheck.push(nextCell);
-                    total++;
                 }
             }
         }
     }
+
+    await updateProgress(progressCaveCtx, 1, undefined, true);
     await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
         (genIterations - 1) / totalGenIterations);
 }
@@ -152,6 +154,7 @@ async function removeDeadEnds(iterations) {
             }
             await sleep(0.01);
         }
+        await updateProgress(progressCaveCtx, 1, undefined, true);
         await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
             (genIterations - 1) / totalGenIterations);
     }
@@ -163,7 +166,6 @@ async function vegetate(iterations) {
         currentCaveAction.textContent = "Расширение пустых зон (" + (iter + 1) + "/" + iterations + ")";
         let points = [ ];
         for (let i = 0; i < hScaled; i++) {
-            await updateProgress(progressCaveCtx, (i + 1) / hScaled, i / hScaled, true);
             for (let j = 0; j < wScaled; j++) {
                 if (fieldScaled[i][j] === -2) {
                     let neighbors = 0;
@@ -186,13 +188,17 @@ async function vegetate(iterations) {
             }
         }
 
+        let count = 0;
         for (let point of points) {
+            count++;
             fieldScaled[point.y][point.x] = -1;
             drawRect(caveCtx, point.x, point.y, 1, 1, "aliceblue");
-            if (Math.random() < 0.05) {
+            if (count % 15 === 0) {
+                await updateProgress(progressCaveCtx, count / points.length, undefined, true);
                 await sleep(0.01);
             }
         }
+        await updateProgress(progressCaveCtx, 1, undefined, true);
         await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
             (genIterations - 1) / totalGenIterations);
     }
@@ -218,6 +224,7 @@ async function scaleUp() {
         }
         await sleep(1);
     }
+    await updateProgress(progressCaveCtx, 1, undefined, true);
     await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
         (genIterations - 1) / totalGenIterations);
 }
@@ -226,8 +233,11 @@ async function removeLonelyPoints() {
     currentCaveAction.textContent = "Удаление одиночных точек";
     clearProgress(progressCaveCtx);
     for (let i = 0; i < hScaled; i++) {
-        await updateProgress(progressCaveCtx, (i + 1) / hScaled, i / hScaled, true);
         for (let j = 0; j < wScaled; j++) {
+            if (j % 75 === 0) {
+                await updateProgress(progressCaveCtx, (i + 1) / hScaled, undefined, true);
+            }
+
             if (fieldScaled[i][j] === -2) {
                 if (i - 1 >= 0 && fieldScaled[i - 1][j] === -2 ||
                     i + 1 < hScaled && fieldScaled[i + 1][j] === -2 ||
@@ -238,10 +248,10 @@ async function removeLonelyPoints() {
 
                 fieldScaled[i][j] = -1;
                 drawRect(caveCtx, j, i, 1, 1, "aliceblue");
-                await sleep(0.01);
             }
         }
     }
+    await updateProgress(progressCaveCtx, 1, undefined, true);
     await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
         (genIterations - 1) / totalGenIterations);
 }
