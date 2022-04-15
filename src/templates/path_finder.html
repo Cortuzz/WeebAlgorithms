@@ -93,6 +93,12 @@
                 <input class="fieldSize" id="findSpeed" type="range" min="2" max="80">
                 <h6>80</h6>
             </div>
+
+            <h6>Метрика эвристики:</h6>
+            <select id="selectHeuristic">
+                <option value="Euclid" selected>Евклидова</option>
+                <option value="Manhattan">Манхэттенская</option>
+            </select>
         </div>
     </div>
 
@@ -132,29 +138,20 @@
                 <h6>100%</h6>
             </div>
 
-            <div class="maze">
-                <div class="firstColumn" style="width: 50%;">
-                    <h6>Способ генерации лабиринта:</h6>
-                    <select id="selectMaze">
-                        <option value="dfs" selected>Поиск в глубину</option>
-                        <option value="prim">Алгоритм Прима</option>
-                        <option value="kruscal">Алгоритм Краскала</option>
-                    </select>
-                </div>
+            <div>
+                <h6>Способ генерации лабиринта:</h6>
+                <select id="selectMaze">
+                    <option value="dfs" selected>Поиск в глубину</option>
+                    <option value="prim">Алгоритм Прима</option>
+                    <option value="kruscal">Алгоритм Краскала</option>
+                </select>
 
-                <div class="secondColumn" style="width: 30%;">
-                    <h6>Показать построение:</h6>
+                <div class="fieldSize">
+                    <h6 style="margin-right: 10px">Рендеринг генерации лабиринта:</h6>
                     <input type="checkbox" id="generatingMazeChecker" class="toggle" checked>
                     <label for="generatingMazeChecker"></label>
                 </div>
-
             </div>
-
-            <h6>Метрика эвристики:</h6>
-            <select id="selectHeuristic" style="width: 50%">
-                <option value="Euclid" selected>Евклидова</option>
-                <option value="Manhattan">Манхэттенская</option>
-            </select>
         </div>
     </div>
 </div>

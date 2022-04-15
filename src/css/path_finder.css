@@ -70,8 +70,8 @@
     background-color: aliceblue;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;
-    margin-left: 1%;
-    margin-top: 0.4%;
+    margin-left: 0.35%;
+    margin-top: 0.3%;
 }
 
 table {
@@ -113,11 +113,11 @@ table td[data-mode="finish"] {
 
 .settings_block {
     width: 30%;
-    margin-left: 1%
+    margin-left: 0.2%
 }
 
 .action {
-    margin-left: 1% !important;
+    margin-left: 0.2% !important;
     margin-right: 17% !important;
 }
 
@@ -133,30 +133,16 @@ table td[data-mode="finish"] {
     transform: scale(0.95);
 }
 
-.action #selectHeuristic, #selectMaze {
+#selectHeuristic, #selectMaze {
+    width: 75%;
     background-color: transparent;
     border-radius: 20px;
     padding: 0 1em 0 0;
-    margin: 1% 0%;
+    margin: 1% 0;
     font-family: inherit;
     font-size: inherit;
     cursor: inherit;
     line-height: inherit;
-}
-
-.action .maze {
-    display: flex;
-    flex-direction: row !important;
-    justify-content: start !important;
-    margin-top: 2%;
-    margin-bottom: 2%;
-}
-
-.maze .secondColumn {
-    display: flex;
-    flex-direction: row !important;
-    justify-content: start !important;
-    margin-left: 10%;
 }
 
 .currentAction, .currentSize, .fieldSize, .speed, .speedView, .random, .randomView {
