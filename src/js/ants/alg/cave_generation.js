@@ -27,14 +27,18 @@ async function generateCave() {
 
 async function prim() {
     currentCaveAction.textContent = "Очистка карты";
+    clearProgress(progressCaveCtx);
     for (let i = 0; i < hScaled; i++) {
         fieldScaled[i] = [ ];
+        await updateProgress(progressCaveCtx, (i + 1) / hScaled, i / hScaled, true);
         for (let j = 0; j < wScaled; j++) {
             fieldScaled[i][j] = -2;
             drawRect(caveCtx, j, i, 1, 1, "gray");
         }
         await sleep(0.01);
     }
+
+    clearProgress(progressCaveCtx);
     currentCaveAction.textContent = "Генерация высотных зон";
     await updateProgress(totalProgressCaveCtx, ++genIterations / totalGenIterations,
         (genIterations - 1) / totalGenIterations);
@@ -54,7 +58,12 @@ async function prim() {
         });
     }
 
+    let total = 0;
     while (toCheck.length > 0) {
+        if (total % 20 === 0) {
+            await updateProgress(progressCaveCtx, 2 * total / wScaled / hScaled, 0, true);
+        }
+
         let index = getRandomIndex(toCheck);
         let choosenCell = toCheck[index];
         toCheck.splice(index, 1);
@@ -66,7 +75,7 @@ async function prim() {
                 await sleep(0.01);
             }
 
-            directions = [];
+            directions = [ ];
             directions = createDirections(choosenCell, directions);
             let edges = directions.slice();
 
@@ -98,6 +107,7 @@ async function prim() {
 
                 if (fieldScaled[nextCell.y][nextCell.x] === -2) {
                     toCheck.push(nextCell);
+                    total++;
                 }
             }
         }
@@ -108,9 +118,12 @@ async function prim() {
 
 async function removeDeadEnds(iterations) {
     for (let iter = 0; iter < iterations; iter++) {
+        clearProgress(progressCaveCtx);
         currentCaveAction.textContent = "Удаление тупиковых зон (" + (iter + 1) + "/" + iterations + ")";
         let deadEnds = [ ];
         for (let i = 0; i < hScaled; i++) {
+            await updateProgress(progressCaveCtx, (i + 1) / hScaled, i / hScaled, true);
+
             for (let j = 0; j < wScaled; j++) {
                 if (fieldScaled[i][j] === -1) {
                     let neighbors = 0;
@@ -146,9 +159,11 @@ async function removeDeadEnds(iterations) {
 
 async function vegetate(iterations) {
     for (let iter = 0; iter < iterations; iter++) {
+        clearProgress(progressCaveCtx);
         currentCaveAction.textContent = "Расширение пустых зон (" + (iter + 1) + "/" + iterations + ")";
         let points = [ ];
         for (let i = 0; i < hScaled; i++) {
+            await updateProgress(progressCaveCtx, (i + 1) / hScaled, i / hScaled, true);
             for (let j = 0; j < wScaled; j++) {
                 if (fieldScaled[i][j] === -2) {
                     let neighbors = 0;
@@ -185,7 +200,12 @@ async function vegetate(iterations) {
 
 async function scaleUp() {
     currentCaveAction.textContent = "Масштабирование карты";
+    clearProgress(progressCaveCtx);
     for (let i = 0; i < HEIGHT; i++) {
+        if (i % 4 === 0) {
+            await updateProgress(progressCaveCtx, (i + 3) / HEIGHT, i / HEIGHT, true);
+        }
+
         for (let j = 0; j < WIDTH; j++) {
             let value = fieldScaled[Math.floor(i / 4)][Math.floor(j / 4)];
 
@@ -204,7 +224,9 @@ async function scaleUp() {
 
 async function removeLonelyPoints() {
     currentCaveAction.textContent = "Удаление одиночных точек";
+    clearProgress(progressCaveCtx);
     for (let i = 0; i < hScaled; i++) {
+        await updateProgress(progressCaveCtx, (i + 1) / hScaled, i / hScaled, true);
         for (let j = 0; j < wScaled; j++) {
             if (fieldScaled[i][j] === -2) {
                 if (i - 1 >= 0 && fieldScaled[i - 1][j] === -2 ||
@@ -254,17 +276,24 @@ function equals(cell1, cell2) {
 
 const totalProgressCaveCanvas = document.getElementById('totalProgressCave');
 const totalProgressCaveCtx = totalProgressCaveCanvas.getContext('2d');
+const progressCaveCanvas = document.getElementById('progressCave');
+const progressCaveCtx = progressCaveCanvas.getContext('2d');
 
-let progressCaveGradient = ctx.createLinearGradient(0, 0, totalProgressCaveCanvas.width, 0);
+let progressCaveGradient = totalProgressCaveCtx.createLinearGradient(0, 0, totalProgressCaveCanvas.width, 0);
 
 progressCaveGradient.addColorStop(0, 'darkred');
 progressCaveGradient.addColorStop(.5, 'darkorange');
 progressCaveGradient.addColorStop(.8, 'forestgreen');
 progressCaveGradient.addColorStop(1, 'green');
 
-async function updateProgress(ctx, value, lastValue) {
+async function updateProgress(ctx, value, lastValue, fastRendering) {
     ctx.fillStyle = progressCaveGradient;
 
+    if (fastRendering) {
+        ctx.fillRect(0, 0, 250 * value, 30);
+        await sleep(0.01);
+        return;
+    }
     for (let i = 250 * lastValue; i <= 250 * value; i++) {
         ctx.fillRect(i, 0, 1, 30);
         await sleep(0.01);
