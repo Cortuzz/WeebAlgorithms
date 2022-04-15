@@ -18,6 +18,7 @@ let defaultColor = "coral";
 let maxDeep = 10;
 window.fieldDeepView.textContent = maxDeep;
 window.fieldDeep.value = maxDeep;
+let c = 0;
 
 function changeDeep(event) {
     maxDeep = event.target.value;
@@ -220,7 +221,7 @@ function clearTree(parent, node) {
 
 function clearCanvas() {
     clearTree(ulTree, ulTree.childNodes[0]);
-    printTree(tree.root, ulTree);
+    tree = undefined;
 }
 
 async function generateTree() {

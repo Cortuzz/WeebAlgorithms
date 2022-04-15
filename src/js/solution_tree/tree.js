@@ -142,7 +142,7 @@ class Tree {
                 }
 
                 uniqueParams = getCombinations(column);
-                uniqueParams.splice(uniqueParams.length - 1, 1);
+                uniqueParams.splice(uniqueParams.length / 2 + 1);
             }
 
             for (let j = 0; j < uniqueParams.length; j++) {
