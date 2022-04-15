@@ -330,28 +330,3 @@ async function prediction() {
         await tree.predict(predictData[predictData.length - 1]);
     }
 }
-
-/*
-Соперник,Играем,Лидеры,Дождь,Победа
-Выше,Дома,На месте,Да,Нет
-Выше,Дома,На месте,Нет,Да
-Выше,Дома,Пропускают,Нет,Нет
-Ниже,Дома,Пропускают,Нет,Да
-Ниже,В гостях,Пропускают,Нет,Нет
-Ниже,Дома,Пропускают,Да,Да
-Выше,В гостях,На месте,Да,Нет
-Ниже,В гостях,На месте,Нет,Да
- */
-/*
-color,diam,weight,fruit
-Green,3,500,Apple
-Yellow,3,100,Apple
-Red,1,60,Grape
-Red,1,0,Grape
-Yellow,3,60,Lemon
-Green,3,500,Apple
-Blue,6,150,Apple
-Red,2,40,Grape
-Green,4,20,Grape
-White,7,20,Lemon
- */
