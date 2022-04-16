@@ -1,0 +1,16 @@
+.dropdown {
+    margin-top: 1%;
+    margin-bottom: 2%;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.dropbtn {
+    height: 30px;
+}
+
+.dropdown-content {
+    display: none;
+}

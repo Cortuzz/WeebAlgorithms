@@ -1,0 +1,96 @@
+.main {
+    display: flex;
+}
+
+.main_block {
+    width: 30%;
+}
+
+.visualization_block {
+    width: 22.2%;
+}
+
+.description, .control, .probability_block, .micro_canvas_block_left, .micro_canvas_block_right {
+    background-color: aliceblue;
+    border-radius: 20px;
+    margin-left: 100px;
+    margin-top: 1%;
+}
+
+.description, .control, .probability_block {
+    padding: 20px 20px 20px 20px;
+}
+
+.probability_block, .micro_canvas_block_right {
+    margin-top: 1.5%;
+    margin-left: 2% !important;
+    width: 107%;
+}
+
+.micro_canvas_block_right, .micro_canvas_block_left {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.micro_canvas_block_left {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.conv {
+    position: relative;
+    margin: 4px 4px 4px 4px;
+    border: #1e1d1d solid 1px;
+    border-radius: 10px;
+    height: 120px;
+    width: 92%;
+}
+
+.control div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.control button {
+    width: 60%;
+    transition: all .4s ease;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+.control button#pause {
+    border-radius: 10px;
+    background-color: lightgreen;
+    border: 2px solid forestgreen;
+}
+
+.control button#pause:hover {
+    background-color: forestgreen;
+    border: 2px solid lightgreen;
+    transform: scale(0.95);
+}
+
+
+.control button#clear {
+    border-radius: 10px;
+    background-color: palevioletred;
+    border: 2px solid darkred;
+}
+
+.control button#clear:hover {
+    background-color: darkred;
+    border: 2px solid palevioletred;
+    transform: scale(0.95);
+}
+
+.canvas_block {
+    margin-top: 0.3%;
+    width: 40%;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+    margin-left: 10px;
+    background-color: aliceblue;
+}

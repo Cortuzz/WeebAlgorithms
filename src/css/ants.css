@@ -1,0 +1,192 @@
+input {
+    width: 100%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+
+.main {
+    display: flex;
+}
+
+.main_block {
+    margin-left: 5%;
+    margin-top: 0.3%;
+    width: 25%;
+}
+
+.additional_block {
+    margin-top: 0.3%;
+    margin-left: 0.5%;
+    margin-right: 5%;
+    width: 25%;
+}
+
+.fieldSize {
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+.description, .action, .size, .danger_block, .boost_block, .cave_block {
+    margin-bottom: 7px;
+    background-color: aliceblue;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+}
+
+.description div, .action div, .boost_block div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inputValue, .valueView {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+input {
+    width: 100% !important;
+    margin-right: 2.5% !important;
+    margin-left: 2.5% !important;
+}
+
+.description button, .action button, .boost_block div button {
+    width: 60%;
+    transition: all .4s ease;
+    margin: 0 auto 10px;
+}
+
+.description #startButton {
+    margin-top: 2% !important;
+}
+
+.currentAction {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+#switchButton {
+    border-radius: 10px;
+    background-color: pink;
+    border: 2px solid lightpink;
+}
+
+#switchButton:hover {
+    background-color: lightpink;
+    border: 2px solid pink;
+    transform: scale(0.95);
+}
+
+#startButton, .action #foodButton, #boost1 {
+    border-radius: 10px;
+    background-color: lightgreen;
+    border: 2px solid forestgreen;
+}
+
+#startButton:hover, .action #foodButton:hover, #boost1:hover {
+    background-color: forestgreen;
+    border: 2px solid lightgreen;
+    transform: scale(0.95);
+}
+
+.action #colonyButton, #boost2, #caveButton {
+    border-radius: 10px;
+    background-color: palevioletred;
+    border: 2px solid darkred;
+}
+
+.action #colonyButton:hover, #boost2:hover, #caveButton:hover {
+    background-color: darkred;
+    border: 2px solid palevioletred;
+    transform: scale(0.95);
+}
+
+.action #borderButton {
+    border-radius: 10px;
+    background-color: lightcoral;
+    border: 2px solid coral;
+}
+
+.action #borderButton:hover {
+    background-color: coral;
+    border: 2px solid lightcoral;
+    transform: scale(0.95);
+}
+
+.action #clearBorderButton {
+    border-radius: 10px;
+    background-color: coral;
+    border: 2px solid lightcoral;
+}
+
+.action #clearBorderButton:hover {
+    background-color: lightcoral;
+    border: 2px solid coral;
+    transform: scale(0.95);
+}
+
+.action #clearButton {
+    border-radius: 10px;
+    background-color: darkgray;
+    border: 2px solid gray;
+}
+
+.action #clearButton:hover {
+    background-color: gray;
+    border: 2px solid darkgray;
+    transform: scale(0.95);
+}
+
+#boost3 {
+    border-radius: 10px;
+    background-color: lightblue;
+    border: 2px solid darkblue;
+}
+
+#boost3:hover {
+    background-color: darkblue;
+    border: 2px solid lightblue;
+    transform: scale(0.95);
+}
+
+#log_block {
+    display: flex;
+    align-items: center;
+    border: 5px solid coral;
+    background: #d5e6ff;
+    border-radius: 10px;
+    padding: 5px 5px 5px 5px;
+}
+
+.canvas_block, .population_block {
+    width: 99%;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+    margin-left: 10px;
+    margin-top: 0.8%;
+    background-color: aliceblue;
+}
+
+.canvas_block canvas {
+    border: black 1px solid;
+    border-radius: 10px;
+}
+
+.progress_bar_holder {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.progress_bar_holder h6, .progress_bar_holder canvas, #cave {
+    margin-left: auto;
+    margin-right: auto;
+    border: black 1px solid;
+    border-radius: 10px;
+}
+
+.progress_bar_holder h6 {
+    padding: 4px 4px 4px 4px;
+}

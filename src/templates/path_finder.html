@@ -1,0 +1,171 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/path_finder.css">
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/text_style.css">
+    <link rel="stylesheet" href="../css/checkbox.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="../css/animation.css">
+    <title>Поиск пути</title>
+    <link rel="shortcut icon" href="favicon2.ico" type="image/x-icon">
+</head>
+<body>
+<div class="nav">
+    <aside>
+        <ul class="nav_block">
+            <li><a href="../../index.html"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="path_finder.html"><i class="fas fa-clone"></i> Поиск пути</a>
+            <li>
+            <li><a href="genetic.html"><i class="fas fa-dna"></i> Генетический алгоритм</a>
+            <li>
+            <li><a href="ants_basic.html"><i class="fas fa-bug"></i> Муравьиный алгоритм</a>
+            <li>
+            <li><a href="clustering.html"><i class="fas fa-cubes"></i> Кластеризация</a>
+            <li>
+            <li><a href="solution_tree.html"><i class="fas fa-tree"></i> Дерево решений</a>
+            <li>
+            <li><a href="neural_network.html"><i class="fas fa-network-wired"></i> Нейронная сеть</a>
+            <li>
+        </ul>
+    </aside>
+</div>
+
+<div class="main">
+    <div class="main_block">
+        <div class="description">
+            <h3>Поиск пути<br></h3>
+            <a>Данный алгоритм ищет кратчайшее расстояние между двумя точками,
+                используя $А^*$, визуализируя все шаги.</a>
+            <div>
+                <button id="startButton">Начать выполнение</button>
+            </div>
+
+
+            <div id="log_block">
+                <h6 id="log">Алгоритм не запущен</h6>
+            </div>
+        </div>
+
+        <div class="size">
+            <h3>Настройки поля:</h3>
+            <div class="currentSize">
+                <h6>Текущий размер:&nbsp</h6>
+                <h6 id="fieldSizeView"></h6>
+            </div>
+
+            <div class="currentSize">
+                <h6>Ширина:&nbsp</h6>
+                <h6 id="fieldWidthView"></h6>
+            </div>
+
+            <div class="fieldSize">
+                <h6>5</h6>
+                <input class="fieldSize" id="fieldSizeX" type="range" min="5" max="45">
+                <h6>45</h6>
+            </div>
+
+            <div class="currentSize">
+                <h6>Высота:&nbsp</h6>
+                <h6 id="fieldHeightView"></h6>
+            </div>
+
+            <div class="fieldSize">
+                <h6>5</h6>
+                <input class="fieldSize" id="fieldSizeY" type="range" min="5" max="45">
+                <h6>45</h6>
+            </div>
+
+            <div class="fieldSize">
+                <h6 style="margin-top: 3px">Зафиксировать значения:&nbsp</h6>
+                <input type="checkbox" id="retainer" class="toggle">
+                <label for="retainer"></label>
+            </div>
+
+            <br>
+
+            <div class="speedView">
+                <h6>Текущая скорость:&nbsp</h6>
+                <h6 id="speedView"></h6>
+            </div>
+
+            <div class="speed">
+                <h6>2</h6>
+                <input class="fieldSize" id="findSpeed" type="range" min="2" max="80">
+                <h6>80</h6>
+            </div>
+
+            <h6>Метрика эвристики:</h6>
+            <select id="selectHeuristic">
+                <option value="Euclid" selected>Евклидова</option>
+                <option value="Manhattan">Манхэттенская</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="field">
+        <!--Initialized by js code-->
+    </div>
+
+    <div class="settings_block">
+        <div class="action">
+            <h3>Действия с ячейками:</h3>
+            <div class="currentAction">
+                <h6>Текущее действие:&nbsp</h6>
+                <h6 id="currentActionView"></h6>
+            </div>
+
+            <div id="cellButtons">
+                <button id="startCellButton" data-mode="start">Установить начальную ячейку</button>
+                <button id="finishCellButton" data-mode="finish">Установить конечную ячейку</button>
+                <button id="borderCellButton" data-mode="border">Поставить / убрать преграды</button>
+            </div>
+
+            <h3>Действия с полем:</h3>
+            <div id="fillButtons">
+                <button id="randomizeButton" data-mode="start">Заполнить случайно</button>
+                <button id="generateButton" data-mode="finish">Сгенерировать лабиринт</button>
+                <button id="clearButton" data-mode="finish">Очистить</button>
+            </div>
+
+            <div class="randomView">
+                <h6>Заполнение:&nbsp</h6>
+                <h6 id="randomView"></h6>
+            </div>
+
+            <div class="random">
+                <h6>0%</h6>
+                <input class="fieldSize" id="changeRandBorder" type="range" min="0" max="100">
+                <h6>100%</h6>
+            </div>
+
+            <div>
+                <h6>Способ генерации лабиринта:</h6>
+                <select id="selectMaze">
+                    <option value="dfs" selected>Поиск в глубину</option>
+                    <option value="prim">Алгоритм Прима</option>
+                    <option value="kruscal">Алгоритм Краскала</option>
+                </select>
+
+                <div class="fieldSize">
+                    <h6 style="margin-right: 10px">Рендеринг генерации лабиринта:</h6>
+                    <input type="checkbox" id="generatingMazeChecker" class="toggle" checked>
+                    <label for="generatingMazeChecker"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="picture">
+    <img class="jibril" src="../img/flying.png" alt="">
+</div>
+<script src="../js/path_finder/handler.js"></script>
+<script src="../js/path_finder/maze.js"></script>
+<script src="../js/path_finder/finder.js"></script>
+<script src="../js/main.js"></script>
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+.main {
+    display: flex;
+}
+
+.main_block {
+    width: 25%;
+}
+
+.description {
+    background-color: aliceblue;
+    border-radius: 20px;
+    margin-left: 17%;
+    margin-top: 1%;
+    padding: 20px 20px 20px 20px;
+}
+
+.action, .action2 {
+    background-color: aliceblue;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+}
+
+.action_block {
+    width: 18.45%;
+    margin-left: 10px;
+    margin-top: 0.3%;
+}
+
+.action {
+    height: 22%;
+}
+
+.action2 {
+    margin-top: 2%;
+    height: 22%;
+}
+
+.description div, .action div, .action2 div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.currentClassAmount, .classAmount, .radius, .const, .currentRadius, .currentConstant {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+.description button, .action button, .action2 button {
+    width: 60%;
+    transition: transform .4s ease;
+    margin: 0 auto 10px;
+    border-radius: 10px;
+    background-color: lightgreen;
+    border: 2px solid forestgreen;
+}
+
+.description button:hover, .action button:hover, .action2 button:hover {
+    width: 60%;
+    margin: 0 auto 10px;
+    background-color: forestgreen;
+    border: 2px solid lightgreen;
+    transform: scale(0.95);
+}
+
+input {
+    width: 100%;
+    margin-left: 2.5% !important;
+    margin-right: 2.5% !important;
+}
+
+.description button, .action button, .action2 button {
+    margin-top: 2% !important;
+}
+
+.canvas_block {
+    width: 50.6%;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+    margin-left: 10px;
+    margin-top: 0.3%;
+    background-color: aliceblue;
+}
+
+#canvas {
+    background-color: aliceblue;
+}
+
+#log_block {
+    display: flex;
+    align-items: center;
+    border: 5px solid coral;
+    background: #d5e6ff;
+    border-radius: 10px;
+    padding: 5px 5px 5px 5px;
+}
+
+#clearButton {
+    border-radius: 10px;
+    background-color: darkgray;
+    border: 2px solid gray;
+}
+
+#clearButton:hover {
+    background-color: gray;
+    border: 2px solid darkgray;
+    transform: scale(0.95);
+}

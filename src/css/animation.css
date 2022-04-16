@@ -1,0 +1,49 @@
+.picture {
+    animation: MoveUpDown 3s ease-in-out infinite, colorAnim 5s linear infinite;
+    position: fixed;
+    top: 60%;
+    left: 75%;
+    transform: scale(0.3);
+}
+
+@keyframes MoveUpDown {
+    0%, 100% {
+        bottom: 0;
+    }
+    50% {
+        bottom: 100px;
+    }
+}
+
+@keyframes colorAnim {
+    0% {
+        filter: drop-shadow(5px 5px 80px rgba(61, 174, 255, 1));
+    }
+    20% {
+        filter: drop-shadow(5px 5px 60px rgba(158, 125, 255, 1));
+    }
+    30% {
+        filter: drop-shadow(5px 5px 40px rgba(238, 99, 255, 1));
+    }
+    40% {
+        filter: drop-shadow(5px 5px 30px rgba(255, 14, 122, 1));
+    }
+    50% {
+        filter: drop-shadow(5px 5px 20px rgba(253, 25, 25, 1));
+    }
+    60% {
+        filter: drop-shadow(5px 5px 40px rgba(255, 153, 46, 1));
+    }
+    70% {
+        filter: drop-shadow(5px 5px 80px rgba(255, 245, 39, 1));
+    }
+    80% {
+        filter: drop-shadow(5px 5px 70px rgba(103, 255, 55, 1));
+    }
+    90% {
+        filter: drop-shadow(5px 5px 60px rgba(46, 255, 111, 1));
+    }
+    100% {
+        filter: drop-shadow(5px 5px 80px rgba(61, 174, 255, 1));
+    }
+}

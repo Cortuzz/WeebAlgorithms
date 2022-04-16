@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/clustering.css">
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/text_style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="../css/animation.css">
+    <title>Кластеризация</title>
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
+</head>
+<body>
+<div class="nav">
+    <aside>
+        <ul class="nav_block">
+            <li><a href="../../index.html"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="path_finder.html"><i class="fas fa-clone"></i> Поиск пути</a>
+            <li>
+            <li><a href="genetic.html"><i class="fas fa-dna"></i> Генетический алгоритм</a>
+            <li>
+            <li><a href="ants_basic.html"><i class="fas fa-bug"></i> Муравьиный алгоритм</a>
+            <li>
+            <li><a href="clustering.html"><i class="fas fa-cubes"></i> Кластеризация</a>
+            <li>
+            <li><a href="solution_tree.html"><i class="fas fa-tree"></i> Дерево решений</a>
+            <li>
+            <li><a href="neural_network.html"><i class="fas fa-network-wired"></i> Нейронная сеть</a>
+            <li>
+        </ul>
+    </aside>
+</div>
+<div class="main">
+    <div class="main_block">
+        <div class="description">
+            <h3>Кластеризация<br></h3>
+            <p>2 алгоритма кластеризации, k-средних и кластризация с помощью сдвига среднего значения</p>
+            <ul>
+                <li class="latex"> Алгоритм k-средних случайно выбирает $k$ центров(где $k$ - количество заданных
+                    классов)
+                    и обновляет данные центры вычисляя среднее расстояние до точек, которые ближе всего к данному центру
+                </li>
+                <li>Алгоритм использует ядерную функцию с параметром c для вычисления "центра тяжести" точек внутри
+                    окружности с радиусом $R$
+                </li>
+            </ul>
+            <div>
+                <button id="startBoth">Сравнить</button>
+            </div>
+            <div>
+                <button id="clearButton">Очистить</button>
+            </div>
+            <div id="log_block">
+                <h6 id="log">Алгоритм не запущен</h6>
+            </div>
+        </div>
+    </div>
+    <div class="canvas_block">
+        <canvas id="canvas" width="932" height="810">
+        </canvas>
+    </div>
+    <div class="action_block">
+        <div class="action">
+            <h3>К-means:</h3>
+            <div>
+                <button id="startKMeans">Начать K-Means</button>
+            </div>
+            <div class="currentClassAmount">
+                <h6>Количество классов:&nbsp</h6>
+                <h6 id="classAmountView">6</h6>
+            </div>
+            <div class="classAmount">
+                <h6>1</h6>
+                <input id="classAmount" type="range" min="1" max="10" step="1">
+                <h6>10</h6>
+            </div>
+        </div>
+        <div class="action2">
+            <h3>Mean Shift:</h3>
+            <div>
+                <button id="startMeanShift">Начать Mean-Shift</button>
+            </div>
+            <div class="currentRadius">
+                <h6>Радиус $R$:&nbsp</h6>
+                <h6 id="radiusView">95</h6>
+            </div>
+            <div class="radius">
+                <h6>30</h6>
+                <input id="radius" type="range" min="30" max="160" step="0.1">
+                <h6>160</h6>
+            </div>
+        </div>
+    </div>
+    <div class="picture">
+        <img class="jibril" src="../img/flying.png" alt="">
+    </div>
+</div>
+
+<script src="../js/clustering/handler.js"></script>
+<script src="../js/clustering/clustering.js"></script>
+<script src="../js/clustering/k_means.js"></script>
+<script src="../js/clustering/mean_shift.js"></script>
+<script src="../js/main.js"></script>
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

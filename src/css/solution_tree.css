@@ -1,0 +1,326 @@
+.main {
+    height: 80%;
+    margin-left: 5%;
+    margin-right: 5%;
+    display: flex;
+}
+
+.main_block {
+    width: 30%;
+}
+
+.description, .csv, .predict, .setDeep {
+    background-color: aliceblue;
+    border-radius: 20px;
+    margin-top: 1%;
+    padding: 20px 20px 20px 20px;
+}
+
+.description {
+    margin-top: 2%;
+}
+
+.params {
+    width: 40%;
+}
+
+.currentDeep, .fieldDeep {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+input.fieldDeep {
+    width: 100%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+
+.tree_block {
+    width: 100%;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+    margin-right: 0.3%;
+    margin-left: 0.3%;
+    margin-top: 0.3%;
+    background-color: aliceblue;
+    overflow: auto;
+}
+
+.tree_block::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: #f9f9fd;
+}
+
+.tree_block::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #d5e6ff;
+}
+
+.tree_block::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background-color: #f9f9fd;
+}
+
+.description div, .csv div, .predict div {
+    display: flex;
+    justify-content: center;
+}
+
+.description button {
+    width: 60%;
+    transition: all .4s ease;
+    margin: 0 auto 10px;
+}
+
+.csv textarea {
+    height: 30%;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.predict textarea {
+    height: 10%;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.description button {
+    margin-top: 2% !important;
+}
+
+#startButton {
+    border-radius: 10px;
+    background-color: lightgreen;
+    border: 2px solid forestgreen;
+}
+
+#startButton:hover {
+    background-color: forestgreen;
+    border: 2px solid lightgreen;
+    transform: scale(0.95);
+}
+
+#buildTree {
+    border-radius: 10px;
+    background-color: palevioletred;
+    border: 2px solid darkred;
+}
+
+#buildTree:hover {
+    background-color: darkred;
+    border: 2px solid palevioletred;
+    transform: scale(0.95);
+}
+
+#clearButton {
+    border-radius: 10px;
+    background-color: darkgray;
+    border: 2px solid gray;
+}
+
+#clearButton:hover {
+    background-color: gray;
+    border: 2px solid darkgray;
+    transform: scale(0.95);
+}
+
+#log_block {
+    display: flex;
+    align-items: center;
+    border: 5px solid coral;
+    background: #d5e6ff;
+    border-radius: 10px;
+    padding: 5px 5px 5px 5px;
+}
+
+.tree, .tree ul, .tree li {
+    color: #e0e0e0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.tree {
+    margin: 1em auto auto;
+    text-align: center;
+}
+
+.tree, .tree ul {
+    display: table;
+}
+
+.tree ul {
+    width: 100%;
+}
+
+.tree li {
+    display: table-cell;
+    padding: .5em 0;
+    vertical-align: top;
+}
+
+.tree li:before {
+    content: "";
+    font-size: 1.25em;
+    color: #9e9e9e;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: -1.1em;
+}
+
+.tree li.trueBranch:before {
+    border-bottom: solid 2px #e0e0e0;
+    color: #1aa81a;
+    content: 'true';
+    text-align: start;
+    left: 50%;
+}
+
+.tree li.falseBranch:before {
+    border-bottom: solid 2px #e0e0e0;
+    color: #be1260;
+    content: 'false';
+    text-align: end;
+    right: 50%;
+}
+
+.tree span {
+    border: solid .1em #e0e0e0;
+    background-color: #9f5d5d;
+    font-size: 1.3em;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 1.5em 1em 1.5em;
+    padding: .2em .5em;
+    position: relative;
+    transition: all .4s ease;
+}
+
+.tree span.leaf {
+    background-color: #862222;
+}
+
+.tree ul:before, .tree span:before {
+    outline: solid 1px #e0e0e0;
+    content: "";
+    left: 50%;
+    position: absolute;
+}
+
+.tree ul:before {
+    height: 2.5em;
+    top: -2em;
+}
+
+.tree span:before {
+    height: 1.4em;
+    top: -1.5em;
+}
+
+.tree>li {
+    margin-top: 0;
+}
+
+.tree>li:before, .tree>li:after, .tree>li>span:before {
+    outline: none;
+}
+
+.slider {
+    width: 40%;
+
+}
+
+.slider__wrapper {
+    overflow: hidden;
+    margin-right: auto;
+}
+
+.slider__item {
+    flex: 0 0 50%;
+    max-width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+}
+
+.splitter {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+    margin-bottom: 2%;
+    margin-top: 3%;
+}
+
+.splitter h6 {
+    margin-top: 2%;
+    margin-right: 20px;
+}
+
+.switch {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+    margin-bottom: 2%;
+}
+
+.switch h6 {
+    margin-top: 5px;
+    margin-right: 25px;
+}
+
+#fileInput {
+    flex-direction: row !important;
+    justify-content: start !important;
+    justify-content: normal !important;
+    display: none;
+}
+
+.fileInput h6 {
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+#btnFile {
+    border-radius: 10px;
+    color:#555;
+    padding:0;
+    line-height:40px;
+    width:40%;
+    border:2px solid #555;
+    text-align: center;
+}
+
+#btnFile:hover, #btnFile:focus {
+    color:#888;
+    border-color:#888;
+}
+
+.input-file {
+    width: 1px;
+    height: 1px;
+    opacity:0;
+    overflow:hidden;
+    position:absolute;
+    z-index:-1;
+}
+.input-file + .js-labelFile {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    padding:0 10px;
+    cursor:pointer;
+}
+.input-file + .js-labelFile .icon:before {
+    content:"\f093";
+}
+.input-file + .js-labelFile.has-file .icon:before {
+    content:"\f00c";
+}
+

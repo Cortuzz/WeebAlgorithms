@@ -1,0 +1,198 @@
+.main {
+    display: flex;
+}
+
+.main_block {
+    width: 30%;
+}
+
+.description, .action, .size {
+    background-color: aliceblue;
+    border-radius: 20px;
+    margin-left: 17%;
+    margin-top: 1%;
+    padding: 20px 20px 20px 20px;
+}
+
+.description div, .action div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.description button, .action button {
+    width: 60%;
+    transition: all .4s ease;
+    margin: 0 auto 10px;
+}
+
+.description button {
+    margin-top: 2% !important;
+}
+
+#startButton, .action #startCellButton {
+    border-radius: 10px;
+    background-color: lightgreen;
+    border: 2px solid forestgreen;
+}
+
+#startButton:hover, .action #startCellButton:hover {
+    background-color: forestgreen;
+    border: 2px solid lightgreen;
+    transform: scale(0.95);
+}
+
+#log_block {
+    display: flex;
+    align-items: center;
+    border: 5px solid coral;
+    background: #d5e6ff;
+    border-radius: 10px;
+    padding: 5px 5px 5px 5px;
+}
+
+.action #finishCellButton {
+    border-radius: 10px;
+    background-color: palevioletred;
+    border: 2px solid darkred;
+}
+
+.action #finishCellButton:hover {
+    background-color: darkred;
+    border: 2px solid palevioletred;
+    transform: scale(0.95);
+}
+
+#field {
+    display: flex;
+    width: 40%;
+    height: 100%;
+    background-color: aliceblue;
+    border-radius: 20px;
+    padding: 20px 20px 20px 20px;
+    margin-left: 0.35%;
+    margin-top: 0.3%;
+}
+
+table {
+    table-layout: fixed;
+    border: 1px solid gray;
+}
+
+table td {
+    border: 1px solid gray;
+}
+
+table td:hover {
+    background-color: #b79501 !important;
+}
+
+table td[data-mode="unchecked"] {
+    background-color: aliceblue;
+}
+
+table td[data-mode="checked"] {
+    background-color: lightblue;
+}
+
+table td[data-mode="path"] {
+    background-color: lightskyblue;
+}
+
+table td[data-mode="border"] {
+    background-color: darkgray;
+}
+
+table td[data-mode="start"] {
+    background-color: forestgreen;
+}
+
+table td[data-mode="finish"] {
+    background-color: darkred;
+}
+
+.settings_block {
+    width: 30%;
+    margin-left: 0.2%
+}
+
+.action {
+    margin-left: 0.2% !important;
+    margin-right: 17% !important;
+}
+
+.action #borderCellButton {
+    border-radius: 10px;
+    background-color: darkgray;
+    border: 2px solid gray;
+}
+
+.action #borderCellButton:hover {
+    background-color: gray;
+    border: 2px solid darkgray;
+    transform: scale(0.95);
+}
+
+#selectHeuristic, #selectMaze {
+    width: 75%;
+    background-color: transparent;
+    border-radius: 20px;
+    padding: 0 1em 0 0;
+    margin: 1% 0;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: inherit;
+}
+
+.currentAction, .currentSize, .fieldSize, .speed, .speedView, .random, .randomView {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+}
+
+input.fieldSize {
+    width: 100%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+
+#retainer {
+    margin-top: 6px;
+}
+
+.action #randomizeButton {
+    border-radius: 10px;
+    background-color: lightsalmon;
+    border: 2px solid salmon;
+}
+
+.action #randomizeButton:hover {
+    background-color: salmon;
+    border: 2px solid lightsalmon;
+    transform: scale(0.95);
+}
+
+.action #generateButton {
+    border-radius: 10px;
+    background-color: lightcoral;
+    border: 2px solid coral;
+}
+
+.action #generateButton:hover {
+    background-color: coral;
+    border: 2px solid lightcoral;
+    transform: scale(0.95);
+}
+
+.action #clearButton {
+    border-radius: 10px;
+    background-color: darkgray;
+    border: 2px solid gray;
+}
+
+.action #clearButton:hover {
+    background-color: gray;
+    border: 2px solid darkgray;
+    transform: scale(0.95);
+}

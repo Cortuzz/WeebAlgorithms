@@ -1,43 +1,4 @@
-body {
-    justify-content: center;
-    background-image: url("/src/img/jibr.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-}
-
-div.nav {
-    justify-content: center;
-    background-color: aliceblue;
-    border-radius: 10px;
-    width: 90%;
-    margin-top: 1%;
-    margin-left: 5%;
-    margin-bottom: 1%;
-    padding: 1%;
-}
-
-ul.nav_block {
-    padding: 4px;
-    margin: auto;
-}
-
-ul.nav_block li {
-    display: inline;
-    color: gray;
-    margin-right: 50px;
-    padding: 15px;
-    transition: transform .4s ease;
-}
-
-ul.nav_block a {
-    text-decoration: none;
-    display: inline;
-    color: gray;
-}
-
 .title {
-    font-style: italic;
     background-color: aliceblue;
     border-radius: 20px;
     margin-left: 5%;
@@ -46,11 +7,9 @@ ul.nav_block a {
 }
 
 .description {
-    font-style: italic;
     background-color: aliceblue;
     border-radius: 20px;
-    margin-left: 10%;
-    margin-right: 5%;
+    margin-left: 15%;
     margin-top: 15%;
     padding: 20px 20px 20px 20px;
 }
