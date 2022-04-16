@@ -254,6 +254,13 @@ input.fieldDeep {
     display: flex;
     flex-direction: row !important;
     justify-content: start !important;
+    margin-bottom: 2%;
+    margin-top: 3%;
+}
+
+.splitter h6 {
+    margin-top: 2%;
+    margin-right: 20px;
 }
 
 .switch {
@@ -263,11 +270,21 @@ input.fieldDeep {
     margin-bottom: 2%;
 }
 
+.switch h6 {
+    margin-top: 5px;
+    margin-right: 25px;
+}
+
 #fileInput {
     flex-direction: row !important;
     justify-content: start !important;
     justify-content: normal !important;
     display: none;
+}
+
+.fileInput h6 {
+    margin-right: 10px;
+    margin-top: 10px;
 }
 
 #btnFile {

@@ -101,49 +101,56 @@ class Tree {
         return [dataForTrueBranch, dataForFalseBranch];
     }
 
+    getParamsForSplitting(data, column) {
+        let params = [];
+
+        if (typeof data[0][column] === "number") {
+            data.sort(function(a, b) {
+                if (a[column] > b[column]) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
+
+            for (let j = 0; j < data.length - 1; j++) {
+                let value = (data[j][column] + data[j + 1][column]) / 2;
+
+                if (!params.includes(value)) {
+                    params.push(value);
+                }
+
+                if (!params.includes(data[j][column])) {
+                    params.push(data[j][column]);
+                }
+            }
+
+            if (!params.includes(data[data.length - 1][column])) {
+                params.push(data[data.length - 1][column]);
+            }
+        } else {
+            let elemsOfColumn = [];
+
+            for (let j = 0; j < data.length; j++) {
+                if (!elemsOfColumn.includes(data[j][column])) {
+                    elemsOfColumn.push(data[j][column]);
+                }
+            }
+
+            params = getCombinations(elemsOfColumn);
+            params.splice(params.length / 2);
+        }
+
+
+        return params;
+    }
+
     getBestSplit(data) {
         let bestSplitNode = new Node("split", -1, "", -1, "", Infinity);
         let sameImpurity = [bestSplitNode];
 
         for (let i = 0; i < headline.length - 1; i++) {
-            let uniqueParams = [];
-
-            if (typeof data[0][i] === "number") {
-                data.sort(function(a, b) {
-                    if (a[i] > b[i]) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                });
-
-                for (let j = 0; j < data.length - 1; j++) {
-                    let value = (data[j][i] + data[j + 1][i]) / 2;
-
-                    if (!uniqueParams.includes(value)) {
-                        uniqueParams.push((data[j][i] + data[j + 1][i]) / 2);
-                    }
-
-                    if (!uniqueParams.includes(data[j][i])) {
-                        uniqueParams.push(data[j][i]);
-                    }
-                }
-
-                if (!uniqueParams.includes(data[data.length - 1][i])) {
-                    uniqueParams.push(data[data.length - 1][i]);
-                }
-            } else {
-                let column = [];
-
-                for (let j = 0; j < data.length; j++) {
-                    if (!column.includes(data[j][i])) {
-                        column.push(data[j][i]);
-                    }
-                }
-
-                uniqueParams = getCombinations(column);
-                uniqueParams.splice(uniqueParams.length / 2);
-            }
+            let uniqueParams = this.getParamsForSplitting(data, i);
 
             for (let j = 0; j < uniqueParams.length; j++) {
                 let nameForNode = this.createNameForNode(headline[i], uniqueParams[j]);
