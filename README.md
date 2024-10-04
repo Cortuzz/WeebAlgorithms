@@ -1,17 +1,21 @@
 # WeebAlgorithms
-__This project contains 6 different optimization algorithms with their visualization.__ <br> <br>
+This project contains 6 different optimization algorithms with their visualization <br>
+WeebAlgorithms - проект, разработанный в рамках курса "Веб разработка" <br>
 
-# Optimization algorithms list:
+Киллер-фича проекта (по совместительсву полностью моя работа) - [реализация алгоритма муравьиной колонии для "реальной" муравьиной колонии](https://cortuzz.github.io/WeebAlgorithms/src/templates/ants.html) (Перейти в "Бонусный вариант"<br>
+Также в проекте присутствует:
 <ul>
-  <li> A* path finder
-  <li> Genetical algorithm
-  <li> Ant colony optimization algorithm (ACO)
-  <li> Clustering algorithm (K-means, Means-shift)
-  <li> Decigion tree algorithm
-  <li> Neural network
+  <li>[Алгоритм А*](https://cortuzz.github.io/WeebAlgorithms/src/templates/path_finder.html) by Cortuzz & Ssslakter
+  <li>[Генетический алгоритм для решения задачи коммивояжера](https://cortuzz.github.io/WeebAlgorithms/src/templates/genetic.html) by Alyoneek
+  <li>[Муравьиный алгоритм](https://cortuzz.github.io/WeebAlgorithms/src/templates/ants_basic.html) by Cortuzz
+  <li>[Алгоритм кластеризации точек на плоскости](https://cortuzz.github.io/WeebAlgorithms/src/templates/clustering.html) by Ssslakter
+  <li>[Дерево решений](https://cortuzz.github.io/WeebAlgorithms/src/templates/solution_tree.html) by Alyoneek & Cortuzz
+  <li>[Нейронная сеть, для определения рукописного ввода](https://cortuzz.github.io/WeebAlgorithms/src/templates/neural_network.html) by Ssslakter & Cortuzz
 </ul>
 
-# Project developers:
+<br><br>
+
+# Разработчики проекта:
 <ul>
   <li>N: Batrakov Oleg
   <li>G: Cortuzz
@@ -25,22 +29,22 @@ __This project contains 6 different optimization algorithms with their visualiza
   <li>G: alyoneek
 </ul>
 
-_P.S. The fields are: Surname Name (N), GitHub account (G)._
+_P.S. Поля: Фамилия Имя (N), GitHub логин (G)._
 
-# Description of work with algorithms:
-### A* path finder
-To start the algorithm, you need to set the start and end points.
-Also you can add borders or generate it by button with variable filling rate.
+# Описание работы алгоритмов
+### A*
+Чтобы запустить алгоритм, вам необходимо задать начальную и конечную точки.
+Также вы можете добавить границы или сгенерировать их с помощью кнопки с переменной скоростью заполнения.
 
 ![image](https://user-images.githubusercontent.com/52497929/159456869-168e4e3b-121e-409b-b1e9-542ae9a7a4fd.png)
 
-Similarly, you can choose maze generation (with this technology, it is guaranteed that there is a path between any two points):
+Аналогично, вы можете выбрать генерацию лабиринта (с помощью этой технологии гарантируется, что между любыми двумя точками существует путь).:
 
 ![image](https://user-images.githubusercontent.com/52497929/159457497-c624667c-6f97-470a-bcf8-4acdb137955c.png)
 ![image](https://user-images.githubusercontent.com/52497929/159457639-7930da69-04d0-4858-afa0-da9a46926a59.png)
 
 
-Changing the "heuristic metric" parameter will affect the evaluation of different cells by the algorithm:
+Изменение параметра "эвристическая метрика" повлияет на оценку различных ячеек алгоритмом:
 
 ![image](https://user-images.githubusercontent.com/52497929/159458655-79b6198a-7717-4cfe-a7c2-8372896f8eca.png)
 ![image](https://user-images.githubusercontent.com/52497929/159458183-f2ffa105-9f3a-4c79-bcf3-8276fedd70df.png)
@@ -56,7 +60,10 @@ function manhattanHeuristic(pointA, pointB) {
 }
 ```
 
-After finding a path between the points, the algorithm will display the most optimal route and output its path length (or that the route does not exist).
+После нахождения пути между точками алгоритм отобразит наиболее оптимальный маршрут и выдаст его длину (или то, что маршрут не существует).
 
 ![image](https://user-images.githubusercontent.com/52497929/159459336-98306bce-6f9e-44b8-8e46-5d1d79c5e4fb.png)
 ![image](https://user-images.githubusercontent.com/52497929/159459395-50c2d4ed-8b83-4c15-92fd-62f5b883b560.png)
+
+*Docs in development*
+
