@@ -2,11 +2,11 @@
 WeebAlgorithms - проект, разработанный в рамках курса "Веб разработка" <br>
 Данный проект позволяет посмотреть на визуализацию работы популярных алгоритмов <br> <br>
 
-Киллер-фича проекта (по совместительсву полностью моя работа) - [реализация алгоритма муравьиной колонии для "реальной" муравьиной колонии](https://cortuzz.github.io/WeebAlgorithms/src/templates/ants.html) (Перейти в "Бонусный вариант")<br>
+Киллер-фича проекта (по совместительсву полностью моя работа) - [реализация алгоритма муравьиной колонии для "реальной" муравьиной колонии](https://cortuzz.github.io/WeebAlgorithms/src/templates/ants.html)<br>
 Также в проекте присутствует:
 * [Алгоритм А*](https://cortuzz.github.io/WeebAlgorithms/src/templates/path_finder.html) by Cortuzz & Ssslakter
 * [Генетический алгоритм для решения задачи коммивояжера](https://cortuzz.github.io/WeebAlgorithms/src/templates/genetic.html) by Alyoneek
-* [Муравьиный алгоритм](https://cortuzz.github.io/WeebAlgorithms/src/templates/ants_basic.html) by Cortuzz
+* [Муравьиный алгоритм для решения задачи коммивояжера](https://cortuzz.github.io/WeebAlgorithms/src/templates/ants_basic.html) by Cortuzz
 * [Алгоритм кластеризации точек на плоскости](https://cortuzz.github.io/WeebAlgorithms/src/templates/clustering.html) by Ssslakter
 * [Дерево решений](https://cortuzz.github.io/WeebAlgorithms/src/templates/solution_tree.html) by Alyoneek & Cortuzz
 * [Нейронная сеть, для определения рукописного ввода](https://cortuzz.github.io/WeebAlgorithms/src/templates/neural_network.html) by Ssslakter & Cortuzz
